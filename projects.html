@@ -3,84 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECTS // JADEN JIRASEVIJINDA</title>
-    <link rel="stylesheet" href="./styles.css">
+    <title>PROJECTS // JADEN_J</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <style>
+        :root {
+            --bg: #0a0a0b;
+            --panel: #111113;
+            --border: #222224;
+            --text: #e1e1e3;
+            --accent: #ff5d22;
+            --left-gutter: 200px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding-left: var(--left-gutter);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 60px;
+        }
+
+        .project-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 30px;
+            transition: 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .project-category {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .project-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* MODAL STYLES */
+        #project-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            max-width: 700px;
+            width: 90%;
+            padding: 60px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            color: var(--accent);
+            font-family: 'JetBrains Mono';
+            cursor: pointer;
+            border: 1px solid var(--accent);
+            padding: 5px 10px;
+        }
+    </style>
 </head>
 <body>
 
-    <nav style="padding: 40px 0;">
-        <div class="container">
-            <a href="./index.html" class="mono-label" style="text-decoration: none;">← RETURN_TO_ROOT</a>
-        </div>
-    </nav>
+    <header style="padding: 60px;">
+        <div style="font-family: 'JetBrains Mono'; color: var(--accent); margin-bottom: 10px;">[ DATA_FILE_02 ]</div>
+        <h1 style="font-size: 48px; text-transform: uppercase;">Selected <span style="color: var(--accent)">Works</span></h1>
+    </header>
 
-    <section class="hero" style="padding-top: 60px; min-height: auto; padding-bottom: 80px;">
-        <div class="container">
-            <div class="hero-badge">ARCHIVE_V1.0</div>
-            <h1 class="display-xl">
-                SELECTED <br>
-                <span style="color:var(--accent)">PROJECTS</span>
-            </h1>
-            <p class="hero-description">
-                Technical builds <span style="color:var(--border)">|</span> Media production <span style="color:var(--border)">|</span> Engineering Documentation
-            </p>
+    <div class="project-grid" id="project-container">
         </div>
-    </section>
 
-    <section class="section" style="padding-top: 0;">
-        <div class="container">
-            <div class="bento">
+    <div id="project-modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="close-btn" onclick="closeModal()">CLOSE [X]</div>
+            <div id="modal-category" class="project-category"></div>
+            <h2 id="modal-title" class="project-title" style="font-size: 32px;"></h2>
+            <div id="modal-body" style="line-height: 1.8; color: #aaa; font-size: 18px;"></div>
+        </div>
+    </div>
+
+    <script src="content.js"></script> <script>
+        // 1. Render Projects from SITE_DATA
+        function renderProjects() {
+            const container = document.getElementById('project-container');
+            container.innerHTML = '';
+
+            SITE_DATA.projects.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.onclick = () => openModal(project);
                 
-                <div class="bc">
-                    <span class="mono-label">BUILD_01 // ENGINEERING</span>
-                    <h3 style="margin-bottom:15px; text-transform: uppercase;">GEA Resource Dashboard</h3>
-                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">
-                        A centralized system for tracking academy assets and student engagement metrics. Built with speed and modularity in mind.
-                    </p>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 25px;">
-                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">NEXT.JS</span>
-                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">TYPESCRIPT</span>
-                    </div>
-                    <a href="#" class="btn" style="padding: 8px 16px; font-size: 10px;">Open Documentation</a>
-                </div>
+                card.innerHTML = `
+                    <div class="project-category">${project.category}</div>
+                    <div class="project-title">${project.title}</div>
+                    <div style="font-family: 'JetBrains Mono'; font-size: 11px; color: #666;">VIEW_DETAILS +</div>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-                <div class="bc">
-                    <span class="mono-label">BUILD_02 // MEDIA</span>
-                    <h3 style="margin-bottom:15px; text-transform: uppercase;">Cinematic Drone Reel</h3>
-                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">
-                        A collection of high-altitude cinematography showcasing industrial and natural landscapes in Northern California.
-                    </p>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 25px;">
-                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">4K RAW</span>
-                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">DAVINCI RESOLVE</span>
-                    </div>
-                    <a href="#" class="btn" style="padding: 8px 16px; font-size: 10px;">Initialize Playback</a>
-                </div>
+        // 2. Modal Functions
+        function openModal(project) {
+            document.getElementById('modal-title').innerText = project.title;
+            document.getElementById('modal-category').innerText = project.category;
+            document.getElementById('modal-body').innerText = project.details;
+            document.getElementById('project-modal').style.display = 'flex';
+        }
 
-                <div class="bc">
-                    <span class="mono-label">BUILD_03 // SYSTEMS</span>
-                    <h3 style="margin-bottom:15px; text-transform: uppercase;">Automated Workflow Tools</h3>
-                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">
-                        Python-based scripts designed to automate repetitive data entry for school organization and club management.
-                    </p>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 25px;">
-                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">PYTHON</span>
-                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">AUTOMATION</span>
-                    </div>
-                    <a href="#" class="btn" style="padding: 8px 16px; font-size: 10px;">View Source</a>
-                </div>
+        function closeModal() {
+            document.getElementById('project-modal').style.display = 'none';
+        }
 
-            </div>
-        </div>
-    </section>
-
-    <footer style="padding: 60px 0; border-top: 1px solid var(--border);">
-        <div class="container">
-            <p style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase;">
-                &copy; 2026 Jaden Jirasevijinda // PROJECT_ARCHIVE_FINAL
-            </p>
-        </div>
-    </footer>
-
+        // Initialize
+        document.addEventListener('DOMContentLoaded', renderProjects);
+    </script>
 </body>
 </html>
