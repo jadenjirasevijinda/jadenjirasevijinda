@@ -1,79 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JADEN J. // TECHNICAL PORTFOLIO</title>
-  <link rel="stylesheet" href="./styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JADEN JIRASEVIJINDA</title>
+    <link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
-  <nav id="site-nav"></nav>
 
-  <section class="hero" id="hero">
-    <div class="container">
-      <div class="hero-badge">
-        SYSTEM_STATUS: OPEN_FOR_COLLAB
-      </div>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                STATUS // ACTIVE_JUNIOR
+            </div>
 
-      <h1 class="display-xl">
-        JADEN <span style="color:var(--text-dim)">JIRASEVIJINDA</span><br/>
-        <span style="color:var(--accent)">BUILDING SYSTEMS.</span>
-      </h1>
+            <h1 class="display-xl">
+                JADEN <br>
+                <span style="color:var(--accent)">JIRASEVIJINDA</span>
+            </h1>
 
-      <p class="body-lg muted hero-sub" style="max-width: 600px; margin: 30px 0;">
-        Engineering-focused creator building at the intersection of <span class="mono" style="color:var(--text)">Code</span>, <span class="mono" style="color:var(--text)">Media</span>, and <span class="mono" style="color:var(--text)">Community</span>.
-      </p>
+            <p class="hero-description">
+                Livermore High School Junior <span style="color:var(--border)">|</span> GEA President
+            </p>
 
-      <div class="hero-btns">
-        <a href="./projects.html" class="btn btn-primary">Initialize View (Projects)</a>
-        <a href="./contact.html"  class="btn">Get In Touch</a>
-      </div>
-    </div>
-  </section>
+            <div class="hero-btns">
+                <a href="./projects.html" class="btn btn-primary">Initialize Projects</a>
+                <a href="./contact.html" class="btn">Contact Terminal</a>
+            </div>
+        </div>
+    </section>
 
-  <div class="stats-band" style="background: var(--panel); border-bottom: 1px solid var(--border);">
-    <div class="container">
-      <div class="stats-grid" id="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+    <div class="stats-band">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-cell">
+                    <span class="stat-num">12+</span>
+                    <span class="stat-lbl">Systems_Shipped</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-num">04</span>
+                    <span class="stat-lbl">Active_Disciplines</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-num">∞</span>
+                    <span class="stat-lbl">Continuous_Iteration</span>
+                </div>
+            </div>
         </div>
     </div>
-  </div>
 
-  <section class="section" id="about">
-    <div class="container">
-      <div class="section-header" style="margin-bottom: 60px;">
-        <span class="mono" style="color: var(--accent);">[ DATA_FILE_01 ]</span>
-        <h2 class="display-lg" style="margin-top: 10px;">ABOUT THE <span style="color: var(--accent);">BUILDER</span></h2>
-      </div>
-      
-      <div class="bento" id="bento-grid">
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="mono-label">[ DATA_ENTRY_01 ]</span>
+                <h2 class="display-lg" style="font-size: 32px; text-transform: uppercase;">Core Profile</h2>
+            </div>
+
+            <div class="bento" id="bento-grid">
+                <div class="bc">
+                    <span class="mono-label">Leadership</span>
+                    <h3 style="margin: 10px 0;">GEA President</h3>
+                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6;">
+                        Leading the Green Engineering Academy, managing technical projects, and fostering a community of builders.
+                    </p>
+                </div>
+                <div class="bc">
+                    <span class="mono-label">Academic</span>
+                    <h3 style="margin: 10px 0;">Livermore High</h3>
+                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6;">
+                        Class of 2027. Focused on the intersection of engineering and media production.
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
-  </section>
+    </section>
 
-  <footer id="site-footer"></footer>
+    <footer style="padding: 40px 0; border-top: 1px solid var(--border); text-align: center; font-family: var(--font-mono); font-size: 10px; color: var(--text-dim);">
+        &copy; 2026 JADEN JIRASEVIJINDA // ALL SYSTEMS OPERATIONAL
+    </footer>
 
-  <script src="./content.js"></script>
-  <script src="./components.js"></script>
-  
-  <script>
-    // Industrial Theme Data Render Override
-    window.addEventListener('DOMContentLoaded', () => {
-      // You can keep your existing renderFromSite logic, 
-      // but ensure it targets these new industrial class names.
-      const stats = [
-        { value: "12", label: "ACTIVE_PROJECTS" },
-        { value: "04", label: "YEARS_EXPERIENCE" },
-        { value: "01", label: "GEA_PRESIDENCY" }
-      ];
-      
-      document.getElementById('stats-grid').innerHTML = stats.map(s => `
-        <div style="padding: 30px; border-right: 1px solid var(--border);">
-          <div class="mono" style="color:var(--accent); font-size: 32px;">${s.value}</div>
-          <div class="mono" style="color:var(--text-dim)">${s.label}</div>
-        </div>
-      `).join('');
-    });
-  </script>
+    <script src="./content.js"></script>
+    <script src="./components.js"></script>
 </body>
 </html>
