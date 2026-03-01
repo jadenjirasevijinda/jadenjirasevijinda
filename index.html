@@ -1,87 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JADEN JIRASEVIJINDA</title>
-    <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
+<script src="content.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof SITE_DATA !== 'undefined') {
+            // Update Text
+            document.body.innerHTML = document.body.innerHTML
+                .replace('JADEN', SITE_DATA.identity.firstName)
+                .replace('JIRASEVIJINDA', SITE_DATA.identity.lastName)
+                .replace('BUILDING SYSTEMS.', SITE_DATA.identity.heroAccent);
+            
+            // Update Bio
+            document.querySelector('.hero-description').innerText = SITE_DATA.identity.statusBio;
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-badge">STATUS: ACTIVE</div>
+            // Update Stats (Targeting by order)
+            const statValues = document.querySelectorAll('.stat-number'); // Ensure your numbers have this class
+            const statLabels = document.querySelectorAll('.stat-label');  // Ensure your labels have this class
+            SITE_DATA.stats.forEach((s, i) => {
+                if(statValues[i]) statValues[i].innerText = s.v;
+                if(statLabels[i]) statLabels[i].innerText = s.l;
+            });
 
-            <h1 class="display-xl">
-                JADEN<br>
-                <span style="color:var(--accent)">JIRASEVIJINDA</span>
-            </h1>
-
-            <p class="hero-description">
-                Livermore High School Junior 
-                <span style="width:30px; height:1px; background:var(--border)"></span>
-                GEA President
-            </p>
-
-            <div class="hero-btns">
-                <a href="./projects.html" class="btn btn-primary">View Projects</a>
-                <a href="./contact.html" class="btn">Get In Touch</a>
-            </div>
-        </div>
-    </section>
-
-    <div class="stats-band">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-cell">
-                    <span class="stat-num">12+</span>
-                    <span class="stat-lbl">Active_Projects</span>
-                </div>
-                <div class="stat-cell">
-                    <span class="stat-num">04</span>
-                    <span class="stat-lbl">Core_Disciplines</span>
-                </div>
-                <div class="stat-cell">
-                    <span class="stat-num">01</span>
-                    <span class="stat-lbl">GEA_Presidency</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <span class="mono-label">// CORE_PROFILE</span>
-                <h2 style="font-size: 24px; text-transform: uppercase;">Technical Background</h2>
-            </div>
-
-            <div class="bento">
-                <div class="bc">
-                    <span class="mono-label">Leadership</span>
-                    <h3 style="margin-bottom:15px; text-transform: uppercase;">GEA Administration</h3>
-                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6;">
-                        Directing the Green Engineering Academy. Managing interdisciplinary teams and executing high-level technical initiatives.
-                    </p>
-                </div>
-                <div class="bc">
-                    <span class="mono-label">Education</span>
-                    <h3 style="margin-bottom:15px; text-transform: uppercase;">Livermore High School</h3>
-                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6;">
-                        Junior Year. Specializing in Engineering systems and Media production workflows.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer style="padding: 60px 0; border-top: 1px solid var(--border);">
-        <div class="container">
-            <p style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase;">
-                &copy; 2026 Jaden Jirasevijinda // Livermore, CA
-            </p>
-        </div>
-    </footer>
-
-</body>
-</html>
+            // Update Theme
+            document.documentElement.style.setProperty('--accent', SITE_DATA.theme.accent);
+            document.documentElement.style.setProperty('--left-gutter', SITE_DATA.theme.gutter);
+            document.querySelector('.system-status-text').innerText = SITE_DATA.theme.systemStatus;
+        }
+    });
+</script>
