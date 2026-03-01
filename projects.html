@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Jaden Jirasevijinda</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .proj-card:hover {
+      border-color: var(--border-md);
+      transform: translateY(-6px);
+      box-shadow: 0 32px 64px rgba(0,0,0,0.55);
+    }
+    .proj-card.featured { grid-column: span 2; }
+
+    .proj-thumb {
+      aspect-ratio: 16/8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 60px; overflow: hidden;
+      transition: transform 0.6s var(--ease);
+    }
+    .proj-card.featured .proj-thumb { aspect-ratio: 16/6; font-size: 80px; }
+    .proj-card:hover .proj-thumb { transform: scale(1.04); }
+
+    .proj-body { padding: 24px 26px 26px; }
+    .proj-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .proj-type { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
+
+    .proj-title { font-size: 20px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 8px; }
+    .proj-desc  { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 20px; }
+
+    .proj-footer { display: flex; align-items: center; justify-content: space-between; }
+    .proj-tags   { display: flex; gap: 6px; flex-wrap: wrap; }
+    .proj-tag    { font-size: 11px; color: var(--text-dim); border: 1px solid var(--border); border-radius: 980px; padding: 3px 10px; }
+
+    .proj-arrow {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--text-muted);
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .proj-card:hover .proj-arrow {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+    }
+
+    @media (max-width: 720px) {
+      .proj-grid { grid-template-columns: 1fr; }
+      .proj-card.featured { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="site-nav"></nav>
+
+  <section class="page-hero section">
+    <div class="container">
+      <span class="label page-hero-label animate">Work</span>
+      <h1 class="display-xl page-hero-title animate" style="animation-delay:0.05s">
+        <span class="grad-light">Selected</span><br/>
+        <span class="grad-accent">Projects</span>
+      </h1>
+      <p class="body-lg muted page-hero-sub animate" style="animation-delay:0.1s">
+        Things I've built, led, shot, and shipped.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="proj-grid" id="proj-grid"></div>
+    </div>
+  </section>
+
+  <footer id="site-footer"></footer>
+
+  <script src="content.js"></script>
+  <script src="components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const S = window.SITE;
+      if (!S) return;
+
+      const statusMap = { active: 'status-active', wip: 'status-wip', complete: 'status-complete' };
+      const statusLabel = { active: 'Active', wip: 'In Progress', complete: 'Complete' };
+
+      document.getElementById('proj-grid').innerHTML = S.projects.map((p, i) =>
+        `<a href="${p.url}" class="proj-card ${p.featured ? 'featured' : ''} animate" data-delay="${i*90}" ${p.url === '#' ? 'onclick="return false"' : 'target="_blank"'}>
+          <div class="proj-thumb" style="background:${p.bg}">${p.emoji}</div>
+          <div class="proj-body">
+            <div class="proj-meta">
+              <span class="proj-type">${p.type}</span>
+              <span class="status-badge ${statusMap[p.status]}">${statusLabel[p.status]}</span>
+            </div>
+            <div class="proj-title">${p.title}</div>
+            <div class="proj-desc">${p.desc}</div>
+            <div class="proj-footer">
+              <div class="proj-tags">${p.tags.map(t=>`<span class="proj-tag">${t}</span>`).join('')}</div>
+              <div class="proj-arrow">↗</div>
+            </div>
+          </div>
+        </a>`
+      ).join('');
+    });
+  </script>
+</body>
+</html>

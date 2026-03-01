@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photos & Videos — Jaden Jirasevijinda</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+
+    /* ── TAB BAR ─────────────────────────────────────────────────── */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 980px;
+      padding: 4px;
+      width: fit-content;
+      margin-bottom: 40px;
+    }
+    .tab-btn {
+      padding: 9px 22px;
+      border-radius: 980px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── FILTER PILLS ────────────────────────────────────────────── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .filter-btn {
+      padding: 7px 16px;
+      border-radius: 980px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--border-md); color: var(--text); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ── TABS CONTENT ────────────────────────────────────────────── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── MASONRY PHOTO GRID ──────────────────────────────────────── */
+    .photo-grid {
+      columns: 3;
+      column-gap: 10px;
+    }
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 10px;
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.2s;
+    }
+    .photo-item:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.55);
+      border-color: var(--border-md);
+    }
+    .photo-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s var(--ease);
+    }
+    .photo-item:hover img { transform: scale(1.04); }
+    .photo-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: flex-end;
+      padding: 14px;
+    }
+    .photo-item:hover .photo-item-overlay { opacity: 1; }
+    .photo-item-caption { font-size: 13px; font-weight: 500; color: #fff; }
+    .photo-item-cat {
+      position: absolute;
+      top: 9px; right: 9px;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.85);
+      padding: 3px 8px;
+      border-radius: 980px;
+    }
+
+    /* placeholder card when no src */
+    .photo-placeholder {
+      break-inside: avoid;
+      margin-bottom: 10px;
+    }
+    .photo-placeholder-inner {
+      border-radius: var(--r-sm);
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+    .ph-icon { font-size: 28px; opacity: 0.3; }
+    .ph-text { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+    .ph-label { font-size: 13px; font-weight: 600; color: var(--text-dim); }
+
+    /* ── VIDEO GRID ──────────────────────────────────────────────── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .video-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.2s;
+    }
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.55);
+      border-color: var(--border-md);
+    }
+    .video-thumb {
+      aspect-ratio: 16/9;
+      position: relative;
+      overflow: hidden;
+      background: var(--surface2);
+    }
+    .video-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s var(--ease);
+    }
+    .video-card:hover .video-thumb img { transform: scale(1.05); }
+    .video-thumb-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+    }
+    /* play button overlay */
+    .video-play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+      transition: background 0.2s;
+    }
+    .video-card:hover .video-play-btn { background: rgba(0,0,0,0.4); }
+    .play-circle {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .video-card:hover .play-circle {
+      transform: scale(1.1);
+      background: rgba(255,255,255,0.25);
+    }
+    .video-cat-badge {
+      position: absolute;
+      top: 9px; left: 9px;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.85);
+      padding: 3px 8px;
+      border-radius: 980px;
+    }
+    .video-body {
+      padding: 16px 18px;
+    }
+    .video-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 5px;
+    }
+    .video-caption {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* placeholder video card */
+    .video-placeholder {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .video-placeholder-thumb {
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      opacity: 0.3;
+    }
+    .video-placeholder-body {
+      padding: 14px 18px;
+    }
+
+    /* ── LIGHTBOX ────────────────────────────────────────────────── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(24px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+
+    /* Photo lightbox */
+    #photo-lightbox .lb-wrap {
+      max-width: min(90vw, 960px);
+      max-height: 88vh;
+      position: relative;
+    }
+    #photo-lightbox .lb-wrap img {
+      max-width: 100%; max-height: 82vh;
+      object-fit: contain;
+      border-radius: var(--r-sm);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+      transform: scale(0.94);
+      transition: transform 0.35s var(--ease);
+      display: block;
+    }
+    #photo-lightbox.open .lb-wrap img { transform: scale(1); }
+    .lb-caption {
+      margin-top: 14px; text-align: center;
+      font-size: 14px; color: rgba(255,255,255,0.55);
+    }
+    .lb-close {
+      position: fixed; top: 22px; right: 22px;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s; z-index: 10;
+    }
+    .lb-close:hover { background: rgba(255,255,255,0.22); }
+    .lb-nav {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,0.18); }
+    .lb-prev { left: 16px; }
+    .lb-next { right: 16px; }
+
+    /* Video lightbox (YouTube embed) */
+    #video-lightbox .vl-wrap {
+      width: min(90vw, 960px);
+      position: relative;
+    }
+    #video-lightbox .vl-embed {
+      aspect-ratio: 16/9;
+      width: 100%;
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+      transform: scale(0.94);
+      transition: transform 0.35s var(--ease);
+    }
+    #video-lightbox.open .vl-embed { transform: scale(1); }
+    #video-lightbox .vl-embed iframe {
+      width: 100%; height: 100%;
+      border: none; display: block;
+    }
+    .vl-title {
+      margin-top: 14px; text-align: center;
+      font-size: 15px; font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ── INSTAGRAM CTA ───────────────────────────────────────────── */
+    .ig-cta {
+      margin-top: 64px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 44px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .ig-left { flex: 1; min-width: 220px; }
+    .ig-icon  { font-size: 38px; margin-bottom: 14px; }
+    .ig-title { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .ig-sub   { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── HOW-TO BANNER ───────────────────────────────────────────── */
+    .howto-banner {
+      background: rgba(41,151,255,0.06);
+      border: 1px solid rgba(41,151,255,0.18);
+      border-radius: var(--r-sm);
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .howto-banner strong { color: var(--text); }
+    .howto-banner code {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      background: var(--surface2);
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    .howto-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── EMPTY STATE ─────────────────────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 72px 24px;
+      color: var(--text-dim);
+    }
+    .empty-state-icon { font-size: 44px; margin-bottom: 14px; }
+    .empty-state-text { font-size: 15px; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .photo-grid  { columns: 2; }
+      .video-grid  { grid-template-columns: repeat(2, 1fr); }
+      .ig-cta      { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 580px) {
+      .photo-grid { columns: 1; }
+      .video-grid { grid-template-columns: 1fr; }
+      .lb-nav { display: none; }
+      .tab-btn { padding: 8px 14px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="site-nav"></nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero section">
+    <div class="container">
+      <span class="label page-hero-label animate">Creative Work</span>
+      <h1 class="display-xl page-hero-title animate" style="animation-delay:0.05s">
+        <span class="grad-light">Photos &</span><br/>
+        <span class="grad-accent">Videos</span>
+      </h1>
+      <p class="body-lg muted page-hero-sub animate" style="animation-delay:0.1s" id="page-sub">
+        Photography, drone, and visual work — based in Livermore, CA.
+      </p>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+
+      <!-- Tab switcher: Photos / Videos -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="photos">📷 Photos</button>
+        <button class="tab-btn"        data-tab="videos">🎬 Videos</button>
+      </div>
+
+      <!-- ── PHOTOS TAB ── -->
+      <div class="tab-panel active" id="tab-photos">
+
+        <div class="howto-banner" id="photo-howto" style="display:none">
+          <span class="howto-icon">💡</span>
+          <span>
+            <strong>No photos yet.</strong> Open <code>content.js</code>, find the <code>photos</code> array, and set <code>src</code> to either <code>"images/your-photo.jpg"</code> (for a local file in the images/ folder) or any direct image URL. See the <a href="#how-to" style="color:var(--accent)">guide below</a> for details.
+          </span>
+        </div>
+
+        <div class="filter-bar" id="photo-filters">
+          <button class="filter-btn active" data-cat="all">All</button>
+          <button class="filter-btn" data-cat="photography">📷 Photography</button>
+          <button class="filter-btn" data-cat="drone">🚁 Drone</button>
+          <button class="filter-btn" data-cat="other">✦ Other</button>
+        </div>
+
+        <div class="photo-grid" id="photo-grid"></div>
+        <div class="empty-state" id="photo-empty" style="display:none">
+          <div class="empty-state-icon">📷</div>
+          <div class="empty-state-text">No photos in this category yet.</div>
+        </div>
+
+        <div class="ig-cta animate" id="ig-cta">
+          <div class="ig-left">
+            <div class="ig-icon">📸</div>
+            <div class="ig-title">See more on Instagram</div>
+            <div class="ig-sub" id="ig-sub">Follow along for more photos, drone footage, and behind-the-scenes content.</div>
+          </div>
+          <a href="#" class="btn btn-primary" id="ig-btn" target="_blank" rel="noopener">
+            Follow <span id="ig-handle-text"></span> ↗
+          </a>
+        </div>
+
+      </div>
+
+      <!-- ── VIDEOS TAB ── -->
+      <div class="tab-panel" id="tab-videos">
+
+        <div class="howto-banner" id="video-howto" style="display:none">
+          <span class="howto-icon">💡</span>
+          <span>
+            <strong>No videos yet.</strong> Open <code>content.js</code>, find the <code>videos</code> array, and paste your YouTube or Vimeo URL into the <code>url</code> field. See the <a href="#how-to" style="color:var(--accent)">guide below</a>.
+          </span>
+        </div>
+
+        <div class="filter-bar" id="video-filters">
+          <button class="filter-btn active" data-vcat="all">All</button>
+          <button class="filter-btn" data-vcat="drone">🚁 Drone</button>
+          <button class="filter-btn" data-vcat="film">🎬 Film</button>
+          <button class="filter-btn" data-vcat="edit">✂️ Edits</button>
+          <button class="filter-btn" data-vcat="event">🎉 Events</button>
+        </div>
+
+        <div class="video-grid" id="video-grid"></div>
+        <div class="empty-state" id="video-empty" style="display:none">
+          <div class="empty-state-icon">🎬</div>
+          <div class="empty-state-text">No videos in this category yet.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW-TO GUIDE SECTION -->
+  <section class="section" id="how-to" style="background:var(--surface);border-top:1px solid var(--border)">
+    <div class="container">
+      <div class="section-header animate">
+        <span class="label">Setup Guide</span>
+        <h2 class="display-md">How to add your photos &amp; videos</h2>
+        <p class="body-lg muted">Step-by-step — no coding required.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:14px">
+
+        <!-- Photos card -->
+        <div class="card animate" style="padding:32px">
+          <div style="font-size:30px;margin-bottom:16px">🗂️</div>
+          <div style="font-size:17px;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px">Adding Photos</div>
+          <div style="font-size:14px;color:var(--text-muted);margin-bottom:18px;line-height:1.6">Put files in the <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">images/</code> folder, then reference them in <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">content.js</code>.</div>
+          <ol style="font-size:14px;color:var(--text-muted);line-height:2;padding-left:18px">
+            <li>Compress your photo at <a href="https://squoosh.app" target="_blank" style="color:var(--accent)">squoosh.app</a> (80% quality, save as JPG)</li>
+            <li>Move the file into your <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">images/</code> folder</li>
+            <li>Open <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">content.js</code> and find the <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">photos</code> array</li>
+            <li>Set <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">src: "images/your-file.jpg"</code></li>
+            <li>Run <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">git add . && git commit -m "add photos" && git push</code></li>
+          </ol>
+          <div style="margin-top:16px;padding:12px 14px;background:rgba(48,209,88,0.07);border:1px solid rgba(48,209,88,0.2);border-radius:9px;font-size:13px;color:var(--accent-green)">
+            💡 For lots of photos, use <a href="https://cloudinary.com" target="_blank" style="color:var(--accent-green);font-weight:600">cloudinary.com</a> (free) and paste the URL instead of a local path.
+          </div>
+        </div>
+
+        <!-- Videos card -->
+        <div class="card animate" style="padding:32px;animation-delay:0.08s">
+          <div style="font-size:30px;margin-bottom:16px">▶️</div>
+          <div style="font-size:17px;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px">Adding Videos</div>
+          <div style="font-size:14px;color:var(--text-muted);margin-bottom:18px;line-height:1.6">Upload to YouTube (can be Unlisted), then paste the link into <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">content.js</code>.</div>
+          <ol style="font-size:14px;color:var(--text-muted);line-height:2;padding-left:18px">
+            <li>Go to <a href="https://youtube.com" target="_blank" style="color:var(--accent)">youtube.com</a> and upload your video</li>
+            <li>Set visibility to <strong style="color:var(--text)">Unlisted</strong> if you want it private-ish</li>
+            <li>Copy the video URL (e.g. youtube.com/watch?v=abc123)</li>
+            <li>Open <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">content.js</code> and find the <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">videos</code> array</li>
+            <li>Paste URL into the <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">url</code> field — thumbnail auto-loads!</li>
+            <li>Push to GitHub</li>
+          </ol>
+          <div style="margin-top:16px;padding:12px 14px;background:rgba(41,151,255,0.06);border:1px solid rgba(41,151,255,0.18);border-radius:9px;font-size:13px;color:var(--text-muted)">
+            💡 Leave <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 5px;border-radius:4px;color:var(--accent)">thumbnail: null</code> and the YouTube thumbnail loads automatically.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Code example -->
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:20px 24px;font-family:'DM Mono',monospace;font-size:12.5px;line-height:2;color:var(--text-muted);overflow-x:auto;margin-top:4px">
+        <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px">content.js — example entries</div>
+<span style="color:var(--text-dim)">// Photo example</span><br/>
+<span style="color:var(--text-dim)">{</span> <span style="color:var(--accent-green)">src</span><span style="color:var(--text-dim)">:</span> <span style="color:var(--accent-orange)">"images/del-valle.jpg"</span><span style="color:var(--text-dim)">,</span> <span style="color:var(--accent-green)">category</span><span style="color:var(--text-dim)">:</span> <span style="color:var(--accent-orange)">"photography"</span><span style="color:var(--text-dim)">,</span> <span style="color:var(--accent-green)">caption</span><span style="color:var(--text-dim)">:</span> <span style="color:var(--accent-orange)">"Golden hour"</span><span style="color:var(--text-dim)">,</span> <span style="color:var(--accent-green)">featured</span><span style="color:var(--text-dim)">:</span> <span style="color:var(--accent)">true</span> <span style="color:var(--text-dim)">},</span><br/>
+<br/>
+<span style="color:var(--text-dim)">// Video example</span><br/>
+<span style="color:var(--text-dim)">{</span> <span style="color:var(--accent-green)">title</span><span style="color:var(--text-dim)">:</span> <span style="color:var(--accent-orange)">"Livermore Aerial 2024"</span><span style="color:var(--text-dim)">,</span> <span style="color:var(--accent-green)">url</span><span style="color:var(--text-dim)">:</span> <span style="color:var(--accent-orange)">"https://youtube.com/watch?v=YOUR_ID"</span><span style="color:var(--text-dim)">,</span> <span style="color:var(--accent-green)">category</span><span style="color:var(--text-dim)">:</span> <span style="color:var(--accent-orange)">"drone"</span><span style="color:var(--text-dim)">,</span> <span style="color:var(--accent-green)">thumbnail</span><span style="color:var(--text-dim)">:</span> <span style="color:var(--accent)">null</span> <span style="color:var(--text-dim)">}</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PHOTO LIGHTBOX -->
+  <div class="lightbox" id="photo-lightbox" onclick="closePhotoLB(event)">
+    <button class="lb-close" onclick="closePhotoLBBtn()">✕</button>
+    <button class="lb-nav lb-prev" onclick="navPhoto(-1);event.stopPropagation()">‹</button>
+    <button class="lb-nav lb-next" onclick="navPhoto(1);event.stopPropagation()">›</button>
+    <div class="lb-wrap">
+      <img id="lb-photo-img" src="" alt="" />
+      <div class="lb-caption" id="lb-photo-caption"></div>
+    </div>
+  </div>
+
+  <!-- VIDEO LIGHTBOX -->
+  <div class="lightbox" id="video-lightbox" onclick="closeVideoLB(event)">
+    <button class="lb-close" onclick="closeVideoLBBtn()">✕</button>
+    <div class="vl-wrap">
+      <div class="vl-embed">
+        <iframe id="vl-iframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>
+      <div class="vl-title" id="vl-title"></div>
+    </div>
+  </div>
+
+  <footer id="site-footer"></footer>
+
+  <script src="content.js"></script>
+  <script src="components.js"></script>
+  <script>
+  const S = window.SITE || {};
+  const photos = S.photos || [];
+  const videos = S.videos || [];
+
+  // ── Instagram CTA ────────────────────────────────────────────
+  document.getElementById('ig-handle-text').textContent = S.instagramHandle || '';
+  document.getElementById('ig-btn').href = S.instagramUrl || '#';
+  document.getElementById('ig-sub').textContent =
+    `Follow ${S.instagramHandle || 'on Instagram'} for more photography, drone footage, and behind-the-scenes content.`;
+
+  // ── Tabs ─────────────────────────────────────────────────────
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ── PHOTOS ───────────────────────────────────────────────────
+  let activeCat = 'all';
+  let lbPhotos  = [];
+  let lbIdx     = 0;
+
+  const hasPhotos = photos.some(p => p.src);
+  if (!hasPhotos) document.getElementById('photo-howto').style.display = 'flex';
+
+  function buildPhotos(cat) {
+    const grid  = document.getElementById('photo-grid');
+    const empty = document.getElementById('photo-empty');
+    grid.innerHTML = '';
+
+    const list = cat === 'all' ? photos : photos.filter(p => p.category === cat);
+    if (!list.length) { empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+
+    lbPhotos = list.filter(p => p.src);
+
+    list.forEach((p, i) => {
+      const delay = (i % 4) * 55;
+      if (!p.src) {
+        const el = document.createElement('div');
+        el.className = 'photo-placeholder';
+        el.innerHTML = `<div class="photo-placeholder-inner" style="animation-delay:${delay}ms">
+          <div class="ph-icon">${p.category === 'drone' ? '🚁' : '📷'}</div>
+          <div class="ph-label">${p.alt || 'Photo'}</div>
+          <div class="ph-text">Add <code style="font-size:11px;font-family:monospace">src</code> in content.js</div>
+        </div>`;
+        grid.appendChild(el);
+        return;
+      }
+      const idx = lbPhotos.indexOf(p);
+      const el  = document.createElement('div');
+      el.className = 'photo-item animate';
+      el.dataset.delay = delay;
+      el.innerHTML = `
+        <img src="${p.src}" alt="${p.alt||''}" loading="lazy"
+             onerror="this.closest('.photo-item').style.display='none'" />
+        <div class="photo-item-overlay">
+          <span class="photo-item-caption">${p.caption||p.alt||''}</span>
+        </div>
+        <span class="photo-item-cat">${p.category||'photo'}</span>`;
+      el.addEventListener('click', () => openPhotoLB(idx));
+      grid.appendChild(el);
+      setTimeout(() => el.classList.add('visible'), delay);
+    });
+  }
+
+  document.querySelectorAll('#photo-filters .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#photo-filters .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.dataset.cat;
+      buildPhotos(activeCat);
+    });
+  });
+
+  // Photo lightbox
+  function openPhotoLB(idx) {
+    if (idx < 0 || idx >= lbPhotos.length) return;
+    lbIdx = idx;
+    const p = lbPhotos[idx];
+    document.getElementById('lb-photo-img').src     = p.src;
+    document.getElementById('lb-photo-img').alt     = p.alt || '';
+    document.getElementById('lb-photo-caption').textContent = p.caption || '';
+    document.getElementById('photo-lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePhotoLBBtn() {
+    document.getElementById('photo-lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closePhotoLB(e) {
+    if (e.target.id === 'photo-lightbox') closePhotoLBBtn();
+  }
+  function navPhoto(dir) { openPhotoLB(lbIdx + dir); }
+
+  // ── VIDEOS ───────────────────────────────────────────────────
+  let activeVCat = 'all';
+
+  const hasVideos = videos.some(v => v.url && !v.url.includes('REPLACE'));
+  if (!hasVideos) document.getElementById('video-howto').style.display = 'flex';
+
+  function getYouTubeId(url) {
+    if (!url) return null;
+    const m = url.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+    return m ? m[1] : null;
+  }
+
+  function getVimeoId(url) {
+    if (!url) return null;
+    const m = url.match(/vimeo\.com\/(\d+)/);
+    return m ? m[1] : null;
+  }
+
+  function getEmbedUrl(url) {
+    const ytId = getYouTubeId(url);
+    if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+    const vId  = getVimeoId(url);
+    if (vId)  return `https://player.vimeo.com/video/${vId}?autoplay=1`;
+    return url;
+  }
+
+  function getAutoThumb(v) {
+    if (v.thumbnail) return v.thumbnail;
+    const ytId = getYouTubeId(v.url);
+    if (ytId) return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+    return null;
+  }
+
+  function buildVideos(cat) {
+    const grid  = document.getElementById('video-grid');
+    const empty = document.getElementById('video-empty');
+    grid.innerHTML = '';
+
+    const list = cat === 'all'
+      ? videos
+      : videos.filter(v => v.category === cat);
+
+    if (!list.length) { empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+
+    list.forEach((v, i) => {
+      const delay   = (i % 3) * 70;
+      const isReal  = v.url && !v.url.includes('REPLACE');
+      const thumb   = getAutoThumb(v);
+      const catIcon = { drone:'🚁', film:'🎬', edit:'✂️', event:'🎉', other:'▶️' }[v.category] || '▶️';
+
+      if (!isReal) {
+        const el = document.createElement('div');
+        el.className = 'video-placeholder animate';
+        el.dataset.delay = delay;
+        el.innerHTML = `
+          <div class="video-placeholder-thumb">${catIcon}</div>
+          <div class="video-placeholder-body">
+            <div class="video-title" style="color:var(--text-dim)">${v.title || 'Untitled Video'}</div>
+            <div class="video-caption">Add YouTube URL in content.js</div>
+          </div>`;
+        grid.appendChild(el);
+        setTimeout(() => el.classList.add('visible'), delay);
+        return;
+      }
+
+      const el = document.createElement('div');
+      el.className = 'video-card animate';
+      el.dataset.delay = delay;
+      el.innerHTML = `
+        <div class="video-thumb">
+          ${thumb
+            ? `<img src="${thumb}" alt="${v.title||''}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="video-thumb-placeholder" style="display:none">${catIcon}</div>`
+            : `<div class="video-thumb-placeholder">${catIcon}</div>`
+          }
+          <div class="video-play-btn">
+            <div class="play-circle">▶</div>
+          </div>
+          <span class="video-cat-badge">${v.category || 'video'}</span>
+        </div>
+        <div class="video-body">
+          <div class="video-title">${v.title || 'Untitled'}</div>
+          ${v.caption ? `<div class="video-caption">${v.caption}</div>` : ''}
+        </div>`;
+      el.addEventListener('click', () => openVideoLB(v));
+      grid.appendChild(el);
+      setTimeout(() => el.classList.add('visible'), delay);
+    });
+  }
+
+  document.querySelectorAll('#video-filters .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#video-filters .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeVCat = btn.dataset.vcat;
+      buildVideos(activeVCat);
+    });
+  });
+
+  // Video lightbox
+  function openVideoLB(v) {
+    const embedUrl = getEmbedUrl(v.url);
+    document.getElementById('vl-iframe').src   = embedUrl;
+    document.getElementById('vl-title').textContent = v.title || '';
+    document.getElementById('video-lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeVideoLBBtn() {
+    document.getElementById('video-lightbox').classList.remove('open');
+    document.getElementById('vl-iframe').src = ''; // stop video
+    document.body.style.overflow = '';
+  }
+  function closeVideoLB(e) {
+    if (e.target.id === 'video-lightbox') closeVideoLBBtn();
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (document.getElementById('photo-lightbox').classList.contains('open')) {
+      if (e.key === 'Escape')     closePhotoLBBtn();
+      if (e.key === 'ArrowRight') navPhoto(1);
+      if (e.key === 'ArrowLeft')  navPhoto(-1);
+    }
+    if (document.getElementById('video-lightbox').classList.contains('open')) {
+      if (e.key === 'Escape') closeVideoLBBtn();
+    }
+  });
+
+  // ── Init ─────────────────────────────────────────────────────
+  buildPhotos('all');
+  buildVideos('all');
+  </script>
+</body>
+</html>

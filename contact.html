@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Jaden Jirasevijinda</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 10px; }
+
+    .clc {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 18px 22px;
+      text-decoration: none; color: var(--text);
+      transition: all 0.25s var(--ease);
+    }
+    .clc:hover {
+      border-color: var(--border-md);
+      transform: translateX(5px);
+    }
+    .clc-icon {
+      width: 42px; height: 42px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; flex-shrink: 0;
+      background: var(--surface2);
+    }
+    .clc-info { flex: 1; }
+    .clc-sub  { font-size: 11.5px; color: var(--text-dim); margin-bottom: 2px; }
+    .clc-val  { font-size: 15px; font-weight: 500; }
+    .clc-arr  { font-size: 16px; color: var(--text-dim); transition: all 0.2s; }
+    .clc:hover .clc-arr { color: var(--accent); transform: translateX(3px); }
+
+    .email-block {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 22px 26px;
+      text-decoration: none; color: var(--text);
+      margin-top: 8px;
+      transition: all 0.3s;
+    }
+    .email-block:hover {
+      border-color: var(--accent);
+      box-shadow: var(--glow);
+      transform: translateX(5px);
+    }
+    .email-val {
+      font-size: clamp(16px, 2.2vw, 24px);
+      font-weight: 700; letter-spacing: -0.03em;
+    }
+    .email-arrow { margin-left: auto; font-size: 20px; opacity: 0.3; transition: opacity 0.2s; }
+    .email-block:hover .email-arrow { opacity: 0.8; }
+
+    .contact-note {
+      margin-top: 32px;
+      padding: 20px 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 14px; color: var(--text-muted); line-height: 1.65;
+    }
+
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="site-nav"></nav>
+
+  <section class="page-hero section">
+    <div class="container">
+      <span class="label page-hero-label animate">Contact</span>
+      <h1 class="display-xl page-hero-title animate" style="animation-delay:0.05s">
+        <span class="grad-light">Got something</span><br/>
+        <span class="grad-accent">cool to build?</span>
+      </h1>
+      <p class="body-lg muted page-hero-sub animate" style="animation-delay:0.1s">
+        Always open to conversations, collaborations, and new opportunities.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="contact-layout">
+
+        <div class="animate">
+          <h2 class="display-md" style="margin-bottom:20px">Let's connect.</h2>
+          <p class="body-lg muted" style="margin-bottom:24px" id="contact-bio"></p>
+          <div class="contact-note">
+            Whether it's a creative shoot, a web project, a STEM initiative, or just a good conversation — I'd love to hear from you.
+          </div>
+        </div>
+
+        <div>
+          <div class="contact-links" id="contact-links"></div>
+          <a href="#" class="email-block animate-x" id="email-link" style="animation-delay:0.4s">
+            <span>✉️</span>
+            <span class="email-val" id="email-val"></span>
+            <span class="email-arrow">→</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer id="site-footer"></footer>
+
+  <script src="content.js"></script>
+  <script src="components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const S = window.SITE;
+      if (!S) return;
+
+      document.getElementById('contact-bio').textContent = S.bio;
+      document.getElementById('email-val').textContent = S.email;
+      document.getElementById('email-link').href = `mailto:${S.email}`;
+
+      document.getElementById('contact-links').innerHTML = S.socials.map((s, i) =>
+        `<a href="${s.url}" class="clc animate-x" target="_blank" data-delay="${i * 80}">
+          <div class="clc-icon">${s.icon}</div>
+          <div class="clc-info">
+            <div class="clc-sub">${s.sublabel}</div>
+            <div class="clc-val">${s.label}</div>
+          </div>
+          <span class="clc-arr">→</span>
+        </a>`
+      ).join('');
+    });
+  </script>
+</body>
+</html>

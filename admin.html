@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site Dashboard — Jaden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #060608;
+      --s1:       #0f0f12;
+      --s2:       #17171c;
+      --s3:       #1e1e25;
+      --border:   rgba(255,255,255,0.08);
+      --border-hi:rgba(255,255,255,0.15);
+      --text:     #f2f2f7;
+      --muted:    rgba(242,242,247,0.5);
+      --dim:      rgba(242,242,247,0.22);
+      --accent:   #2997ff;
+      --green:    #30d158;
+      --purple:   #bf5af2;
+      --orange:   #ff9f0a;
+      --red:      #ff453a;
+      --r:        14px;
+      --r-sm:     9px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      display: flex; min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 240px; flex-shrink: 0;
+      background: var(--s1);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0;
+      z-index: 10; overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 24px 22px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; letter-spacing: -0.03em;
+    }
+    .logo-text { font-size: 14px; font-weight: 600; }
+    .logo-sub  { font-size: 11px; color: var(--dim); }
+
+    .sidebar-nav { padding: 12px 10px; flex: 1; }
+    .nav-section { margin-bottom: 20px; }
+    .nav-section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--dim);
+      padding: 0 10px; margin-bottom: 4px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 10px; border-radius: var(--r-sm);
+      cursor: pointer; color: var(--muted);
+      font-size: 13.5px; font-weight: 400;
+      transition: all 0.15s; user-select: none;
+      border: 1px solid transparent;
+    }
+    .nav-item:hover { background: var(--s2); color: var(--text); }
+    .nav-item.active {
+      background: rgba(41,151,255,0.1);
+      color: var(--accent);
+      border-color: rgba(41,151,255,0.2);
+    }
+    .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+
+    .sidebar-footer {
+      padding: 14px 14px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .preview-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      width: 100%; padding: 10px;
+      background: var(--accent); color: #fff;
+      border-radius: var(--r-sm); border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; text-decoration: none;
+    }
+    .preview-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: 240px; flex: 1;
+      display: flex; flex-direction: column; min-height: 100vh;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 5;
+      background: rgba(6,6,8,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .topbar-title { font-size: 15px; font-weight: 600; }
+    .topbar-actions { display: flex; gap: 8px; }
+
+    .btn-save {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: 8px;
+      background: var(--accent); color: #fff;
+      border: none; font-family: inherit;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-save:hover { filter: brightness(1.1); }
+    .btn-save:disabled { opacity: 0.5; cursor: default; }
+
+    .btn-outline {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 8px;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); font-family: inherit;
+      font-size: 13px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--border-hi); color: var(--text); }
+
+    /* ── CONTENT AREA ── */
+    .content { padding: 32px; flex: 1; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── FORM ELEMENTS ── */
+    .field-group { margin-bottom: 28px; }
+    .field-group:last-child { margin-bottom: 0; }
+
+    .field-label {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--dim);
+      margin-bottom: 7px; display: block;
+    }
+    .field-hint {
+      font-size: 12px; color: var(--dim);
+      margin-bottom: 7px; display: block;
+    }
+
+    input[type="text"], input[type="email"], input[type="url"], input[type="color"],
+    textarea, select {
+      width: 100%;
+      background: var(--s2); color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 10px 14px;
+      font-family: 'Outfit', sans-serif; font-size: 14px;
+      outline: none; transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus,
+    textarea:focus, select:focus {
+      border-color: var(--accent);
+    }
+    input[type="color"] {
+      padding: 4px 8px; height: 38px; cursor: pointer;
+    }
+    textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    select option { background: var(--s2); }
+
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+    }
+    .toggle-info { display: flex; flex-direction: column; gap: 2px; }
+    .toggle-label { font-size: 14px; font-weight: 500; }
+    .toggle-desc  { font-size: 12px; color: var(--dim); }
+    .toggle {
+      width: 42px; height: 24px; border-radius: 12px;
+      background: var(--s3); border: 1px solid var(--border);
+      cursor: pointer; position: relative; transition: background 0.25s;
+    }
+    .toggle.on { background: var(--green); border-color: var(--green); }
+    .toggle::after {
+      content: '';
+      position: absolute; top: 2px; left: 2px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #fff; transition: transform 0.25s;
+    }
+    .toggle.on::after { transform: translateX(18px); }
+
+    /* ── CARD ── */
+    .form-card {
+      background: var(--s1); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 28px; margin-bottom: 16px;
+    }
+    .form-card-title {
+      font-size: 15px; font-weight: 600; margin-bottom: 22px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ── 2-col grid ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    /* ── LIST ITEMS (projects, socials etc) ── */
+    .list-item {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 16px 18px;
+      margin-bottom: 10px; position: relative;
+    }
+    .list-item-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; cursor: pointer;
+    }
+    .list-item-title { font-size: 14px; font-weight: 600; }
+    .list-item-badge {
+      font-size: 11px; padding: 2px 8px; border-radius: 980px;
+      border: 1px solid var(--border); color: var(--dim);
+    }
+    .list-item-body { display: none; padding-top: 12px; border-top: 1px solid var(--border); }
+    .list-item.open .list-item-body { display: block; }
+    .list-item-chevron { transition: transform 0.2s; font-size: 12px; color: var(--dim); }
+    .list-item.open .list-item-chevron { transform: rotate(180deg); }
+
+    .remove-btn {
+      background: rgba(255,69,58,0.12); color: var(--red);
+      border: 1px solid rgba(255,69,58,0.2); border-radius: var(--r-sm);
+      padding: 5px 12px; font-size: 12px; cursor: pointer;
+      font-family: inherit; transition: all 0.2s; margin-top: 12px;
+    }
+    .remove-btn:hover { background: rgba(255,69,58,0.2); }
+
+    .add-btn {
+      width: 100%; padding: 10px;
+      background: transparent; color: var(--muted);
+      border: 1px dashed var(--border); border-radius: var(--r-sm);
+      font-family: inherit; font-size: 13px; cursor: pointer;
+      transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .add-btn:hover { border-color: var(--border-hi); color: var(--text); background: var(--s2); }
+
+    /* ── COLOR SWATCHES ── */
+    .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .swatch {
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      border: 2px solid transparent; transition: all 0.15s;
+    }
+    .swatch:hover, .swatch.active { border-color: #fff; transform: scale(1.1); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--s1); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 13px 18px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+      z-index: 999;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    .toast-icon { font-size: 16px; }
+
+    /* ── CODE OUTPUT ── */
+    .code-output {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      font-family: 'DM Mono', monospace; font-size: 12px;
+      color: var(--muted); padding: 16px;
+      max-height: 320px; overflow: auto;
+      line-height: 1.6; white-space: pre-wrap; word-break: break-all;
+    }
+
+    /* ── LIVE PREVIEW PANE ── */
+    .preview-section {
+      background: var(--s1); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden; margin-bottom: 16px;
+    }
+    .preview-header {
+      padding: 12px 18px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dim);
+    }
+    .preview-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .preview-hero {
+      padding: 32px 28px; text-align: center;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--s1) 100%);
+    }
+    #preview-name {
+      font-size: 36px; font-weight: 800; letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+    #preview-tagline { font-size: 16px; color: var(--muted); margin-bottom: 16px; }
+    #preview-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+    .preview-chip {
+      font-size: 11px; padding: 4px 11px; border-radius: 980px;
+      background: var(--s3); border: 1px solid var(--border); color: var(--dim);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar { width: 200px; }
+      .main { margin-left: 200px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      body { flex-direction: column; }
+      .sidebar { position: static; width: 100%; height: auto; }
+      .main { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">JJ</div>
+      <div>
+        <div class="logo-text">Site Dashboard</div>
+        <div class="logo-sub">Edit without code</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Content</div>
+        <div class="nav-item active" data-panel="identity">
+          <span class="nav-icon">👤</span> Identity
+        </div>
+        <div class="nav-item" data-panel="roles">
+          <span class="nav-icon">🏷️</span> Hero Chips
+        </div>
+        <div class="nav-item" data-panel="projects">
+          <span class="nav-icon">🗂️</span> Projects
+        </div>
+        <div class="nav-item" data-panel="socials">
+          <span class="nav-icon">🔗</span> Social Links
+        </div>
+        <div class="nav-item" data-panel="interests">
+          <span class="nav-icon">⚡</span> Interests
+        </div>
+        <div class="nav-item" data-panel="stats">
+          <span class="nav-icon">📊</span> Stats
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Design</div>
+        <div class="nav-item" data-panel="design">
+          <span class="nav-icon">🎨</span> Colors &amp; Theme
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Export</div>
+        <div class="nav-item" data-panel="export">
+          <span class="nav-icon">📋</span> Export Code
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="index.html" class="preview-btn" target="_blank">↗ Preview Site</a>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Identity</div>
+      <div class="topbar-actions">
+        <button class="btn-outline" onclick="resetToDefaults()">↺ Reset</button>
+        <button class="btn-save" id="save-btn" onclick="saveAll()">Save Changes</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── IDENTITY ── -->
+      <div class="panel active" id="panel-identity">
+
+        <!-- Live preview -->
+        <div class="preview-section">
+          <div class="preview-header">
+            <span class="preview-dot" style="background:#ff453a"></span>
+            <span class="preview-dot" style="background:#ff9f0a"></span>
+            <span class="preview-dot" style="background:#30d158"></span>
+            <span style="margin-left:8px">Live Preview</span>
+          </div>
+          <div class="preview-hero">
+            <div id="preview-name">Jaden</div>
+            <div id="preview-tagline">Builder, creator, and community leader.</div>
+            <div id="preview-chips"></div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-title">👤 Personal Info</div>
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Full Name</label>
+              <input type="text" id="f-name" placeholder="Your full name" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Short Name (for nav)</label>
+              <input type="text" id="f-nameShort" placeholder="Jaden" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Initials (nav logo mark)</label>
+              <input type="text" id="f-initials" placeholder="JJ" maxlength="3" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Email</label>
+              <input type="email" id="f-email" placeholder="you@email.com" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Location</label>
+              <input type="text" id="f-location" placeholder="Livermore, CA" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">School / Organization</label>
+              <input type="text" id="f-school" placeholder="Livermore High School" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Hero Tagline (big line under name)</label>
+            <input type="text" id="f-tagline" placeholder="Builder, creator, and community leader." />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Bio (main paragraph)</label>
+            <textarea id="f-bio" rows="3"></textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Bio Extra (second paragraph)</label>
+            <textarea id="f-bioExtra" rows="2"></textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Quote (shown in the bento grid)</label>
+            <input type="text" id="f-quote" />
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-title">🟢 Availability Badge</div>
+          <div class="toggle-row" style="margin-bottom:14px">
+            <div class="toggle-info">
+              <div class="toggle-label">Show availability dot</div>
+              <div class="toggle-desc">Displays the green "available" indicator in the hero</div>
+            </div>
+            <div class="toggle on" id="toggle-available" onclick="toggleAvailable()"></div>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label">Badge Text</label>
+            <input type="text" id="f-availableText" placeholder="Student at Livermore High School" />
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-title">🛠️ Skills / Pills</div>
+          <span class="field-hint">Comma-separated list</span>
+          <textarea id="f-skills" rows="3" placeholder="Photography, Videography, Web Dev ..."></textarea>
+        </div>
+      </div>
+
+      <!-- ── HERO CHIPS ── -->
+      <div class="panel" id="panel-roles">
+        <div class="form-card">
+          <div class="form-card-title">🏷️ Hero Role Chips</div>
+          <div id="roles-list"></div>
+          <button class="add-btn" onclick="addRole()">+ Add chip</button>
+        </div>
+      </div>
+
+      <!-- ── PROJECTS ── -->
+      <div class="panel" id="panel-projects">
+        <div class="form-card">
+          <div class="form-card-title">🗂️ Projects</div>
+          <div id="projects-list"></div>
+          <button class="add-btn" onclick="addProject()">+ Add project</button>
+        </div>
+      </div>
+
+      <!-- ── SOCIALS ── -->
+      <div class="panel" id="panel-socials">
+        <div class="form-card">
+          <div class="form-card-title">🔗 Social Links</div>
+          <div id="socials-list"></div>
+          <button class="add-btn" onclick="addSocial()">+ Add link</button>
+        </div>
+      </div>
+
+      <!-- ── INTERESTS ── -->
+      <div class="panel" id="panel-interests">
+        <div class="form-card">
+          <div class="form-card-title">⚡ Interests / Creative Skills</div>
+          <div id="interests-list"></div>
+          <button class="add-btn" onclick="addInterest()">+ Add interest</button>
+        </div>
+      </div>
+
+      <!-- ── STATS ── -->
+      <div class="panel" id="panel-stats">
+        <div class="form-card">
+          <div class="form-card-title">📊 Stats Bar</div>
+          <div id="stats-list"></div>
+        </div>
+      </div>
+
+      <!-- ── DESIGN ── -->
+      <div class="panel" id="panel-design">
+        <div class="form-card">
+          <div class="form-card-title">🎨 Accent Color</div>
+          <p class="field-hint" style="margin-bottom:14px">Changes the primary color across the entire site.</p>
+          <div class="field-group">
+            <label class="field-label">Pick a preset</label>
+            <div class="color-swatches">
+              <div class="swatch" style="background:#2997ff" title="Apple Blue"   onclick="setAccent('#2997ff')"></div>
+              <div class="swatch" style="background:#30d158" title="Green"        onclick="setAccent('#30d158')"></div>
+              <div class="swatch" style="background:#bf5af2" title="Purple"       onclick="setAccent('#bf5af2')"></div>
+              <div class="swatch" style="background:#ff9f0a" title="Orange"       onclick="setAccent('#ff9f0a')"></div>
+              <div class="swatch" style="background:#ff453a" title="Red"          onclick="setAccent('#ff453a')"></div>
+              <div class="swatch" style="background:#64d2ff" title="Cyan"         onclick="setAccent('#64d2ff')"></div>
+              <div class="swatch" style="background:#ffd60a" title="Yellow"       onclick="setAccent('#ffd60a')"></div>
+              <div class="swatch" style="background:#ff6369" title="Coral"        onclick="setAccent('#ff6369')"></div>
+            </div>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label">Or enter custom hex</label>
+            <div style="display:flex;gap:10px;align-items:center">
+              <input type="color" id="f-accent" style="width:56px;flex-shrink:0" oninput="onAccentInput(this.value)" />
+              <input type="text"  id="f-accent-hex" placeholder="#2997ff" style="flex:1"
+                oninput="if(this.value.match(/^#[0-9a-f]{6}$/i)) setAccent(this.value)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- live preview of accent -->
+        <div class="form-card">
+          <div class="form-card-title">👀 Color Preview</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="padding:14px 18px;border-radius:9px;font-weight:600;font-size:14px;text-align:center" id="preview-btn-color">Primary Button</div>
+            <div style="padding:14px 18px;border-radius:9px;font-size:14px;border:1px solid" id="preview-border-color">Nav / Badge Border</div>
+            <div style="padding:4px 13px;border-radius:980px;font-size:12px;display:inline-block;width:fit-content" id="preview-chip-color">Hero Chip</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXPORT ── -->
+      <div class="panel" id="panel-export">
+        <div class="form-card">
+          <div class="form-card-title">📋 Export content.js</div>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:16px;line-height:1.6">
+            After editing, click <strong style="color:var(--text)">Generate & Copy</strong> to get your new <code style="font-family:monospace;background:var(--s2);padding:2px 6px;border-radius:4px">content.js</code>. Replace your existing file with this code to update your live site.
+          </p>
+          <div style="display:flex;gap:8px;margin-bottom:16px">
+            <button class="btn-save" onclick="generateCode()">⚡ Generate &amp; Copy</button>
+            <button class="btn-outline" onclick="downloadCode()">⬇ Download file</button>
+          </div>
+          <div class="code-output" id="code-output">Click "Generate & Copy" to see your content.js code...</div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+  <!-- TOAST -->
+  <div id="toast">
+    <span class="toast-icon" id="toast-icon">✓</span>
+    <span id="toast-msg">Saved!</span>
+  </div>
+
+  <script src="content.js"></script>
+  <script>
+  // ── State ────────────────────────────────────────────────────
+  let STATE = {};
+
+  function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+  function initState() {
+    // Try to load from localStorage first (persists edits across page reloads)
+    const saved = localStorage.getItem('jaden_site_state');
+    if (saved) {
+      try { STATE = JSON.parse(saved); return; } catch(e) {}
+    }
+    STATE = deepClone(window.SITE);
+  }
+
+  // ── Toast ─────────────────────────────────────────────────────
+  function showToast(msg, icon = '✓') {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    document.getElementById('toast-icon').textContent = icon;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  // ── Nav ──────────────────────────────────────────────────────
+  document.querySelectorAll('.nav-item[data-panel]').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      item.classList.add('active');
+      const panel = document.getElementById('panel-' + item.dataset.panel);
+      if (panel) panel.classList.add('active');
+      document.getElementById('topbar-title').textContent = item.textContent.trim();
+    });
+  });
+
+  // ── Identity panel ────────────────────────────────────────────
+  function populateIdentity() {
+    const S = STATE;
+    document.getElementById('f-name').value       = S.name || '';
+    document.getElementById('f-nameShort').value  = S.nameShort || '';
+    document.getElementById('f-initials').value   = S.initials || '';
+    document.getElementById('f-email').value      = S.email || '';
+    document.getElementById('f-location').value   = S.location || '';
+    document.getElementById('f-school').value     = S.school || '';
+    document.getElementById('f-tagline').value    = S.tagline || '';
+    document.getElementById('f-bio').value        = S.bio || '';
+    document.getElementById('f-bioExtra').value   = S.bioExtra || '';
+    document.getElementById('f-quote').value      = S.quote || '';
+    document.getElementById('f-availableText').value = S.availableText || '';
+    document.getElementById('f-skills').value     = (S.skills||[]).join(', ');
+
+    const tog = document.getElementById('toggle-available');
+    tog.className = 'toggle' + (S.available ? ' on' : '');
+
+    updateLivePreview();
+  }
+
+  function toggleAvailable() {
+    STATE.available = !STATE.available;
+    document.getElementById('toggle-available').className = 'toggle' + (STATE.available ? ' on' : '');
+  }
+
+  function collectIdentity() {
+    STATE.name         = document.getElementById('f-name').value.trim();
+    STATE.nameShort    = document.getElementById('f-nameShort').value.trim();
+    STATE.initials     = document.getElementById('f-initials').value.trim();
+    STATE.email        = document.getElementById('f-email').value.trim();
+    STATE.location     = document.getElementById('f-location').value.trim();
+    STATE.school       = document.getElementById('f-school').value.trim();
+    STATE.tagline      = document.getElementById('f-tagline').value.trim();
+    STATE.bio          = document.getElementById('f-bio').value.trim();
+    STATE.bioExtra     = document.getElementById('f-bioExtra').value.trim();
+    STATE.quote        = document.getElementById('f-quote').value.trim();
+    STATE.availableText= document.getElementById('f-availableText').value.trim();
+    STATE.skills       = document.getElementById('f-skills').value.split(',').map(s=>s.trim()).filter(Boolean);
+  }
+
+  function updateLivePreview() {
+    const nameEl = document.getElementById('preview-name');
+    const tagEl  = document.getElementById('preview-tagline');
+    if (nameEl) nameEl.textContent = document.getElementById('f-nameShort')?.value || STATE.nameShort;
+    if (tagEl)  tagEl.textContent  = document.getElementById('f-tagline')?.value   || STATE.tagline;
+
+    const chips = document.getElementById('preview-chips');
+    if (chips) {
+      chips.innerHTML = (STATE.roles||[]).slice(0,5).map(r =>
+        `<span class="preview-chip">${r.text}</span>`
+      ).join('');
+    }
+    nameEl.style.color = STATE.accentColor || '#2997ff';
+  }
+
+  // live update as user types
+  ['f-nameShort','f-tagline'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateLivePreview);
+  });
+
+  // ── Roles panel ───────────────────────────────────────────────
+  function renderRoles() {
+    const list = document.getElementById('roles-list');
+    const styleOptions = ['dim','accent','green','purple'].map(s =>
+      `<option value="${s}">${s}</option>`
+    ).join('');
+    list.innerHTML = (STATE.roles||[]).map((r,i) =>
+      `<div class="list-item" id="role-${i}">
+        <div class="list-item-header" onclick="toggleItem('role-${i}')">
+          <div class="list-item-title">${r.text}</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="list-item-badge">${r.style}</span>
+            <span class="list-item-chevron">▼</span>
+          </div>
+        </div>
+        <div class="list-item-body">
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Text</label>
+              <input type="text" value="${r.text}" oninput="STATE.roles[${i}].text=this.value;updateLivePreview()" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Style</label>
+              <select onchange="STATE.roles[${i}].style=this.value">${styleOptions.replace(`"${r.style}"`,`"${r.style}" selected`)}</select>
+            </div>
+          </div>
+          <button class="remove-btn" onclick="removeRole(${i})">✕ Remove</button>
+        </div>
+      </div>`
+    ).join('');
+  }
+
+  function addRole() {
+    STATE.roles.push({ text: 'New Role', style: 'dim' });
+    renderRoles();
+  }
+  function removeRole(i) {
+    STATE.roles.splice(i,1); renderRoles();
+  }
+
+  // ── Projects panel ────────────────────────────────────────────
+  function renderProjects() {
+    const list = document.getElementById('projects-list');
+    const statusOptions = ['active','wip','complete'].map(s => `<option value="${s}">${s}</option>`).join('');
+    list.innerHTML = (STATE.projects||[]).map((p,i) =>
+      `<div class="list-item" id="proj-${i}">
+        <div class="list-item-header" onclick="toggleItem('proj-${i}')">
+          <div class="list-item-title">${p.emoji} ${p.title}</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="list-item-badge">${p.status}</span>
+            <span class="list-item-chevron">▼</span>
+          </div>
+        </div>
+        <div class="list-item-body">
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Title</label>
+              <input type="text" value="${p.title}" oninput="STATE.projects[${i}].title=this.value" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Type / Category</label>
+              <input type="text" value="${p.type}" oninput="STATE.projects[${i}].type=this.value" />
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="field-group">
+              <label class="field-label">Emoji Icon</label>
+              <input type="text" value="${p.emoji}" maxlength="4" oninput="STATE.projects[${i}].emoji=this.value" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Status</label>
+              <select onchange="STATE.projects[${i}].status=this.value">${statusOptions.replace(`"${p.status}"`,`"${p.status}" selected`)}</select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Featured (spans full width)</label>
+              <select onchange="STATE.projects[${i}].featured=this.value==='true'">
+                <option value="false" ${!p.featured?'selected':''}>No</option>
+                <option value="true"  ${p.featured?'selected':''}>Yes</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Description</label>
+            <textarea rows="3" oninput="STATE.projects[${i}].desc=this.value">${p.desc}</textarea>
+          </div>
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Link URL</label>
+              <input type="url" value="${p.url}" placeholder="https://..." oninput="STATE.projects[${i}].url=this.value" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Background gradient / color</label>
+              <input type="text" value="${p.bg}" oninput="STATE.projects[${i}].bg=this.value" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Tags (comma-separated)</label>
+            <input type="text" value="${p.tags.join(', ')}" oninput="STATE.projects[${i}].tags=this.value.split(',').map(t=>t.trim()).filter(Boolean)" />
+          </div>
+          <button class="remove-btn" onclick="removeProject(${i})">✕ Remove Project</button>
+        </div>
+      </div>`
+    ).join('');
+  }
+
+  function addProject() {
+    STATE.projects.push({
+      id:'new-'+Date.now(), title:'New Project', type:'Web Dev',
+      desc:'Project description.', status:'wip', tags:['Tag'],
+      emoji:'🚀', bg:'linear-gradient(135deg, #0a1628, #1a3a5c)',
+      url:'#', featured:false
+    });
+    renderProjects();
+  }
+  function removeProject(i) { STATE.projects.splice(i,1); renderProjects(); }
+
+  // ── Socials panel ─────────────────────────────────────────────
+  function renderSocials() {
+    const list = document.getElementById('socials-list');
+    list.innerHTML = (STATE.socials||[]).map((s,i) =>
+      `<div class="list-item" id="soc-${i}">
+        <div class="list-item-header" onclick="toggleItem('soc-${i}')">
+          <div class="list-item-title">${s.icon} ${s.label}</div>
+          <span class="list-item-chevron">▼</span>
+        </div>
+        <div class="list-item-body">
+          <div class="grid-3">
+            <div class="field-group">
+              <label class="field-label">Icon (emoji)</label>
+              <input type="text" value="${s.icon}" maxlength="4" oninput="STATE.socials[${i}].icon=this.value" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Label</label>
+              <input type="text" value="${s.label}" oninput="STATE.socials[${i}].label=this.value" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Sublabel</label>
+              <input type="text" value="${s.sublabel}" oninput="STATE.socials[${i}].sublabel=this.value" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">URL</label>
+            <input type="url" value="${s.url}" placeholder="https://..." oninput="STATE.socials[${i}].url=this.value" />
+          </div>
+          <button class="remove-btn" onclick="removeSocial(${i})">✕ Remove</button>
+        </div>
+      </div>`
+    ).join('');
+  }
+
+  function addSocial() {
+    STATE.socials.push({ icon:'🔗', label:'Platform', sublabel:'Description', url:'https://' });
+    renderSocials();
+  }
+  function removeSocial(i) { STATE.socials.splice(i,1); renderSocials(); }
+
+  // ── Interests panel ───────────────────────────────────────────
+  function renderInterests() {
+    const list = document.getElementById('interests-list');
+    list.innerHTML = (STATE.interests||[]).map((item,i) =>
+      `<div class="list-item" id="int-${i}">
+        <div class="list-item-header" onclick="toggleItem('int-${i}')">
+          <div class="list-item-title">${item.icon} ${item.name}</div>
+          <span class="list-item-chevron">▼</span>
+        </div>
+        <div class="list-item-body">
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Emoji Icon</label>
+              <input type="text" value="${item.icon}" maxlength="4" oninput="STATE.interests[${i}].icon=this.value" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Name</label>
+              <input type="text" value="${item.name}" oninput="STATE.interests[${i}].name=this.value" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Description</label>
+            <textarea rows="2" oninput="STATE.interests[${i}].desc=this.value">${item.desc}</textarea>
+          </div>
+          <button class="remove-btn" onclick="removeInterest(${i})">✕ Remove</button>
+        </div>
+      </div>`
+    ).join('');
+  }
+
+  function addInterest() {
+    STATE.interests.push({ icon:'✨', name:'New Interest', desc:'Description here.', color:'rgba(41,151,255,0.12)' });
+    renderInterests();
+  }
+  function removeInterest(i) { STATE.interests.splice(i,1); renderInterests(); }
+
+  // ── Stats panel ───────────────────────────────────────────────
+  function renderStats() {
+    const list = document.getElementById('stats-list');
+    const colorOptions = ['accent','green','purple','orange'].map(c=>`<option value="${c}">${c}</option>`).join('');
+    list.innerHTML = (STATE.stats||[]).map((s,i) =>
+      `<div class="list-item" id="stat-${i}" style="display:grid;grid-template-columns:80px 1fr 120px;gap:12px;align-items:center">
+        <div class="field-group" style="margin:0">
+          <label class="field-label">Value</label>
+          <input type="text" value="${s.value}" oninput="STATE.stats[${i}].value=this.value" style="text-align:center;font-size:18px;font-weight:700" />
+        </div>
+        <div class="field-group" style="margin:0">
+          <label class="field-label">Label</label>
+          <input type="text" value="${s.label}" oninput="STATE.stats[${i}].label=this.value" />
+        </div>
+        <div class="field-group" style="margin:0">
+          <label class="field-label">Color</label>
+          <select onchange="STATE.stats[${i}].color=this.value">${colorOptions.replace(`"${s.color}"`,`"${s.color}" selected`)}</select>
+        </div>
+      </div>`
+    ).join('');
+  }
+
+  // ── Design panel ──────────────────────────────────────────────
+  function populateDesign() {
+    const hex = STATE.accentColor || '#2997ff';
+    document.getElementById('f-accent').value     = hex;
+    document.getElementById('f-accent-hex').value = hex;
+    updateColorPreview(hex);
+  }
+
+  function setAccent(hex) {
+    STATE.accentColor = hex;
+    document.getElementById('f-accent').value     = hex;
+    document.getElementById('f-accent-hex').value = hex;
+    updateColorPreview(hex);
+    updateLivePreview();
+  }
+
+  function onAccentInput(val) {
+    STATE.accentColor = val;
+    document.getElementById('f-accent-hex').value = val;
+    updateColorPreview(val);
+  }
+
+  function updateColorPreview(hex) {
+    const r = parseInt(hex.slice(1,3)||'41',16);
+    const g = parseInt(hex.slice(3,5)||'97',16);
+    const b = parseInt(hex.slice(5,7)||'ff',16);
+    document.getElementById('preview-btn-color').style.cssText =
+      `background:${hex};color:#fff;padding:14px 18px;border-radius:9px;font-weight:600;font-size:14px;text-align:center`;
+    document.getElementById('preview-border-color').style.cssText =
+      `padding:14px 18px;border-radius:9px;font-size:14px;border:1px solid rgba(${r},${g},${b},0.4);color:${hex};background:rgba(${r},${g},${b},0.08)`;
+    document.getElementById('preview-chip-color').style.cssText =
+      `padding:4px 13px;border-radius:980px;font-size:12px;display:inline-block;background:rgba(${r},${g},${b},0.1);border:1px solid rgba(${r},${g},${b},0.3);color:${hex}`;
+    document.getElementById('preview-chip-color').textContent = 'Hero Chip';
+    // Highlight matching swatch
+    document.querySelectorAll('.swatch').forEach(s => {
+      s.classList.toggle('active', s.style.background === hex);
+    });
+  }
+
+  // ── Toggle accordion ──────────────────────────────────────────
+  function toggleItem(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('open');
+  }
+
+  // ── Save ─────────────────────────────────────────────────────
+  function saveAll() {
+    collectIdentity();
+    localStorage.setItem('jaden_site_state', JSON.stringify(STATE));
+    showToast('Changes saved! Export content.js to apply to your site.', '✓');
+  }
+
+  // ── Reset ─────────────────────────────────────────────────────
+  function resetToDefaults() {
+    if (!confirm('Reset all changes back to defaults from content.js?')) return;
+    localStorage.removeItem('jaden_site_state');
+    STATE = deepClone(window.SITE);
+    populateIdentity(); renderRoles(); renderProjects();
+    renderSocials(); renderInterests(); renderStats(); populateDesign();
+    showToast('Reset to defaults.', '↺');
+  }
+
+  // ── Generate code ─────────────────────────────────────────────
+  function generateCode() {
+    collectIdentity();
+    const s = STATE;
+    const code = `/**
+ * JADEN'S SITE — CONTENT CONFIGURATION
+ * Generated by Dashboard on ${new Date().toLocaleDateString()}
+ */
+
+const SITE = {
+
+  name:         "${s.name}",
+  nameShort:    "${s.nameShort}",
+  initials:     "${s.initials}",
+  tagline:      "${s.tagline}",
+  bio:          "${s.bio.replace(/"/g,'\\"')}",
+  bioExtra:     "${s.bioExtra.replace(/"/g,'\\"')}",
+  location:     "${s.location}",
+  school:       "${s.school}",
+  email:        "${s.email}",
+  available:    ${s.available},
+  availableText:"${s.availableText}",
+
+  accentColor: "${s.accentColor}",
+
+  socials: ${JSON.stringify(s.socials, null, 4)},
+
+  skills: ${JSON.stringify(s.skills)},
+
+  roles: ${JSON.stringify(s.roles, null, 4)},
+
+  stats: ${JSON.stringify(s.stats, null, 4)},
+
+  experience: ${JSON.stringify(s.experience, null, 4)},
+
+  interests: ${JSON.stringify(s.interests, null, 4)},
+
+  projects: ${JSON.stringify(s.projects, null, 4)},
+
+  quote: "${s.quote.replace(/"/g,'\\"')}",
+
+  nav: [
+    { label: "About",    href: "index.html"    },
+    { label: "Projects", href: "projects.html" },
+    { label: "Contact",  href: "contact.html"  },
+  ],
+
+};
+
+if (typeof module !== "undefined") module.exports = SITE;
+`;
+    document.getElementById('code-output').textContent = code;
+
+    navigator.clipboard.writeText(code).then(() => {
+      showToast('Code copied to clipboard! Paste into content.js', '📋');
+    }).catch(() => {
+      showToast('Code generated! Select all & copy from the box below.', '📋');
+    });
+
+    // Switch to export panel
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('[data-panel="export"]').classList.add('active');
+    document.getElementById('panel-export').classList.add('active');
+    document.getElementById('topbar-title').textContent = 'Export Code';
+  }
+
+  function downloadCode() {
+    collectIdentity();
+    generateCode();
+    const code = document.getElementById('code-output').textContent;
+    if (code.startsWith('Click')) return;
+    const blob = new Blob([code], { type:'text/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'content.js';
+    a.click();
+    showToast('content.js downloaded!', '⬇');
+  }
+
+  // ── Boot ─────────────────────────────────────────────────────
+  initState();
+  populateIdentity();
+  renderRoles();
+  renderProjects();
+  renderSocials();
+  renderInterests();
+  renderStats();
+  populateDesign();
+  </script>
+</body>
+</html>
