@@ -3,531 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jaden Jirasevijinda</title>
-  <meta name="description" content="Jaden Jirasevijinda — Student, creator, builder. President of GEA, Board Member at Pillars of Tech." />
-
-  <!-- Use explicit relative paths (safer on deploy) -->
+  <title>JADEN J. // TECHNICAL PORTFOLIO</title>
   <link rel="stylesheet" href="./styles.css" />
-
-  <style>
-    /* -----------------------------------------------------------
-      FALLBACK BASE STYLES
-      If styles.css fails to load, you still see content.
-      Also prevents "blank page" if .animate is hidden elsewhere.
-    ----------------------------------------------------------- */
-    :root{
-      --bg: #0b0c10;
-      --surface: rgba(255,255,255,0.04);
-      --text: rgba(255,255,255,0.92);
-      --text-muted: rgba(255,255,255,0.72);
-      --text-dim: rgba(255,255,255,0.55);
-      --border: rgba(255,255,255,0.10);
-      --border-md: rgba(255,255,255,0.18);
-
-      --accent: #2997ff;
-      --accent-green: #30d158;
-      --accent-purple: #bf5af2;
-
-      --r: 18px;
-      --r-sm: 14px;
-      --ease: cubic-bezier(.2,.8,.2,1);
-      --nav-h: 72px;
-    }
-
-    /* If your main stylesheet loads, it can override these. */
-    html, body { height: 100%; }
-    body{
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: var(--bg);
-      color: var(--text);
-    }
-    a{ color: inherit; text-decoration: none; }
-    .container{ width: min(1100px, calc(100% - 48px)); margin: 0 auto; }
-    .section{ padding: 90px 0; }
-    .label{
-      display:inline-block; font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-      color: var(--text-dim); margin-bottom: 10px;
-    }
-    .display-xl{ font-size: clamp(38px, 5vw, 66px); line-height: 1.05; letter-spacing: -0.04em; margin: 0; }
-    .display-lg{ font-size: clamp(26px, 3.5vw, 44px); line-height: 1.1; letter-spacing: -0.03em; margin: 0; }
-    .display-sm{ font-size: 18px; font-weight: 650; }
-    .body-lg{ font-size: 16px; line-height: 1.7; }
-    .body-sm{ font-size: 13.5px; line-height: 1.6; }
-    .muted{ color: var(--text-muted); }
-    .grad-accent{
-      background: linear-gradient(90deg, var(--accent), var(--accent-purple));
-      -webkit-background-clip: text; background-clip: text;
-      color: transparent;
-    }
-    .grad-light{
-      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.70));
-      -webkit-background-clip: text; background-clip: text;
-      color: transparent;
-    }
-
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding: 11px 16px; border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      font-size: 14px; gap: 10px;
-      transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: var(--border-md); background: rgba(255,255,255,0.07); }
-    .btn-primary{ border-color: rgba(41,151,255,0.35); background: rgba(41,151,255,0.12); }
-    .btn-ghost{ background: rgba(255,255,255,0.03); }
-
-    /* CRITICAL FIX:
-       Never hide content by default. If some other stylesheet sets
-       .animate { opacity:0 }, this overrides it so deploy isn't blank.
-    */
-    .animate { opacity: 1 !important; transform: none !important; }
-
-    /* pill used in your markup */
-    .pill{
-      display:inline-flex; padding: 6px 10px; border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      font-size: 12px; color: var(--text-muted);
-    }
-
-    /* ── PAGE-SPECIFIC STYLES ── */
-
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: calc(var(--nav-h) + 60px) 24px 100px;
-      position: relative; overflow: hidden;
-    }
-    .hero-canvas { position: absolute; inset: 0; pointer-events: none; }
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, black 30%, transparent 100%);
-    }
-    .orb {
-      position: absolute; border-radius: 50%; filter: blur(100px);
-      opacity: 0; animation: orbFadeIn 1.8s ease forwards;
-    }
-    .orb-1 {
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(41,151,255,0.2), transparent 65%);
-      top: -200px; left: 50%; transform: translateX(-50%);
-      animation-delay: 0.2s;
-    }
-    .orb-2 {
-      width: 450px; height: 450px;
-      background: radial-gradient(circle, rgba(191,90,242,0.15), transparent 65%);
-      bottom: -50px; right: -80px; animation-delay: 0.5s;
-    }
-    .orb-3 {
-      width: 350px; height: 350px;
-      background: radial-gradient(circle, rgba(48,209,88,0.12), transparent 65%);
-      bottom: 100px; left: -60px; animation-delay: 0.7s;
-    }
-    @keyframes orbFadeIn { to { opacity: 1; } }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-      border-radius: 980px; padding: 6px 16px;
-      font-size: 13px; color: var(--text-muted);
-      margin-bottom: 36px;
-    }
-    .badge-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 8px var(--accent-green);
-      animation: blinkDot 2.5s ease-in-out infinite;
-    }
-    @keyframes blinkDot { 0%,100%{opacity:1} 50%{opacity:0.25} }
-
-    .hero-sub { margin-bottom: 18px; max-width: 560px; }
-
-    .hero-chips {
-      display: flex; align-items: center; justify-content: center;
-      gap: 7px; flex-wrap: wrap;
-      margin-bottom: 52px;
-    }
-    .chip {
-      font-size: 12.5px; padding: 5px 13px; border-radius: 980px;
-      border: 1px solid var(--border); background: rgba(255,255,255,0.03);
-      color: var(--text-dim); font-weight: 400;
-    }
-    .chip-accent  { color: var(--accent);        border-color: rgba(41,151,255,0.3);  background: rgba(41,151,255,0.07);  }
-    .chip-green   { color: var(--accent-green);   border-color: rgba(48,209,88,0.3);   background: rgba(48,209,88,0.07);   }
-    .chip-purple  { color: var(--accent-purple);  border-color: rgba(191,90,242,0.3);  background: rgba(191,90,242,0.07);  }
-
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-
-    .hero-scroll-hint {
-      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      color: var(--text-dim); font-size: 10.5px; letter-spacing: 0.14em;
-      text-transform: uppercase;
-      opacity: .9;
-    }
-    .scroll-line {
-      width: 1px; height: 40px;
-      background: linear-gradient(to bottom, var(--text-dim), transparent);
-      animation: scrollPulse 2.2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
-      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
-      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
-    }
-
-    /* STATS */
-    .stats-band { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-    .stat-cell { padding: 40px 44px; border-right: 1px solid var(--border); }
-    .stat-cell:last-child { border-right: none; }
-    .stat-num { font-size: 52px; font-weight: 800; letter-spacing: -0.05em; line-height: 1; margin-bottom: 6px; }
-    .stat-lbl { font-size: 13.5px; color: var(--text-muted); }
-
-    /* BENTO ABOUT */
-    .bento { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .bc{
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 28px;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.35s var(--ease);
-    }
-    .bc:hover { border-color: var(--border-md); transform: translateY(-3px); }
-
-    .bc-bio    { grid-column: span 2; grid-row: span 2; }
-    .bc-role   { grid-column: span 1; }
-    .bc-photo  { grid-column: span 2; }
-    .bc-loc    { grid-column: span 1; }
-    .bc-quote  { grid-column: span 3; }
-
-    .bc-icon { font-size: 38px; display: block; margin-bottom: 14px; }
-    .bc-micro { font-size: 10.5px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
-    .bc-title { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 14px; }
-    .bc-body  { font-size: 14.5px; color: var(--text-muted); line-height: 1.7; }
-    .bc-org   { font-size: 13px; color: var(--accent); margin-bottom: 8px; }
-
-    .photo-thumb {
-      aspect-ratio: 16/7;
-      border-radius: var(--r-sm);
-      background: linear-gradient(135deg, #0a192f 0%, #112240 50%, #1a3a5c 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 60px; overflow: hidden;
-    }
-    .photo-caption { margin-top: 12px; font-size: 12.5px; color: var(--text-dim); }
-
-    .loc-row { display: flex; align-items: center; gap: 9px; }
-    .loc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
-
-    .quote-text { font-size: clamp(16px, 2vw, 22px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.4; color: var(--text-muted); }
-    .quote-text span { color: var(--text); }
-
-    .skills-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
-
-    /* INTERESTS */
-    .interests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .interest-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 32px 26px; display: flex; flex-direction: column; gap: 12px;
-    }
-    .interest-icon {
-      width: 52px; height: 52px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center; font-size: 24px;
-    }
-
-    /* Simple fallback nav/footer */
-    .fallback-nav{
-      position: fixed; top: 0; left: 0; right:0; height: var(--nav-h);
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 0 24px;
-      background: rgba(10,12,16,0.7);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      z-index: 50;
-    }
-    .fallback-nav .links{ display:flex; gap: 16px; font-size: 14px; color: var(--text-muted); }
-    .fallback-footer{
-      padding: 44px 24px; border-top: 1px solid var(--border);
-      color: var(--text-dim); font-size: 13px;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 960px) {
-      .bento { grid-template-columns: 1fr 1fr; }
-      .bc-bio { grid-column: span 2; }
-      .bc-photo { grid-column: span 2; }
-      .bc-quote { grid-column: span 2; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
-      .stat-cell:last-child { border-bottom: none; }
-      .interests-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 600px) {
-      .bento { grid-template-columns: 1fr; }
-      .bc-bio, .bc-role, .bc-photo, .bc-loc, .bc-quote { grid-column: span 1; }
-      .interests-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-
-  <!-- Defer external scripts so they don't block render -->
-  <script defer src="./content.js"></script>
-  <script defer src="./components.js"></script>
 </head>
 
 <body>
   <nav id="site-nav"></nav>
 
-  <!-- ── HERO ──────────────────────────────────────────────────── -->
   <section class="hero" id="hero">
-    <div class="hero-canvas">
-      <div class="hero-grid"></div>
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-    </div>
+    <div class="container">
+      <div class="hero-badge">
+        SYSTEM_STATUS: OPEN_FOR_COLLAB
+      </div>
 
-    <span class="hero-badge">
-      <span class="badge-dot"></span>
-      <span id="hero-available-text">Open to projects & collabs</span>
-    </span>
+      <h1 class="display-xl">
+        JADEN <span style="color:var(--text-dim)">JIRASEVIJINDA</span><br/>
+        <span style="color:var(--accent)">BUILDING SYSTEMS.</span>
+      </h1>
 
-    <h1 class="display-xl" style="margin-bottom:28px">
-      <span class="hero-name grad-light" id="hero-name">Jaden</span>
-      <span class="hero-name-line2 grad-accent" id="hero-tagline-word">builds things.</span>
-    </h1>
+      <p class="body-lg muted hero-sub" style="max-width: 600px; margin: 30px 0;">
+        Engineering-focused creator building at the intersection of <span class="mono" style="color:var(--text)">Code</span>, <span class="mono" style="color:var(--text)">Media</span>, and <span class="mono" style="color:var(--text)">Community</span>.
+      </p>
 
-    <p class="body-lg muted hero-sub" id="hero-sub">
-      Student • creator • builder. I make things with cameras, code, and a whole lot of curiosity.
-    </p>
-
-    <div class="hero-chips" id="hero-chips"></div>
-
-    <div class="hero-btns">
-      <a href="./projects.html" class="btn btn-primary">See my work</a>
-      <a href="./contact.html"  class="btn btn-ghost">Get in touch</a>
-    </div>
-
-    <div class="hero-scroll-hint">
-      <span>Scroll</span>
-      <span class="scroll-line"></span>
+      <div class="hero-btns">
+        <a href="./projects.html" class="btn btn-primary">Initialize View (Projects)</a>
+        <a href="./contact.html"  class="btn">Get In Touch</a>
+      </div>
     </div>
   </section>
 
-  <!-- ── STATS ─────────────────────────────────────────────────── -->
-  <div class="stats-band">
+  <div class="stats-band" style="background: var(--panel); border-bottom: 1px solid var(--border);">
     <div class="container">
-      <div class="stats-grid" id="stats-grid"></div>
+      <div class="stats-grid" id="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        </div>
     </div>
   </div>
 
-  <!-- ── ABOUT BENTO ───────────────────────────────────────────── -->
   <section class="section" id="about">
     <div class="container">
-      <div class="section-header animate">
-        <span class="label">About me</span>
-        <h2 class="display-lg">Passionate about tech,<br/>community <span class="grad-accent">&amp; creativity.</span></h2>
+      <div class="section-header" style="margin-bottom: 60px;">
+        <span class="mono" style="color: var(--accent);">[ DATA_FILE_01 ]</span>
+        <h2 class="display-lg" style="margin-top: 10px;">ABOUT THE <span style="color: var(--accent);">BUILDER</span></h2>
       </div>
-      <div class="bento" id="bento-grid"></div>
-    </div>
-  </section>
-
-  <!-- ── INTERESTS ─────────────────────────────────────────────── -->
-  <section class="section" id="interests" style="background: var(--surface); border-top: 1px solid var(--border)">
-    <div class="container">
-      <div class="section-header animate">
-        <span class="label">What I do</span>
-        <h2 class="display-lg">Creative &amp; Technical<br/><span class="grad-accent">Interests</span></h2>
-        <p class="body-lg">I love working at the intersection of art and technology.</p>
-      </div>
-      <div class="interests-grid" id="interests-grid"></div>
+      
+      <div class="bento" id="bento-grid">
+        </div>
     </div>
   </section>
 
   <footer id="site-footer"></footer>
 
-  <noscript>
-    <div class="fallback-footer">
-      This site uses JavaScript to load content. Please enable JavaScript to see the full page.
-    </div>
-  </noscript>
-
+  <script src="./content.js"></script>
+  <script src="./components.js"></script>
+  
   <script>
-    // ── Hero parallax on mouse ──────────────────────────────────
-    document.addEventListener('mousemove', e => {
-      const cx = (e.clientX / window.innerWidth  - 0.5) * 22;
-      const cy = (e.clientY / window.innerHeight - 0.5) * 22;
-      const o1 = document.querySelector('.orb-1');
-      const o2 = document.querySelector('.orb-2');
-      const o3 = document.querySelector('.orb-3');
-      if (o1) o1.style.transform = `translateX(calc(-50% + ${cx*0.4}px)) translateY(${cy*0.4}px)`;
-      if (o2) o2.style.transform = `translateX(${cx*-0.6}px) translateY(${cy*-0.6}px)`;
-      if (o3) o3.style.transform = `translateX(${cx*0.7}px) translateY(${cy*0.7}px)`;
-    });
-
-    // ── Fallback SITE content (prevents blank page if content.js fails) ──
-    function ensureSiteFallback(){
-      if (window.SITE) return;
-
-      window.SITE = {
-        availableText: "Open to projects & collabs",
-        nameShort: "Jaden",
-        tagline: "Student, creator, builder.",
-        bio: "I like building real stuff — events, websites, videos, and projects that help my community.",
-        bioExtra: "I’m into engineering, media production, and making systems that are clean, fast, and actually usable.",
-        location: "Livermore, CA",
-        school: "Green Engineering Academy (GEA)",
-        quote: "Make it real. Make it useful. Make it look good.",
-        roles: [
-          { text: "GEA President", style: "green" },
-          { text: "Builder", style: "accent" },
-          { text: "Creator", style: "purple" }
-        ],
-        stats: [
-          { value: "10+", label: "Projects shipped", color: "accent" },
-          { value: "100+", label: "Students impacted", color: "green" },
-          { value: "∞", label: "Ideas in progress", color: "purple" }
-        ],
-        experience: [
-          { icon: "🧩", role: "Student Leader", org: "GEA", desc: "Organizing events, teams, and systems that scale." },
-          { icon: "🛠️", role: "Builder", org: "Web + Tools", desc: "Dashboards, pages, and apps for real-world needs." }
-        ],
-        skills: ["Web", "Design", "Video", "Leadership", "Systems"],
-        interests: [
-          { icon:"🎥", name:"Media", desc:"Filming, editing, storytelling.", color:"rgba(191,90,242,0.18)" },
-          { icon:"💻", name:"Code", desc:"Web apps, dashboards, automation.", color:"rgba(41,151,255,0.18)" },
-          { icon:"🧠", name:"Engineering", desc:"Design, build, iterate.", color:"rgba(48,209,88,0.18)" }
-        ]
-      };
-    }
-
-    // ── Fallback nav/footer if components.js doesn't populate them ──
-    function ensureNavFooterFallback(){
-      const nav = document.getElementById('site-nav');
-      if (nav && !nav.innerHTML.trim()){
-        nav.innerHTML = `
-          <div class="fallback-nav">
-            <div style="font-weight:650;">JJ</div>
-            <div class="links">
-              <a href="./index.html">Home</a>
-              <a href="./projects.html">Projects</a>
-              <a href="./contact.html">Contact</a>
-            </div>
-          </div>
-        `;
-      }
-      const footer = document.getElementById('site-footer');
-      if (footer && !footer.innerHTML.trim()){
-        const year = new Date().getFullYear();
-        footer.innerHTML = `
-          <div class="fallback-footer">
-            © ${year} Jaden Jirasevijinda · Built with HTML/CSS/JS
-          </div>
-        `;
-      }
-    }
-
-    // ── Render from SITE content ────────────────────────────────
-    function renderFromSite(){
-      const S = window.SITE;
-      if (!S) return;
-
-      // Hero
-      document.getElementById('hero-available-text').textContent = S.availableText || "Open to projects & collabs";
-      document.getElementById('hero-name').textContent = S.nameShort || "Jaden";
-      document.getElementById('hero-tagline-word').textContent = "builds things.";
-      document.getElementById('hero-sub').textContent =
-        (S.tagline || "Student, creator, builder.") + " " +
-        "I make things with cameras, code, and a whole lot of curiosity.";
-
-      // Chips
-      const chipStyles = { accent:'chip-accent', green:'chip-green', purple:'chip-purple', dim:'' };
-      const roles = Array.isArray(S.roles) ? S.roles : [];
-      document.getElementById('hero-chips').innerHTML = roles.map(r =>
-        `<span class="chip ${chipStyles[r.style]||''}">${r.text}</span>`
-      ).join('');
-
-      // Stats
-      const statColors = { accent:'var(--accent)', green:'var(--accent-green)', purple:'var(--accent-purple)' };
-      const stats = Array.isArray(S.stats) ? S.stats : [];
-      document.getElementById('stats-grid').innerHTML = stats.map(s =>
-        `<div class="stat-cell animate">
-           <div class="stat-num" style="color:${statColors[s.color]||'var(--text)'}">${s.value}</div>
-           <div class="stat-lbl">${s.label}</div>
-         </div>`
-      ).join('');
-
-      // Bento
-      const exp = Array.isArray(S.experience) ? S.experience : [];
-      const expCards = exp.map(e =>
-        `<div class="bc bc-role animate">
-           <span class="bc-icon">${e.icon}</span>
-           <div class="bc-micro">Role</div>
-           <div class="bc-title">${e.role}</div>
-           <div class="bc-org">${e.org}</div>
-           <div class="bc-body">${e.desc}</div>
-         </div>`
-      ).join('');
-
-      const skills = Array.isArray(S.skills) ? S.skills : [];
-      const skillPills = skills.map(s => `<span class="pill">${s}</span>`).join('');
-
-      document.getElementById('bento-grid').innerHTML = `
-        <div class="bc bc-bio animate">
-          <div class="bc-micro">About</div>
-          <div class="bc-title">Builder, creator,<br/>community leader.</div>
-          <div class="bc-body">${S.bio || ""}</div>
-          <div class="bc-body" style="margin-top:12px">${S.bioExtra || ""}</div>
-          <div class="skills-row">${skillPills}</div>
-        </div>
-        ${expCards}
-        <div class="bc bc-photo animate">
-          <div class="bc-micro">Visual Storytelling</div>
-          <div class="photo-thumb">📸</div>
-          <div class="photo-caption">Photography · Videography · Drone · Editing</div>
-        </div>
-        <div class="bc bc-loc animate">
-          <div class="bc-micro">Based in</div>
-          <div class="loc-row">
-            <span class="loc-dot"></span>
-            <span style="font-weight:500">${S.location || ""}</span>
-          </div>
-          <div class="bc-body" style="margin-top:10px;font-size:13px">${S.school || ""}</div>
-        </div>
-        <div class="bc bc-quote animate">
-          <div class="quote-text">
-            "${(S.quote || "").trim() ? `<span>${S.quote.split(' ').slice(0,8).join(' ')}</span> ${S.quote.split(' ').slice(8).join(' ')}` : `<span>Make it real.</span> Make it useful. Make it look good.`}"
-          </div>
-        </div>
-      `;
-
-      // Interests
-      const interests = Array.isArray(S.interests) ? S.interests : [];
-      document.getElementById('interests-grid').innerHTML = interests.map(i =>
-        `<div class="interest-card card animate">
-           <div class="interest-icon" style="background:${i.color || 'rgba(255,255,255,0.06)'}">${i.icon || "✨"}</div>
-           <div class="display-sm">${i.name || ""}</div>
-           <div class="body-sm muted">${i.desc || ""}</div>
-         </div>`
-      ).join('');
-    }
-
-    // Run after everything is ready
+    // Industrial Theme Data Render Override
     window.addEventListener('DOMContentLoaded', () => {
-      ensureSiteFallback();
-      ensureNavFooterFallback();
-      renderFromSite();
+      // You can keep your existing renderFromSite logic, 
+      // but ensure it targets these new industrial class names.
+      const stats = [
+        { value: "12", label: "ACTIVE_PROJECTS" },
+        { value: "04", label: "YEARS_EXPERIENCE" },
+        { value: "01", label: "GEA_PRESIDENCY" }
+      ];
+      
+      document.getElementById('stats-grid').innerHTML = stats.map(s => `
+        <div style="padding: 30px; border-right: 1px solid var(--border);">
+          <div class="mono" style="color:var(--accent); font-size: 32px;">${s.value}</div>
+          <div class="mono" style="color:var(--text-dim)">${s.label}</div>
+        </div>
+      `).join('');
     });
   </script>
 </body>
