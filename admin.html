@@ -1,46 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>TERMINAL // AUTO_DEPLOY</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TERMINAL // ADMIN_PANEL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <style>
-        /* ... (Same styles as before) ... */
-        .github-card { border: 1px solid #444; background: #1a1a1c; padding: 20px; margin-bottom: 20px; }
-        .token-input { font-family: monospace; font-size: 10px; background: #000; color: #30d158; border: 1px solid #333; }
+        :root {
+            --bg: #0a0a0b;
+            --panel: #111113;
+            --border: #222224;
+            --text: #e1e1e3;
+            --accent: #ff5d22;
+            --left-gutter: 200px; /* This creates the shift you like */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            background-image: radial-gradient(var(--border) 1px, transparent 0);
+            background-size: 32px 32px;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 260px;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: 100vh;
+            padding: 40px 24px;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main {
+            margin-left: 260px;
+            flex: 1;
+        }
+
+        header {
+            height: 80px;
+            padding-left: var(--left-gutter);
+            padding-right: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10, 10, 11, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0;
+        }
+
+        .container {
+            padding-left: var(--left-gutter);
+            padding-right: 60px;
+            padding-top: 60px;
+            max-width: 1200px;
+        }
+
+        /* ── UI ELEMENTS ── */
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+
+        .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border);
+            padding: 12px;
+            color: #fff;
+            font-family: inherit;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--accent); }
+
+        .btn {
+            background: var(--accent);
+            color: #000;
+            padding: 12px 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 11px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn:hover { filter: brightness(1.2); }
     </style>
 </head>
 <body>
+
+    <aside class="sidebar">
+        <div class="logo">TERMINAL_v3.0</div>
+        <p style="font-size: 11px; color: #666; font-family: 'JetBrains Mono'">[ STATUS: ONLINE ]</p>
+    </aside>
+
     <div class="main">
-        <header class="top-nav">
-            <div style="font-family: 'JetBrains Mono'; font-size: 12px;">STATUS: CONNECTED // CLOUD_SYNC</div>
+        <header>
+            <div style="font-family: 'JetBrains Mono'; font-size: 11px;">ROOT / CONFIG / CONTENT</div>
             <button class="btn" id="deploy-btn" onclick="deployToGitHub()">Deploy to GitHub</button>
         </header>
 
-        <main class="content-area">
-            <div class="card github-card">
-                <span class="card-label">// GITHUB_AUTHENTICATION</span>
-                <div class="field">
-                    <label class="label">Personal Access Token (Classic)</label>
-                    <input type="password" id="gh-token" class="token-input" placeholder="ghp_xxxxxxxxxxxx">
-                </div>
-                <div class="row">
-                    <div class="field"><label class="label">Repo Name</label><input type="text" id="gh-repo" placeholder="username/repo-name"></div>
-                    <div class="field"><label class="label">Branch</label><input type="text" id="gh-branch" value="main"></div>
-                </div>
+        <div class="container">
+            <div class="card" style="border-style: dashed;">
+                <span class="label">// GITHUB_AUTHENTICATION</span>
+                <input type="password" id="gh-token" placeholder="Personal Access Token (ghp_...)">
+                <input type="text" id="gh-repo" placeholder="username/repo-name">
             </div>
 
             <div class="card">
-                <span class="card-label">// IDENTITY_DATA</span>
-                <div class="field">
-                    <label class="label">Full Name</label>
-                    <input type="text" id="f-name" value="Jaden Jirasevijinda">
-                </div>
-                <div class="field">
-                    <label class="label">Status</label>
-                    <input type="text" id="f-status" value="Livermore High School Junior | GEA President">
-                </div>
+                <span class="label">// IDENTITY_DATA</span>
+                <label style="font-size: 10px; color: #666;">FULL NAME</label>
+                <input type="text" id="f-name" value="Jaden Jirasevijinda">
+                
+                <label style="font-size: 10px; color: #666;">STATUS LINE</label>
+                <input type="text" id="f-status" value="Livermore High School Junior | GEA President">
             </div>
-        </main>
+        </div>
     </div>
 
     <script>
@@ -48,59 +153,44 @@
             const btn = document.getElementById('deploy-btn');
             const token = document.getElementById('gh-token').value;
             const repo = document.getElementById('gh-repo').value;
-            const branch = document.getElementById('gh-branch').value;
-            const path = 'content.js'; // The file we are updating
+            
+            if(!token || !repo) return alert("Please fill in GitHub credentials.");
 
-            if (!token || !repo) return alert("Missing GitHub Credentials");
-
-            btn.innerText = "PUSHING_DATA...";
-            btn.style.opacity = "0.5";
-
-            // 1. Construct the new file content
-            const contentObject = {
+            btn.innerText = "PUSHING...";
+            
+            const content = {
                 name: document.getElementById('f-name').value,
                 status: document.getElementById('f-status').value,
-                lastUpdated: new Date().toLocaleString()
+                updatedAt: new Date().toISOString()
             };
-            
-            const fileContent = `const SITE_DATA = ${JSON.stringify(contentObject, null, 4)};`;
-            const encodedContent = btoa(fileContent);
 
+            const fileContent = `const SITE_DATA = ${JSON.stringify(content, null, 4)};`;
+            
             try {
-                // 2. Get the current file SHA (GitHub needs this to overwrite)
-                const getUrl = `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`;
-                const getRes = await fetch(getUrl, {
+                // 1. Get SHA
+                const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/content.js`, {
                     headers: { 'Authorization': `token ${token}` }
                 });
                 const getData = await getRes.json();
-                const sha = getData.sha;
-
-                // 3. Push the update
-                const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                
+                // 2. Push Update
+                const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/content.js`, {
                     method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: `Update site content via Admin Terminal`,
-                        content: encodedContent,
-                        sha: sha,
-                        branch: branch
+                        message: "Content Update",
+                        content: btoa(fileContent),
+                        sha: getData.sha
                     })
                 });
 
-                if (putRes.ok) {
-                    alert("DEPLOY_SUCCESSFUL: Site will update in ~60 seconds.");
-                } else {
-                    alert("DEPLOY_FAILED: Check your token permissions.");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("CONNECTION_ERROR: Check console.");
+                if(putRes.ok) alert("Deployment Successful!");
+                else alert("Deployment Failed.");
+            } catch (e) {
+                alert("Error: Check console.");
+                console.log(e);
             } finally {
                 btn.innerText = "Deploy to GitHub";
-                btn.style.opacity = "1";
             }
         }
     </script>
