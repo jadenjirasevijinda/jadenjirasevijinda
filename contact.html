@@ -1,190 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CONTACT // JADEN JIRASEVIJINDA</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8"><title>CONNECT // JADEN_J</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        /* ── INDUSTRIAL CONTACT COMPONENTS ── */
-        .contact-layout {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 60px;
-            align-items: start;
-        }
-
-        /* Technical Link Panels */
-        .clc {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            padding: 24px;
-            text-decoration: none;
-            color: var(--text);
-            margin-bottom: 2px; /* Slight gap for technical look */
-            transition: all 0.2s ease;
-        }
-
-        .clc:hover {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-            transform: translateX(8px);
-        }
-
-        .clc-icon {
-            font-size: 20px;
-            width: 30px;
-            text-align: center;
-        }
-
-        .clc-info { flex: 1; }
-        .clc-sub { 
-            font-family: var(--font-mono); 
-            font-size: 10px; 
-            color: var(--text-dim); 
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .clc-val { 
-            font-size: 16px; 
-            font-weight: 600; 
-            text-transform: uppercase;
-        }
-
-        /* Email Block - The Primary Action */
-        .email-block {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: var(--accent);
-            padding: 30px;
-            text-decoration: none;
-            color: #000;
-            margin-top: 20px;
-            transition: transform 0.2s ease, filter 0.2s ease;
-        }
-
-        .email-block:hover {
-            transform: translateY(-5px);
-            filter: brightness(1.1);
-        }
-
-        .email-val {
-            font-family: var(--font-mono);
-            font-size: clamp(14px, 1.8vw, 20px);
-            font-weight: 700;
-            word-break: break-all;
-        }
-
-        .contact-note {
-            margin-top: 40px;
-            padding: 30px;
-            background: var(--panel);
-            border-left: 3px solid var(--accent);
-            font-size: 13px;
-            color: var(--text-dim);
-            line-height: 1.6;
-            font-family: var(--font-mono);
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 1000px) {
-            .contact-layout { grid-template-columns: 1fr; }
-        }
+        :root { --bg: #0a0a0b; --accent: #ff5d22; --border: #222224; --nav-h: 70px; }
+        body { background: var(--bg); color: #fff; font-family: 'Space Grotesk'; padding: var(--nav-h) 40px 40px; margin: 0; }
+        nav { position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-h); background: #0a0a0b; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+        .nav-logo { font-family: 'JetBrains Mono'; font-weight: 700; font-size: 13px; color: var(--accent); }
+        .nav-links a { font-family: 'JetBrains Mono'; color: #666; text-decoration: none; font-size: 11px; margin-left: 25px; }
+        .container { max-width: 800px; margin-top: 80px; }
+        .email-link { font-size: clamp(1.5rem, 5vw, 3rem); color: var(--accent); text-decoration: none; border-bottom: 2px solid var(--accent); transition: 0.3s; }
+        .email-link:hover { color: #fff; border-color: #fff; }
     </style>
 </head>
 <body>
+<nav>
+    <div class="nav-logo">JADEN_JIRASEVIJINDA.SYS</div>
+    <div class="nav-links">
+        <a href="index.html">01_HOME</a>
+        <a href="projects.html">02_WORKS</a>
+        <a href="photos.html">03_GALLERY</a>
+        <a href="contact.html">04_CONNECT</a>
+    </div>
+</nav>
 
-    <nav style="padding: 40px 0;">
-        <div class="container">
-            <a href="./index.html" class="mono-label" style="text-decoration: none; color: var(--accent);">← [ RETURN_TO_ROOT ]</a>
-        </div>
-    </nav>
-
-    <section class="hero" style="padding-top: 40px; min-height: auto; padding-bottom: 60px;">
-        <div class="container">
-            <div class="hero-badge">COMMS_LINK: STANDBY</div>
-            <h1 class="display-xl">
-                START <br>
-                <span style="color:var(--accent)">COMMUNICATION</span>
-            </h1>
-            <p class="hero-description">
-                Livermore, CA <span style="color:var(--border)">|</span> Available for project collaboration
-            </p>
-        </div>
-    </section>
-
-    <section class="section" style="padding-top:0">
-        <div class="container">
-            <div class="contact-layout">
-
-                <div>
-                    <span class="mono-label" style="margin-bottom: 20px;">// SYSTEM_MESSAGE</span>
-                    <h2 style="font-size: 28px; text-transform: uppercase; margin-bottom: 20px;">Direct Profile</h2>
-                    <p id="contact-bio" style="color: var(--text-dim); line-height: 1.6; margin-bottom: 30px; max-width: 500px;"></p>
-                    
-                    <div class="contact-note">
-                        Whether it's a creative shoot, a web build, or GEA-related inquiries — initiate contact via the terminal links provided.
-                    </div>
-                </div>
-
-                <div>
-                    <span class="mono-label" style="margin-bottom: 20px;">// ACTIVE_CHANNELS</span>
-                    
-                    <div class="contact-links" id="contact-links"></div>
-
-                    <a href="#" class="email-block" id="email-link">
-                        <span class="mono-label" style="color: #000; opacity: 0.8; font-weight: 800;">[ SEND_ENCRYPTED_EMAIL ]</span>
-                        <span class="email-val" id="email-val"></span>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <footer style="padding: 60px 0; border-top: 1px solid var(--border);">
-        <div class="container">
-            <p style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px;">
-                &copy; 2026 Jaden Jirasevijinda // TERMINAL_END
-            </p>
-        </div>
-    </footer>
-
-    <script src="content.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check if SITE object exists from content.js
-            if (typeof SITE === 'undefined') {
-                console.error("Content.js not found or SITE object missing.");
-                return;
-            }
-
-            // 1. Populate Bio
-            document.getElementById('contact-bio').textContent = SITE.bio;
-
-            // 2. Populate Email
-            const emailVal = document.getElementById('email-val');
-            const emailLink = document.getElementById('email-link');
-            emailVal.textContent = SITE.email;
-            emailLink.href = `mailto:${SITE.email}`;
-
-            // 3. Populate Social Links (LinkedIn, Instagram)
-            const linksContainer = document.getElementById('contact-links');
-            linksContainer.innerHTML = SITE.socials.map((social) => `
-                <a href="${social.url}" class="clc" target="_blank">
-                    <div class="clc-icon">${social.icon}</div>
-                    <div class="clc-info">
-                        <div class="clc-sub">${social.sublabel}</div>
-                        <div class="clc-val">${social.label}</div>
-                    </div>
-                    <span style="opacity:0.3; font-family: var(--font-mono);">>></span>
-                </a>
-            `).join('');
-        });
-    </script>
+<div class="container">
+    <span style="font-family:'JetBrains Mono'; color:var(--accent); display:block; margin-bottom:20px;">[ INITIATE_CONTACT ]</span>
+    <h1 style="font-size: 4rem; margin-bottom: 40px;">WANT TO <br>COLLABORATE?</h1>
+    <p style="color: #666; font-size: 1.2rem; margin-bottom: 20px;">Reach out via email at:</p>
+    <a href="mailto:jadenjirasevijinda@gmail.com" class="email-link">jadenjirasevijinda@gmail.com</a>
+</div>
 </body>
 </html>
