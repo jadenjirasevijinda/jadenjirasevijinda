@@ -31,19 +31,29 @@
         .filter-btn:hover { color: #fff; border-color: #444; }
         .filter-btn.active { border-color: var(--accent); color: var(--accent); }
 
-        /* GALLERY GRID */
+        /* PROTECTED GALLERY GRID */
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px; padding: 0 40px 40px; flex-grow: 1; }
         
         .photo-item { 
             width: 100%; aspect-ratio: 1/1; background: #111; border: 1px solid var(--border); 
             overflow: hidden; position: relative; cursor: crosshair;
             clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
         }
-        .photo-item img, .photo-item video { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; filter: grayscale(1); }
+
+        /* INVISIBLE SHIELD: This sits in front of the image */
+        .shield {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; background: transparent;
+        }
+
+        .photo-item img, .photo-item video { 
+            width: 100%; height: 100%; object-fit: cover; 
+            opacity: 0.5; transition: 0.5s; filter: grayscale(1); 
+            pointer-events: none; /* Prevents direct interaction with the file */
+        }
+
+        /* Hover effect triggered by the photo-item container */
         .photo-item:hover img, .photo-item:hover video { opacity: 1; transform: scale(1.05); filter: grayscale(0); }
-        
-        /* Hidden state for filtered items */
         .photo-item.hidden { display: none; }
 
         .sys-footer { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 25px 40px; font-family: 'JetBrains Mono'; background: #000; border-top: 1px solid var(--border); }
@@ -79,19 +89,12 @@
 
 <div class="photo-grid" id="media-grid">
     <div class="photo-item" data-type="photo">
-        <img src="shot1.jpg" alt="Photography">
+        <div class="shield"></div> <img src="shot1.jpg" alt="Photography">
     </div>
 
     <div class="photo-item" data-type="video">
-        <video src="edit1.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
-    </div>
-
-    <div class="photo-item" data-type="photo">
-        <img src="shot2.jpg" alt="Photography">
-    </div>
-
-    <div class="photo-item" data-type="video">
-        <video src="edit2.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+        <div class="shield" onmouseover="this.nextElementSibling.play()" onmouseout="this.nextElementSibling.pause()"></div>
+        <video src="edit1.mp4" muted loop></video>
     </div>
 </div>
 
@@ -102,14 +105,16 @@
 </footer>
 
 <script>
+    // SECURITY SCRIPT: Disable Right-Click and Dragging
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+
     // FILTER LOGIC
     function filterMedia(type) {
-        // Update Buttons
         const buttons = document.querySelectorAll('.filter-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
 
-        // Filter Grid
         const items = document.querySelectorAll('.photo-item');
         items.forEach(item => {
             if (type === 'all' || item.getAttribute('data-type') === type) {
