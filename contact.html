@@ -24,19 +24,20 @@
             padding: 24px;
             text-decoration: none;
             color: var(--text);
-            margin-bottom: 1px; /* Stacked appearance */
+            margin-bottom: 2px; /* Slight gap for technical look */
             transition: all 0.2s ease;
         }
 
         .clc:hover {
             border-color: var(--accent);
             background: var(--accent-soft);
-            transform: translateX(5px);
+            transform: translateX(8px);
         }
 
         .clc-icon {
             font-size: 20px;
-            color: var(--accent);
+            width: 30px;
+            text-align: center;
         }
 
         .clc-info { flex: 1; }
@@ -45,6 +46,7 @@
             font-size: 10px; 
             color: var(--text-dim); 
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         .clc-val { 
             font-size: 16px; 
@@ -52,27 +54,29 @@
             text-transform: uppercase;
         }
 
-        /* Email Block - Heavy Data Look */
+        /* Email Block - The Primary Action */
         .email-block {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             background: var(--accent);
             padding: 30px;
             text-decoration: none;
             color: #000;
             margin-top: 20px;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, filter 0.2s ease;
         }
 
         .email-block:hover {
             transform: translateY(-5px);
+            filter: brightness(1.1);
         }
 
         .email-val {
             font-family: var(--font-mono);
-            font-size: clamp(16px, 2vw, 22px);
+            font-size: clamp(14px, 1.8vw, 20px);
             font-weight: 700;
+            word-break: break-all;
         }
 
         .contact-note {
@@ -80,7 +84,7 @@
             padding: 30px;
             background: var(--panel);
             border-left: 3px solid var(--accent);
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-dim);
             line-height: 1.6;
             font-family: var(--font-mono);
@@ -96,13 +100,13 @@
 
     <nav style="padding: 40px 0;">
         <div class="container">
-            <a href="./index.html" class="mono-label" style="text-decoration: none;">← RETURN_TO_ROOT</a>
+            <a href="./index.html" class="mono-label" style="text-decoration: none; color: var(--accent);">← [ RETURN_TO_ROOT ]</a>
         </div>
     </nav>
 
-    <section class="hero" style="padding-top: 60px; min-height: auto; padding-bottom: 80px;">
+    <section class="hero" style="padding-top: 40px; min-height: auto; padding-bottom: 60px;">
         <div class="container">
-            <div class="hero-badge">COMMS_LINK: OPEN</div>
+            <div class="hero-badge">COMMS_LINK: STANDBY</div>
             <h1 class="display-xl">
                 START <br>
                 <span style="color:var(--accent)">COMMUNICATION</span>
@@ -119,21 +123,21 @@
 
                 <div>
                     <span class="mono-label" style="margin-bottom: 20px;">// SYSTEM_MESSAGE</span>
-                    <h2 style="font-size: 28px; text-transform: uppercase; margin-bottom: 20px;">Let's connect.</h2>
-                    <p id="contact-bio" style="color: var(--text-dim); line-height: 1.6; margin-bottom: 30px;"></p>
+                    <h2 style="font-size: 28px; text-transform: uppercase; margin-bottom: 20px;">Direct Profile</h2>
+                    <p id="contact-bio" style="color: var(--text-dim); line-height: 1.6; margin-bottom: 30px; max-width: 500px;"></p>
                     
                     <div class="contact-note">
-                        Whether it's a creative shoot, a web build, or GEA-related inquiries — initiate contact via the terminal links.
+                        Whether it's a creative shoot, a web build, or GEA-related inquiries — initiate contact via the terminal links provided.
                     </div>
                 </div>
 
                 <div>
                     <span class="mono-label" style="margin-bottom: 20px;">// ACTIVE_CHANNELS</span>
-                    <div class="contact-links" id="contact-links">
-                        </div>
+                    
+                    <div class="contact-links" id="contact-links"></div>
 
                     <a href="#" class="email-block" id="email-link">
-                        <span class="mono-label" style="color: #000; opacity: 0.7;">DIRECT_EMAIL</span>
+                        <span class="mono-label" style="color: #000; opacity: 0.8; font-weight: 800;">[ SEND_ENCRYPTED_EMAIL ]</span>
                         <span class="email-val" id="email-val"></span>
                     </a>
                 </div>
@@ -144,33 +148,42 @@
 
     <footer style="padding: 60px 0; border-top: 1px solid var(--border);">
         <div class="container">
-            <p style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase;">
+            <p style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px;">
                 &copy; 2026 Jaden Jirasevijinda // TERMINAL_END
             </p>
         </div>
     </footer>
 
     <script src="content.js"></script>
-    <script src="components.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const S = window.SITE;
-            if (!S) return;
+            // Check if SITE object exists from content.js
+            if (typeof SITE === 'undefined') {
+                console.error("Content.js not found or SITE object missing.");
+                return;
+            }
 
-            document.getElementById('contact-bio').textContent = S.bio;
-            document.getElementById('email-val').textContent = S.email;
-            document.getElementById('email-link').href = `mailto:${S.email}`;
+            // 1. Populate Bio
+            document.getElementById('contact-bio').textContent = SITE.bio;
 
-            document.getElementById('contact-links').innerHTML = S.socials.map((s) =>
-                `<a href="${s.url}" class="clc" target="_blank">
-                    <div class="clc-icon">${s.icon}</div>
+            // 2. Populate Email
+            const emailVal = document.getElementById('email-val');
+            const emailLink = document.getElementById('email-link');
+            emailVal.textContent = SITE.email;
+            emailLink.href = `mailto:${SITE.email}`;
+
+            // 3. Populate Social Links (LinkedIn, Instagram)
+            const linksContainer = document.getElementById('contact-links');
+            linksContainer.innerHTML = SITE.socials.map((social) => `
+                <a href="${social.url}" class="clc" target="_blank">
+                    <div class="clc-icon">${social.icon}</div>
                     <div class="clc-info">
-                        <div class="clc-sub">${s.sublabel}</div>
-                        <div class="clc-val">${s.label}</div>
+                        <div class="clc-sub">${social.sublabel}</div>
+                        <div class="clc-val">${social.label}</div>
                     </div>
-                    <span style="opacity:0.3">→</span>
-                </a>`
-            ).join('');
+                    <span style="opacity:0.3; font-family: var(--font-mono);">>></span>
+                </a>
+            `).join('');
         });
     </script>
 </body>
