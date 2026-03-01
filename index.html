@@ -3,51 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WORKS // JADEN_J</title>
+    <title>JADEN J. // TERMINAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #0a0a0b; --accent: #ff5d22; --border: #222224; --nav-h: 70px; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { background: var(--bg); color: #e1e1e3; font-family: 'Space Grotesk', sans-serif; padding-top: var(--nav-h); }
+        body { background: var(--bg); color: #e1e1e3; font-family: 'Space Grotesk', sans-serif; padding-top: var(--nav-h); overflow-x: hidden; }
 
-        /* CRT SCANLINE EFFECT */
+        /* Vercel-Style Scanline Effect */
         body::before {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
             z-index: 2000; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* TOP NAVIGATION */
         nav {
             position: fixed; top: 0; width: 100%; height: var(--nav-h);
             background: rgba(10,10,11,0.8); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border); display: flex; 
             align-items: center; justify-content: space-between; padding: 0 40px; z-index: 1000;
         }
-        .nav-logo { font-family: 'JetBrains Mono'; font-weight: 700; font-size: 13px; color: var(--accent); }
+        .nav-logo { font-family: 'JetBrains Mono'; font-weight: 700; font-size: 13px; color: var(--accent); text-transform: uppercase; }
         .nav-links a { font-family: 'JetBrains Mono'; color: #666; text-decoration: none; font-size: 11px; margin-left: 25px; transition: 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 
-        /* HEADER */
-        .header { padding: 80px 40px; border-bottom: 1px solid var(--border); }
-        .label { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 11px; margin-bottom: 15px; display: block; }
+        section { padding: 100px 40px; border-bottom: 1px solid var(--border); animation: fadeIn 1s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GRID */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
-        .card { 
-            background: var(--bg); padding: 50px 40px; height: 380px; 
-            display: flex; flex-direction: column; justify-content: space-between; 
-            text-decoration: none; color: #fff; transition: 0.4s; position: relative; overflow: hidden;
-        }
-        .card:hover { background: #0e0e10; }
-        .card::after { 
-            content: "OPEN_FILE"; position: absolute; bottom: -20px; right: 20px; 
-            font-family: 'JetBrains Mono'; font-size: 10px; color: var(--accent); opacity: 0; transition: 0.3s;
-        }
-        .card:hover::after { bottom: 20px; opacity: 1; }
-        .card h3 { font-size: 2.2rem; text-transform: uppercase; line-height: 1; }
-        .card:hover h3 { color: var(--accent); }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; text-transform: uppercase; line-height: 0.9; }
+        .label { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 11px; margin-bottom: 15px; display: block; }
     </style>
 </head>
 <body>
@@ -55,44 +39,19 @@
 <nav>
     <div class="nav-logo">JADEN_JIRASEVIJINDA.SYS</div>
     <div class="nav-links">
-        <a href="index.html">01_HOME</a>
+        <a href="index.html" class="active">01_HOME</a>
         <a href="about.html">02_ABOUT</a>
-        <a href="projects.html" class="active">03_WORKS</a>
+        <a href="projects.html">03_WORKS</a>
         <a href="photos.html">04_GALLERY</a>
         <a href="contact.html">05_CONNECT</a>
     </div>
 </nav>
 
-<div class="header">
-    <span class="label">[ FILE_03: SELECTED_PROJECTS ]</span>
-    <h1 style="font-size: 4rem; text-transform: uppercase;">Build <span style="color:var(--accent)">Log.</span></h1>
-</div>
-
-<div class="grid">
-    <div class="card">
-        <div>
-            <span style="font-family:'JetBrains Mono'; color:var(--accent); font-size:11px;">#001 // FUSION360</span>
-            <h3 style="margin-top:20px;">CAD <br>MECHANISMS</h3>
-        </div>
-        <p style="color:#555; font-family:'JetBrains Mono'; font-size:11px;">[ STATUS: ARCHIVED ]</p>
-    </div>
-
-    <div class="card">
-        <div>
-            <span style="font-family:'JetBrains Mono'; color:var(--accent); font-size:11px;">#002 // DAVINCI_RESOLVE</span>
-            <h3 style="margin-top:20px;">POST <br>PRODUCTION</h3>
-        </div>
-        <p style="color:#555; font-family:'JetBrains Mono'; font-size:11px;">[ STATUS: ACTIVE ]</p>
-    </div>
-
-    <div class="card">
-        <div>
-            <span style="font-family:'JetBrains Mono'; color:var(--accent); font-size:11px;">#003 // VEX_ROBOTICS</span>
-            <h3 style="margin-top:20px;">AUTONOMOUS <br>SYSTEMS</h3>
-        </div>
-        <p style="color:#555; font-family:'JetBrains Mono'; font-size:11px;">[ STATUS: TESTING ]</p>
-    </div>
-</div>
+<section>
+    <span class="label">[ STATUS: ONLINE ]</span>
+    <h1 class="hero-title">JADEN <br><span style="color:var(--accent)">JIRASEVIJINDA.</span></h1>
+    <h2 class="hero-title" style="color:#222">BUILDING STUFF & <br>SOLVING PROBLEMS.</h2>
+</section>
 
 </body>
 </html>
