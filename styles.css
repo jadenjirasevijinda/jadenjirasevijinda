@@ -1,77 +1,105 @@
 /* ═══════════════════════════════════════════════════════════════
-   JADEN JIRASEVIJINDA — REFINED INDUSTRIAL SPEC
+   JADEN JIRASEVIJINDA — INDUSTRIAL SPEC (REFINED)
    Theme: "The Laboratory" (Precision + Tech + Data)
    ═══════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-    --bg: #0d0e10;
-    --panel: #141517;
-    --border: #2a2c2f;
+    --bg: #0a0a0b;
+    --panel: #111113;
+    --border: #222224;
     --text: #e1e1e3;
-    --text-dim: #71717a;
+    --text-dim: #636366;
     
     /* Industrial Accents */
     --accent: #ff5d22; /* Safety Orange */
-    --accent-soft: rgba(255, 93, 34, 0.1);
-    --data-blue: #00d1ff; /* Tooling Blue */
+    --accent-soft: rgba(255, 93, 34, 0.08);
     
     --font-main: 'Space Grotesk', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     
-    --r: 4px; /* Harder, professional edges */
+    --r: 2px; /* Hard, technical edges */
     --ease: cubic-bezier(0.2, 0, 0, 1);
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-main);
-    margin: 0;
     overflow-x: hidden;
-    /* The Blueprint Background */
+    /* Technical Grid Pattern */
     background-image: 
-        radial-gradient(circle at 2px 2px, var(--border) 1px, transparent 0);
-    background-size: 32px 32px;
+        radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+    background-size: 40px 40px;
 }
 
-/* ── REFINED TYPOGRAPHY ───────────────────────────────────────── */
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 100px; /* Pushes content right */
+}
+
+/* ── HERO SECTION ────────────────────────────────────────────── */
+.hero {
+    padding: 180px 0 100px;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 6px 12px;
+    margin-bottom: 32px;
+    background: var(--accent-soft);
+}
+
 .display-xl {
     font-size: clamp(48px, 8vw, 92px);
     font-weight: 700;
+    line-height: 0.95;
     letter-spacing: -0.04em;
     text-transform: uppercase;
-    line-height: 0.9;
+    margin-bottom: 24px;
 }
 
-.mono {
+.hero-description {
     font-family: var(--font-mono);
+    color: var(--text-dim);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    margin-bottom: 48px;
     text-transform: uppercase;
-    font-size: 11px;
-    letter-spacing: 0.1em;
 }
 
-/* ── INDUSTRIAL COMPONENTS ────────────────────────────────────── */
+/* ── BUTTONS ─────────────────────────────────────────────────── */
+.hero-btns { display: flex; gap: 16px; }
+
 .btn {
     font-family: var(--font-mono);
     text-transform: uppercase;
     font-size: 12px;
     font-weight: 700;
-    padding: 12px 24px;
+    padding: 14px 28px;
     border: 1px solid var(--border);
     background: var(--panel);
     color: var(--text);
-    position: relative;
+    text-decoration: none;
     transition: all 0.3s var(--ease);
-    border-radius: var(--r);
 }
 
 .btn:hover {
     border-color: var(--accent);
     color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .btn-primary {
@@ -85,56 +113,73 @@ body {
     color: var(--accent);
 }
 
-/* ── BENTO / CARD SYSTEM ──────────────────────────────────────── */
-.bc {
+/* ── STATS BAND ──────────────────────────────────────────────── */
+.stats-band {
     background: var(--panel);
-    border: 1px solid var(--border);
-    border-top: 3px solid var(--border); /* Thick top "Beam" */
-    border-radius: var(--r);
-    padding: 30px;
-    position: relative;
-    transition: border-color 0.3s var(--ease);
-}
-
-.bc:hover {
-    border-top-color: var(--accent);
-}
-
-/* Technical Label for cards */
-.bc::after {
-    content: "MOD_SPEC.04";
-    position: absolute;
-    bottom: 10px;
-    right: 12px;
-    font-family: var(--font-mono);
-    font-size: 8px;
-    color: var(--text-dim);
-    opacity: 0.5;
-}
-
-.pill {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 4px 10px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--data-blue);
-    border-radius: 2px;
-}
-
-/* ── HERO SPECIFIC ────────────────────────────────────────────── */
-.hero {
-    padding: 120px 0 80px;
+    border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
 }
 
-.hero-badge {
-    border: 1px solid var(--accent);
-    background: var(--accent-soft);
-    color: var(--accent);
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.stat-cell {
+    padding: 40px 0;
+    border-right: 1px solid var(--border);
+}
+
+.stat-cell:last-child { border-right: none; }
+
+.stat-num {
     font-family: var(--font-mono);
-    padding: 6px 14px;
+    font-size: 32px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.stat-lbl {
+    font-family: var(--font-mono);
     font-size: 11px;
-    margin-bottom: 24px;
-    display: inline-block;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+/* ── BENTO / CARDS ───────────────────────────────────────────── */
+.section { padding: 100px 0; }
+
+.section-header { margin-bottom: 60px; }
+
+.mono-label {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.bento {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.bc {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 40px;
+    position: relative;
+}
+
+.bc:hover {
+    border-color: var(--text-dim);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .container { padding: 0 40px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .stat-cell { border-right: none; border-bottom: 1px solid var(--border); padding-left: 20px; }
 }
