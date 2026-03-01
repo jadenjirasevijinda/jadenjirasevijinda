@@ -5,8 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jaden Jirasevijinda</title>
   <meta name="description" content="Jaden Jirasevijinda — Student, creator, builder. President of GEA, Board Member at Pillars of Tech." />
-  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Use explicit relative paths (safer on deploy) -->
+  <link rel="stylesheet" href="./styles.css" />
+
   <style>
+    /* -----------------------------------------------------------
+      FALLBACK BASE STYLES
+      If styles.css fails to load, you still see content.
+      Also prevents "blank page" if .animate is hidden elsewhere.
+    ----------------------------------------------------------- */
+    :root{
+      --bg: #0b0c10;
+      --surface: rgba(255,255,255,0.04);
+      --text: rgba(255,255,255,0.92);
+      --text-muted: rgba(255,255,255,0.72);
+      --text-dim: rgba(255,255,255,0.55);
+      --border: rgba(255,255,255,0.10);
+      --border-md: rgba(255,255,255,0.18);
+
+      --accent: #2997ff;
+      --accent-green: #30d158;
+      --accent-purple: #bf5af2;
+
+      --r: 18px;
+      --r-sm: 14px;
+      --ease: cubic-bezier(.2,.8,.2,1);
+      --nav-h: 72px;
+    }
+
+    /* If your main stylesheet loads, it can override these. */
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+    }
+    a{ color: inherit; text-decoration: none; }
+    .container{ width: min(1100px, calc(100% - 48px)); margin: 0 auto; }
+    .section{ padding: 90px 0; }
+    .label{
+      display:inline-block; font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 10px;
+    }
+    .display-xl{ font-size: clamp(38px, 5vw, 66px); line-height: 1.05; letter-spacing: -0.04em; margin: 0; }
+    .display-lg{ font-size: clamp(26px, 3.5vw, 44px); line-height: 1.1; letter-spacing: -0.03em; margin: 0; }
+    .display-sm{ font-size: 18px; font-weight: 650; }
+    .body-lg{ font-size: 16px; line-height: 1.7; }
+    .body-sm{ font-size: 13.5px; line-height: 1.6; }
+    .muted{ color: var(--text-muted); }
+    .grad-accent{
+      background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+    .grad-light{
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.70));
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 11px 16px; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      font-size: 14px; gap: 10px;
+      transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: var(--border-md); background: rgba(255,255,255,0.07); }
+    .btn-primary{ border-color: rgba(41,151,255,0.35); background: rgba(41,151,255,0.12); }
+    .btn-ghost{ background: rgba(255,255,255,0.03); }
+
+    /* CRITICAL FIX:
+       Never hide content by default. If some other stylesheet sets
+       .animate { opacity:0 }, this overrides it so deploy isn't blank.
+    */
+    .animate { opacity: 1 !important; transform: none !important; }
+
+    /* pill used in your markup */
+    .pill{
+      display:inline-flex; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      font-size: 12px; color: var(--text-muted);
+    }
+
     /* ── PAGE-SPECIFIC STYLES ── */
 
     /* HERO */
@@ -55,7 +140,6 @@
       border-radius: 980px; padding: 6px 16px;
       font-size: 13px; color: var(--text-muted);
       margin-bottom: 36px;
-      animation: fadeUpIn 0.7s 0.3s ease both;
     }
     .badge-dot {
       width: 6px; height: 6px; border-radius: 50%;
@@ -65,25 +149,12 @@
     }
     @keyframes blinkDot { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
-    .hero-name {
-      display: block;
-      animation: fadeUpIn 0.7s 0.45s ease both;
-    }
-    .hero-name-line2 {
-      display: block;
-      animation: fadeUpIn 0.7s 0.55s ease both;
-    }
-
-    .hero-sub {
-      margin-bottom: 18px; max-width: 530px;
-      animation: fadeUpIn 0.7s 0.65s ease both;
-    }
+    .hero-sub { margin-bottom: 18px; max-width: 560px; }
 
     .hero-chips {
       display: flex; align-items: center; justify-content: center;
       gap: 7px; flex-wrap: wrap;
       margin-bottom: 52px;
-      animation: fadeUpIn 0.7s 0.75s ease both;
     }
     .chip {
       font-size: 12.5px; padding: 5px 13px; border-radius: 980px;
@@ -94,17 +165,14 @@
     .chip-green   { color: var(--accent-green);   border-color: rgba(48,209,88,0.3);   background: rgba(48,209,88,0.07);   }
     .chip-purple  { color: var(--accent-purple);  border-color: rgba(191,90,242,0.3);  background: rgba(191,90,242,0.07);  }
 
-    .hero-btns {
-      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-      animation: fadeUpIn 0.7s 0.85s ease both;
-    }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
     .hero-scroll-hint {
       position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
       display: flex; flex-direction: column; align-items: center; gap: 8px;
       color: var(--text-dim); font-size: 10.5px; letter-spacing: 0.14em;
       text-transform: uppercase;
-      animation: fadeUpIn 1s 1.4s ease both;
+      opacity: .9;
     }
     .scroll-line {
       width: 1px; height: 40px;
@@ -116,40 +184,18 @@
       50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
       100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
     }
-    @keyframes fadeUpIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
 
     /* STATS */
-    .stats-band {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      divide-x: 1px solid var(--border);
-    }
-    .stat-cell {
-      padding: 40px 44px;
-      border-right: 1px solid var(--border);
-    }
+    .stats-band { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .stat-cell { padding: 40px 44px; border-right: 1px solid var(--border); }
     .stat-cell:last-child { border-right: none; }
-    .stat-num {
-      font-size: 52px; font-weight: 800;
-      letter-spacing: -0.05em; line-height: 1;
-      margin-bottom: 6px;
-    }
+    .stat-num { font-size: 52px; font-weight: 800; letter-spacing: -0.05em; line-height: 1; margin-bottom: 6px; }
     .stat-lbl { font-size: 13.5px; color: var(--text-muted); }
 
     /* BENTO ABOUT */
-    .bento {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-    .bc { /* bento cell */
+    .bento { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .bc{
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--r);
@@ -181,24 +227,15 @@
     .photo-caption { margin-top: 12px; font-size: 12.5px; color: var(--text-dim); }
 
     .loc-row { display: flex; align-items: center; gap: 9px; }
-    .loc-dot {
-      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-      background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green);
-    }
+    .loc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
 
-    .quote-text {
-      font-size: clamp(16px, 2vw, 22px); font-weight: 600;
-      letter-spacing: -0.02em; line-height: 1.4;
-      color: var(--text-muted);
-    }
+    .quote-text { font-size: clamp(16px, 2vw, 22px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.4; color: var(--text-muted); }
     .quote-text span { color: var(--text); }
 
     .skills-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
 
     /* INTERESTS */
-    .interests-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-    }
+    .interests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .interest-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -208,6 +245,22 @@
     .interest-icon {
       width: 52px; height: 52px; border-radius: 14px;
       display: flex; align-items: center; justify-content: center; font-size: 24px;
+    }
+
+    /* Simple fallback nav/footer */
+    .fallback-nav{
+      position: fixed; top: 0; left: 0; right:0; height: var(--nav-h);
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 0 24px;
+      background: rgba(10,12,16,0.7);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
+    }
+    .fallback-nav .links{ display:flex; gap: 16px; font-size: 14px; color: var(--text-muted); }
+    .fallback-footer{
+      padding: 44px 24px; border-top: 1px solid var(--border);
+      color: var(--text-dim); font-size: 13px;
     }
 
     /* RESPONSIVE */
@@ -227,9 +280,13 @@
       .interests-grid { grid-template-columns: 1fr; }
     }
   </style>
-</head>
-<body>
 
+  <!-- Defer external scripts so they don't block render -->
+  <script defer src="./content.js"></script>
+  <script defer src="./components.js"></script>
+</head>
+
+<body>
   <nav id="site-nav"></nav>
 
   <!-- ── HERO ──────────────────────────────────────────────────── -->
@@ -243,21 +300,23 @@
 
     <span class="hero-badge">
       <span class="badge-dot"></span>
-      <span id="hero-available-text"></span>
+      <span id="hero-available-text">Open to projects & collabs</span>
     </span>
 
     <h1 class="display-xl" style="margin-bottom:28px">
-      <span class="hero-name grad-light" id="hero-name"></span>
-      <span class="hero-name-line2 grad-accent" id="hero-tagline-word"></span>
+      <span class="hero-name grad-light" id="hero-name">Jaden</span>
+      <span class="hero-name-line2 grad-accent" id="hero-tagline-word">builds things.</span>
     </h1>
 
-    <p class="body-lg muted hero-sub" id="hero-sub"></p>
+    <p class="body-lg muted hero-sub" id="hero-sub">
+      Student • creator • builder. I make things with cameras, code, and a whole lot of curiosity.
+    </p>
 
     <div class="hero-chips" id="hero-chips"></div>
 
     <div class="hero-btns">
-      <a href="projects.html" class="btn btn-primary">See my work</a>
-      <a href="contact.html"  class="btn btn-ghost">Get in touch</a>
+      <a href="./projects.html" class="btn btn-primary">See my work</a>
+      <a href="./contact.html"  class="btn btn-ghost">Get in touch</a>
     </div>
 
     <div class="hero-scroll-hint">
@@ -298,8 +357,12 @@
 
   <footer id="site-footer"></footer>
 
-  <script src="content.js"></script>
-  <script src="components.js"></script>
+  <noscript>
+    <div class="fallback-footer">
+      This site uses JavaScript to load content. Please enable JavaScript to see the full page.
+    </div>
+  </noscript>
+
   <script>
     // ── Hero parallax on mouse ──────────────────────────────────
     document.addEventListener('mousemove', e => {
@@ -313,26 +376,92 @@
       if (o3) o3.style.transform = `translateX(${cx*0.7}px) translateY(${cy*0.7}px)`;
     });
 
+    // ── Fallback SITE content (prevents blank page if content.js fails) ──
+    function ensureSiteFallback(){
+      if (window.SITE) return;
+
+      window.SITE = {
+        availableText: "Open to projects & collabs",
+        nameShort: "Jaden",
+        tagline: "Student, creator, builder.",
+        bio: "I like building real stuff — events, websites, videos, and projects that help my community.",
+        bioExtra: "I’m into engineering, media production, and making systems that are clean, fast, and actually usable.",
+        location: "Livermore, CA",
+        school: "Green Engineering Academy (GEA)",
+        quote: "Make it real. Make it useful. Make it look good.",
+        roles: [
+          { text: "GEA President", style: "green" },
+          { text: "Builder", style: "accent" },
+          { text: "Creator", style: "purple" }
+        ],
+        stats: [
+          { value: "10+", label: "Projects shipped", color: "accent" },
+          { value: "100+", label: "Students impacted", color: "green" },
+          { value: "∞", label: "Ideas in progress", color: "purple" }
+        ],
+        experience: [
+          { icon: "🧩", role: "Student Leader", org: "GEA", desc: "Organizing events, teams, and systems that scale." },
+          { icon: "🛠️", role: "Builder", org: "Web + Tools", desc: "Dashboards, pages, and apps for real-world needs." }
+        ],
+        skills: ["Web", "Design", "Video", "Leadership", "Systems"],
+        interests: [
+          { icon:"🎥", name:"Media", desc:"Filming, editing, storytelling.", color:"rgba(191,90,242,0.18)" },
+          { icon:"💻", name:"Code", desc:"Web apps, dashboards, automation.", color:"rgba(41,151,255,0.18)" },
+          { icon:"🧠", name:"Engineering", desc:"Design, build, iterate.", color:"rgba(48,209,88,0.18)" }
+        ]
+      };
+    }
+
+    // ── Fallback nav/footer if components.js doesn't populate them ──
+    function ensureNavFooterFallback(){
+      const nav = document.getElementById('site-nav');
+      if (nav && !nav.innerHTML.trim()){
+        nav.innerHTML = `
+          <div class="fallback-nav">
+            <div style="font-weight:650;">JJ</div>
+            <div class="links">
+              <a href="./index.html">Home</a>
+              <a href="./projects.html">Projects</a>
+              <a href="./contact.html">Contact</a>
+            </div>
+          </div>
+        `;
+      }
+      const footer = document.getElementById('site-footer');
+      if (footer && !footer.innerHTML.trim()){
+        const year = new Date().getFullYear();
+        footer.innerHTML = `
+          <div class="fallback-footer">
+            © ${year} Jaden Jirasevijinda · Built with HTML/CSS/JS
+          </div>
+        `;
+      }
+    }
+
     // ── Render from SITE content ────────────────────────────────
-    document.addEventListener('DOMContentLoaded', () => {
+    function renderFromSite(){
       const S = window.SITE;
       if (!S) return;
 
       // Hero
-      document.getElementById('hero-available-text').textContent = S.availableText;
-      document.getElementById('hero-name').textContent = S.nameShort;
+      document.getElementById('hero-available-text').textContent = S.availableText || "Open to projects & collabs";
+      document.getElementById('hero-name').textContent = S.nameShort || "Jaden";
       document.getElementById('hero-tagline-word').textContent = "builds things.";
-      document.getElementById('hero-sub').textContent = S.tagline + " " + "I make things with cameras, code, and a whole lot of curiosity.";
+      document.getElementById('hero-sub').textContent =
+        (S.tagline || "Student, creator, builder.") + " " +
+        "I make things with cameras, code, and a whole lot of curiosity.";
 
       // Chips
       const chipStyles = { accent:'chip-accent', green:'chip-green', purple:'chip-purple', dim:'' };
-      document.getElementById('hero-chips').innerHTML = S.roles.map(r =>
+      const roles = Array.isArray(S.roles) ? S.roles : [];
+      document.getElementById('hero-chips').innerHTML = roles.map(r =>
         `<span class="chip ${chipStyles[r.style]||''}">${r.text}</span>`
       ).join('');
 
       // Stats
       const statColors = { accent:'var(--accent)', green:'var(--accent-green)', purple:'var(--accent-purple)' };
-      document.getElementById('stats-grid').innerHTML = S.stats.map(s =>
+      const stats = Array.isArray(S.stats) ? S.stats : [];
+      document.getElementById('stats-grid').innerHTML = stats.map(s =>
         `<div class="stat-cell animate">
            <div class="stat-num" style="color:${statColors[s.color]||'var(--text)'}">${s.value}</div>
            <div class="stat-lbl">${s.label}</div>
@@ -340,7 +469,8 @@
       ).join('');
 
       // Bento
-      const expCards = S.experience.map(e =>
+      const exp = Array.isArray(S.experience) ? S.experience : [];
+      const expCards = exp.map(e =>
         `<div class="bc bc-role animate">
            <span class="bc-icon">${e.icon}</span>
            <div class="bc-micro">Role</div>
@@ -350,14 +480,15 @@
          </div>`
       ).join('');
 
-      const skillPills = S.skills.map(s => `<span class="pill">${s}</span>`).join('');
+      const skills = Array.isArray(S.skills) ? S.skills : [];
+      const skillPills = skills.map(s => `<span class="pill">${s}</span>`).join('');
 
       document.getElementById('bento-grid').innerHTML = `
         <div class="bc bc-bio animate">
           <div class="bc-micro">About</div>
           <div class="bc-title">Builder, creator,<br/>community leader.</div>
-          <div class="bc-body">${S.bio}</div>
-          <div class="bc-body" style="margin-top:12px">${S.bioExtra}</div>
+          <div class="bc-body">${S.bio || ""}</div>
+          <div class="bc-body" style="margin-top:12px">${S.bioExtra || ""}</div>
           <div class="skills-row">${skillPills}</div>
         </div>
         ${expCards}
@@ -370,30 +501,33 @@
           <div class="bc-micro">Based in</div>
           <div class="loc-row">
             <span class="loc-dot"></span>
-            <span style="font-weight:500">${S.location}</span>
+            <span style="font-weight:500">${S.location || ""}</span>
           </div>
-          <div class="bc-body" style="margin-top:10px;font-size:13px">${S.school}</div>
+          <div class="bc-body" style="margin-top:10px;font-size:13px">${S.school || ""}</div>
         </div>
         <div class="bc bc-quote animate">
           <div class="quote-text">
-            "<span>${S.quote.split(' ').slice(0,8).join(' ')}</span> ${S.quote.split(' ').slice(8).join(' ')}"
+            "${(S.quote || "").trim() ? `<span>${S.quote.split(' ').slice(0,8).join(' ')}</span> ${S.quote.split(' ').slice(8).join(' ')}` : `<span>Make it real.</span> Make it useful. Make it look good.`}"
           </div>
         </div>
       `;
 
       // Interests
-      document.getElementById('interests-grid').innerHTML = S.interests.map(i =>
+      const interests = Array.isArray(S.interests) ? S.interests : [];
+      document.getElementById('interests-grid').innerHTML = interests.map(i =>
         `<div class="interest-card card animate">
-           <div class="interest-icon" style="background:${i.color}">${i.icon}</div>
-           <div class="display-sm">${i.name}</div>
-           <div class="body-sm muted">${i.desc}</div>
+           <div class="interest-icon" style="background:${i.color || 'rgba(255,255,255,0.06)'}">${i.icon || "✨"}</div>
+           <div class="display-sm">${i.name || ""}</div>
+           <div class="body-sm muted">${i.desc || ""}</div>
          </div>`
       ).join('');
+    }
 
-      // Re-observe new elements
-      document.querySelectorAll('.animate:not([data-delay])').forEach((el, idx) => {
-        el.dataset.delay = (idx % 4) * 80;
-      });
+    // Run after everything is ready
+    window.addEventListener('DOMContentLoaded', () => {
+      ensureSiteFallback();
+      ensureNavFooterFallback();
+      renderFromSite();
     });
   </script>
 </body>
