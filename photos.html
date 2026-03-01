@@ -8,7 +8,12 @@
     <style>
         :root { --bg: #0a0a0b; --accent: #ff5d22; --border: #222224; --nav-h: 70px; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: #fff; font-family: 'Space Grotesk'; padding-top: var(--nav-h); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Space Grotesk'; 
+            padding-top: var(--nav-h); min-height: 100vh; display: flex; flex-direction: column; 
+            overflow-x: hidden; 
+        }
         
         /* BACKGROUND EFFECTS */
         .grid-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(var(--border) 1px, transparent 0); background-size: 40px 40px; z-index: -1; }
@@ -40,7 +45,7 @@
             clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
         }
 
-        /* INVISIBLE SHIELD: This sits in front of the image */
+        /* INVISIBLE SHIELD: This sits in front of the image to prevent right-clicking/saving */
         .shield {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 10; background: transparent;
@@ -49,15 +54,17 @@
         .photo-item img, .photo-item video { 
             width: 100%; height: 100%; object-fit: cover; 
             opacity: 0.5; transition: 0.5s; filter: grayscale(1); 
-            pointer-events: none; /* Prevents direct interaction with the file */
+            pointer-events: none; /* Disables direct browser interaction with the file */
         }
 
-        /* Hover effect triggered by the photo-item container */
+        /* Hover effects */
         .photo-item:hover img, .photo-item:hover video { opacity: 1; transform: scale(1.05); filter: grayscale(0); }
         .photo-item.hidden { display: none; }
 
+        /* FOOTER */
         .sys-footer { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 25px 40px; font-family: 'JetBrains Mono'; background: #000; border-top: 1px solid var(--border); }
-        .f-label { color: #444; font-size: 9px; } .f-data { color: var(--accent); font-size: 10px; margin-left: 8px; }
+        .f-label { color: #444; font-size: 9px; } 
+        .f-data { color: var(--accent); font-size: 10px; margin-left: 8px; }
     </style>
 </head>
 <body onmousemove="document.documentElement.style.setProperty('--x', event.clientX + 'px'); document.documentElement.style.setProperty('--y', event.clientY + 'px')">
@@ -88,14 +95,27 @@
 </div>
 
 <div class="photo-grid" id="media-grid">
+    
     <div class="photo-item" data-type="photo">
-        <div class="shield"></div> <img src="shot1.jpg" alt="Photography">
+        <div class="shield"></div>
+        <img src="media/shot1.jpg" alt="Photography">
     </div>
 
     <div class="photo-item" data-type="video">
         <div class="shield" onmouseover="this.nextElementSibling.play()" onmouseout="this.nextElementSibling.pause()"></div>
-        <video src="edit1.mp4" muted loop></video>
+        <video src="media/edit1.mp4" muted loop></video>
     </div>
+
+    <div class="photo-item" data-type="photo">
+        <div class="shield"></div>
+        <img src="media/shot2.jpg" alt="Photography">
+    </div>
+
+    <div class="photo-item" data-type="video">
+        <div class="shield" onmouseover="this.nextElementSibling.play()" onmouseout="this.nextElementSibling.pause()"></div>
+        <video src="media/edit2.mp4" muted loop></video>
+    </div>
+
 </div>
 
 <footer class="sys-footer">
@@ -105,7 +125,10 @@
 </footer>
 
 <script>
-    // SECURITY SCRIPT: Disable Right-Click and Dragging
+    /* SECURITY SCRIPT
+       1. Disables Right-Click Menu
+       2. Disables Clicking and Dragging Images/Videos 
+    */
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('dragstart', e => e.preventDefault());
 
@@ -125,10 +148,13 @@
         });
     }
 
-    // System Clock
+    // SYSTEM CLOCK
     function tick() {
         const now = new Date();
-        document.getElementById('clock').textContent = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') + ":" + now.getSeconds().toString().padStart(2, '0');
+        document.getElementById('clock').textContent = 
+            now.getHours().toString().padStart(2, '0') + ":" + 
+            now.getMinutes().toString().padStart(2, '0') + ":" + 
+            now.getSeconds().toString().padStart(2, '0');
     }
     setInterval(tick, 1000); tick();
 </script>
