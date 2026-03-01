@@ -1,28 +1,107 @@
-<script src="content.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof SITE_DATA !== 'undefined') {
-            // Update Text
-            document.body.innerHTML = document.body.innerHTML
-                .replace('JADEN', SITE_DATA.identity.firstName)
-                .replace('JIRASEVIJINDA', SITE_DATA.identity.lastName)
-                .replace('BUILDING SYSTEMS.', SITE_DATA.identity.heroAccent);
-            
-            // Update Bio
-            document.querySelector('.hero-description').innerText = SITE_DATA.identity.statusBio;
-
-            // Update Stats (Targeting by order)
-            const statValues = document.querySelectorAll('.stat-number'); // Ensure your numbers have this class
-            const statLabels = document.querySelectorAll('.stat-label');  // Ensure your labels have this class
-            SITE_DATA.stats.forEach((s, i) => {
-                if(statValues[i]) statValues[i].innerText = s.v;
-                if(statLabels[i]) statLabels[i].innerText = s.l;
-            });
-
-            // Update Theme
-            document.documentElement.style.setProperty('--accent', SITE_DATA.theme.accent);
-            document.documentElement.style.setProperty('--left-gutter', SITE_DATA.theme.gutter);
-            document.querySelector('.system-status-text').innerText = SITE_DATA.theme.systemStatus;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JADEN JIRASEVIJINDA // HOME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --bg: #0a0a0b;
+            --panel: #111113;
+            --border: #222224;
+            --text: #e1e1e3;
+            --accent: #ff5d22;
+            --left-gutter: 200px;
         }
-    });
-</script>
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding-left: var(--left-gutter); /* The 200px shift */
+        }
+
+        section {
+            padding: 100px 60px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .display-xl { font-size: 5rem; font-weight: 800; line-height: 0.9; text-transform: uppercase; }
+        .hero-description { max-width: 600px; font-size: 1.2rem; color: #888; margin-top: 30px; }
+
+        /* ABOUT SECTION */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        .about-text { font-size: 1.1rem; line-height: 1.6; color: #aaa; }
+        .section-label { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 12px; margin-bottom: 20px; display: block; }
+
+        /* STATS BAND */
+        .stats-container { display: flex; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .stat-item { flex: 1; padding: 40px; border-right: 1px solid var(--border); }
+        .stat-number { font-size: 3rem; font-weight: 700; display: block; }
+        .stat-label { font-family: 'JetBrains Mono'; font-size: 10px; color: #666; text-transform: uppercase; }
+
+        /* TECH STACK LIST */
+        .tech-list { display: flex; flex-wrap: wrap; gap: 15px; list-style: none; padding: 0; }
+        .tech-tag { padding: 8px 16px; border: 1px solid var(--border); font-family: 'JetBrains Mono'; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+    <section id="hero">
+        <div class="section-label">[ SYSTEM_INITIALIZED ]</div>
+        <h1 class="display-xl" id="hero-name">JADEN <span style="color:var(--accent)">JIRASEVIJINDA</span></h1>
+        <h2 class="display-xl" style="color:var(--accent)" id="hero-accent">BUILDING SYSTEMS.</h2>
+        <p class="hero-description" id="hero-desc">
+            Engineering-focused creator building at the intersection of CODE, MEDIA, and COMMUNITY.
+        </p>
+    </section>
+
+    <div class="stats-container">
+        <div class="stat-item"><span class="stat-number" id="s1-v">12</span><span class="stat-label" id="s1-l">ACTIVE_PROJECTS</span></div>
+        <div class="stat-item"><span class="stat-number" id="s2-v">04</span><span class="stat-label" id="s2-l">YEARS_EXPERIENCE</span></div>
+        <div class="stat-item"><span class="stat-number" id="s3-v">01</span><span class="stat-label" id="s3-l">GEA_PRESIDENCY</span></div>
+    </div>
+
+    <section id="about">
+        <div class="section-label">[ DATA_FILE_01 ]</div>
+        <div class="about-grid">
+            <div>
+                <h3 style="font-size: 2.5rem; margin-top: 0;">ABOUT THE <span style="color:var(--accent)">BUILDER</span></h3>
+            </div>
+            <div class="about-text" id="about-bio">
+                I am a Junior at Livermore High School and the President of the Green Engineering Academy. My work focuses on creating efficient, technical solutions—whether that's through mechanical engineering, automated software, or digital media production.
+            </div>
+        </div>
+    </section>
+
+    <section id="tech">
+        <div class="section-label">[ CORE_COMPETENCIES ]</div>
+        <ul class="tech-list" id="tech-tags">
+            <li class="tech-tag">JAVASCRIPT</li>
+            <li class="tech-tag">PYTHON</li>
+            <li class="tech-tag">VEX_ROBOTICS</li>
+            <li class="tech-tag">CAD/SOLIDWORKS</li>
+            <li class="tech-tag">ADOBE_CREATIVE_SUITE</li>
+        </ul>
+    </section>
+
+    <script src="content.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof SITE_DATA !== 'undefined') {
+                // Update text based on SITE_DATA
+                document.getElementById('hero-desc').innerText = SITE_DATA.index.description;
+                document.getElementById('about-bio').innerText = SITE_DATA.index.aboutLong || SITE_DATA.index.description;
+                
+                // Update Stats
+                document.getElementById('s1-v').innerText = SITE_DATA.index.stats[0].val;
+                document.getElementById('s1-l').innerText = SITE_DATA.index.stats[0].label;
+                // ... Repeat for s2 and s3
+            }
+        });
+    </script>
+</body>
+</html>
