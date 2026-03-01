@@ -1,149 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECTS // JADEN_J</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css"> <style>
-        :root {
-            --bg: #0a0a0b;
-            --panel: #111113;
-            --border: #222224;
-            --text: #e1e1e3;
-            --accent: #ff5d22;
-            --left-gutter: 200px;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
-            margin: 0;
-            padding-left: var(--left-gutter);
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 60px;
-        }
-
-        .project-card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            padding: 30px;
-            transition: 0.3s;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .project-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-        }
-
-        .project-category {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 15px;
-        }
-
-        .project-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        /* MODAL STYLES */
-        #project-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .modal-content {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            max-width: 700px;
-            width: 90%;
-            padding: 60px;
-            position: relative;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px; right: 20px;
-            color: var(--accent);
-            font-family: 'JetBrains Mono';
-            cursor: pointer;
-            border: 1px solid var(--accent);
-            padding: 5px 10px;
-        }
+    <meta charset="UTF-8"><title>PROJECTS // JADEN_J</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0b; --accent: #ff5d22; --left-gutter: 200px; }
+        body { background: var(--bg); color: #fff; font-family: 'Space Grotesk'; padding-left: var(--left-gutter); margin: 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 60px; }
+        .card { background: #111; border: 1px solid #222; padding: 30px; cursor: pointer; transition: 0.3s; }
+        .card:hover { border-color: var(--accent); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; }
+        .modal-content { background: #111; padding: 60px; border: 1px solid #222; max-width: 600px; position: relative; }
     </style>
 </head>
 <body>
-
-    <header style="padding: 60px;">
-        <div style="font-family: 'JetBrains Mono'; color: var(--accent); margin-bottom: 10px;">[ DATA_FILE_02 ]</div>
-        <h1 style="font-size: 48px; text-transform: uppercase;">Selected <span style="color: var(--accent)">Works</span></h1>
+    <header style="padding: 60px 60px 0 60px;">
+        <div style="font-family:'JetBrains Mono'; color:var(--accent); font-size:12px;">[ DATA_FILE_02 ]</div>
+        <h1 style="font-size: 3rem; text-transform: uppercase;">Selected <span style="color:var(--accent)">Works</span></h1>
     </header>
 
-    <div class="project-grid" id="project-container">
-        </div>
+    <div class="grid" id="project-grid"></div>
 
-    <div id="project-modal" onclick="closeModal()">
+    <div id="modal" class="modal" onclick="this.style.display='none'">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="close-btn" onclick="closeModal()">CLOSE [X]</div>
-            <div id="modal-category" class="project-category"></div>
-            <h2 id="modal-title" class="project-title" style="font-size: 32px;"></h2>
-            <div id="modal-body" style="line-height: 1.8; color: #aaa; font-size: 18px;"></div>
+            <h2 id="m-title" style="color:var(--accent)"></h2>
+            <p id="m-details" style="color:#aaa; line-height:1.6;"></p>
+            <button onclick="document.getElementById('modal').style.display='none'" style="background:var(--accent); border:none; padding:10px 20px; font-family:'JetBrains Mono'; cursor:pointer;">CLOSE [X]</button>
         </div>
     </div>
 
-    <script src="content.js"></script> <script>
-        // 1. Render Projects from SITE_DATA
-        function renderProjects() {
-            const container = document.getElementById('project-container');
-            container.innerHTML = '';
-
-            SITE_DATA.projects.forEach(project => {
-                const card = document.createElement('div');
-                card.className = 'project-card';
-                card.onclick = () => openModal(project);
-                
-                card.innerHTML = `
-                    <div class="project-category">${project.category}</div>
-                    <div class="project-title">${project.title}</div>
-                    <div style="font-family: 'JetBrains Mono'; font-size: 11px; color: #666;">VIEW_DETAILS +</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // 2. Modal Functions
-        function openModal(project) {
-            document.getElementById('modal-title').innerText = project.title;
-            document.getElementById('modal-category').innerText = project.category;
-            document.getElementById('modal-body').innerText = project.details;
-            document.getElementById('project-modal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('project-modal').style.display = 'none';
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', renderProjects);
+    <script src="content.js"></script>
+    <script>
+        const grid = document.getElementById('project-grid');
+        SITE_DATA.projects.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `<div style="font-family:'JetBrains Mono'; color:var(--accent); font-size:10px;">${p.category}</div><h3>${p.title}</h3><p style="color:#666; font-size:12px;">VIEW DETAILS +</p>`;
+            div.onclick = () => {
+                document.getElementById('m-title').innerText = p.title;
+                document.getElementById('m-details').innerText = p.details;
+                document.getElementById('modal').style.display = 'flex';
+            };
+            grid.appendChild(div);
+        });
     </script>
 </body>
 </html>
