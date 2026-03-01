@@ -1,269 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TERMINAL // SITE_ADMIN</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <title>TERMINAL // AUTO_DEPLOY</title>
     <style>
-        :root {
-            --bg: #0a0a0b;
-            --panel: #111113;
-            --s2: #17171c;
-            --border: #222224;
-            --text: #e1e1e3;
-            --muted: #636366;
-            --accent: #ff5d22; /* Safety Orange */
-            --left-gutter: 200px; /* MATCHES MAIN SITE ALIGNMENT */
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
-            display: flex;
-            min-height: 100vh;
-            background-image: radial-gradient(var(--border) 1px, transparent 0);
-            background-size: 32px 32px;
-        }
-
-        /* ── SIDEBAR NAVIGATION ── */
-        .sidebar {
-            width: 260px;
-            background: var(--panel);
-            border-right: 1px solid var(--border);
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-        }
-
-        .sidebar-header {
-            padding: 40px 24px;
-            border-bottom: 1px solid var(--border);
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 12px;
-            letter-spacing: 2px;
-            color: var(--accent);
-        }
-
-        .nav-group { padding: 20px 0; }
-        .nav-item {
-            padding: 12px 24px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--muted);
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .nav-item:hover, .nav-item.active {
-            color: var(--text);
-            background: var(--s2);
-            border-left: 3px solid var(--accent);
-        }
-
-        /* ── MAIN LAYOUT ── */
-        .main {
-            margin-left: 260px;
-            flex: 1;
-        }
-
-        .top-nav {
-            height: 80px;
-            padding-left: var(--left-gutter);
-            padding-right: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-            background: rgba(10, 10, 11, 0.9);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 90;
-        }
-
-        .content-area {
-            padding-left: var(--left-gutter);
-            padding-right: 60px;
-            padding-top: 60px;
-            padding-bottom: 100px;
-        }
-
-        /* ── FORM CARDS ── */
-        .card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            padding: 40px;
-            margin-bottom: 32px;
-            max-width: 900px;
-        }
-
-        .card-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            display: block;
-            letter-spacing: 1px;
-        }
-
-        /* ── INPUTS ── */
-        .field { margin-bottom: 24px; }
-        .label {
-            display: block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: var(--muted);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        input, textarea, select {
-            width: 100%;
-            background: #000;
-            border: 1px solid var(--border);
-            padding: 12px;
-            color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 15px;
-            outline: none;
-        }
-        input:focus { border-color: var(--accent); }
-
-        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-        /* ── ACTION BUTTONS ── */
-        .btn {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            padding: 12px 28px;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn:hover { filter: brightness(1.2); }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .status-pill {
-            background: var(--s2);
-            padding: 15px;
-            border-left: 2px solid var(--accent);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            margin-bottom: 30px;
-        }
+        /* ... (Same styles as before) ... */
+        .github-card { border: 1px solid #444; background: #1a1a1c; padding: 20px; margin-bottom: 20px; }
+        .token-input { font-family: monospace; font-size: 10px; background: #000; color: #30d158; border: 1px solid #333; }
     </style>
 </head>
 <body>
-
-    <aside class="sidebar">
-        <div class="sidebar-header">SYSTEM_ADMIN_v3</div>
-        <nav class="nav-group">
-            <div class="nav-item active">01_Identity</div>
-            <div class="nav-item">02_Projects</div>
-            <div class="nav-item">03_Bento_Grid</div>
-            <div class="nav-item">04_Global_Styles</div>
-            <div class="nav-item" style="margin-top: 50px; color: var(--accent);">05_Generate_JS</div>
-        </nav>
-    </aside>
-
     <div class="main">
         <header class="top-nav">
-            <div style="font-family: 'JetBrains Mono'; font-size: 12px;">PATH: ROOT / CONFIG / IDENTITY</div>
-            <button class="btn" onclick="saveToMemory()">Sync Changes</button>
+            <div style="font-family: 'JetBrains Mono'; font-size: 12px;">STATUS: CONNECTED // CLOUD_SYNC</div>
+            <button class="btn" id="deploy-btn" onclick="deployToGitHub()">Deploy to GitHub</button>
         </header>
 
         <main class="content-area">
-            
-            <div class="status-pill">
-                ACTIVE_CONFIG: <span style="color: var(--text)">Jaden Jirasevijinda // LHS_Junior_GEA_Pres</span>
-            </div>
-
-            <div class="card">
-                <span class="card-label">// CORE DATA</span>
-                
+            <div class="card github-card">
+                <span class="card-label">// GITHUB_AUTHENTICATION</span>
                 <div class="field">
-                    <label class="label">Legal Name (Uppercase focus)</label>
-                    <input type="text" id="site-name" value="Jaden Jirasevijinda">
+                    <label class="label">Personal Access Token (Classic)</label>
+                    <input type="password" id="gh-token" class="token-input" placeholder="ghp_xxxxxxxxxxxx">
                 </div>
-
                 <div class="row">
-                    <div class="field">
-                        <label class="label">Education Status</label>
-                        <input type="text" id="site-school" value="Livermore High School Junior">
-                    </div>
-                    <div class="field">
-                        <label class="label">Organization Title</label>
-                        <input type="text" id="site-role" value="GEA President">
-                    </div>
+                    <div class="field"><label class="label">Repo Name</label><input type="text" id="gh-repo" placeholder="username/repo-name"></div>
+                    <div class="field"><label class="label">Branch</label><input type="text" id="gh-branch" value="main"></div>
                 </div>
+            </div>
 
+            <div class="card">
+                <span class="card-label">// IDENTITY_DATA</span>
                 <div class="field">
-                    <label class="label">Terminal Bio (Bento Card)</label>
-                    <textarea id="site-bio" rows="4">Focused on the intersection of engineering systems and media production. Managing technical initiatives within the Green Engineering Academy.</textarea>
+                    <label class="label">Full Name</label>
+                    <input type="text" id="f-name" value="Jaden Jirasevijinda">
+                </div>
+                <div class="field">
+                    <label class="label">Status</label>
+                    <input type="text" id="f-status" value="Livermore High School Junior | GEA President">
                 </div>
             </div>
-
-            <div class="card">
-                <span class="card-label">// METRIC CONSTANTS</span>
-                <div class="row" style="grid-template-columns: 1fr 1fr 1fr;">
-                    <div class="field">
-                        <label class="label">Metric 01 (Value)</label>
-                        <input type="text" value="12+">
-                    </div>
-                    <div class="field">
-                        <label class="label">Metric 02 (Value)</label>
-                        <input type="text" value="04">
-                    </div>
-                    <div class="field">
-                        <label class="label">Metric 03 (Value)</label>
-                        <input type="text" value="∞">
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <span class="card-label">// VISUAL SCHEMATICS</span>
-                <div class="row">
-                    <div class="field">
-                        <label class="label">Accent Hex (Orange/Safety)</label>
-                        <input type="text" value="#ff5d22">
-                    </div>
-                    <div class="field">
-                        <label class="label">Left Margin Offset (px)</label>
-                        <input type="number" value="200">
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 10px;">
-                <button class="btn">Deploy to Live</button>
-                <button class="btn btn-outline">Discard Cache</button>
-            </div>
-
         </main>
     </div>
 
     <script>
-        function saveToMemory() {
-            // Logic to sync with content.js would go here
-            alert("System Synced. Ready for deployment.");
+        async function deployToGitHub() {
+            const btn = document.getElementById('deploy-btn');
+            const token = document.getElementById('gh-token').value;
+            const repo = document.getElementById('gh-repo').value;
+            const branch = document.getElementById('gh-branch').value;
+            const path = 'content.js'; // The file we are updating
+
+            if (!token || !repo) return alert("Missing GitHub Credentials");
+
+            btn.innerText = "PUSHING_DATA...";
+            btn.style.opacity = "0.5";
+
+            // 1. Construct the new file content
+            const contentObject = {
+                name: document.getElementById('f-name').value,
+                status: document.getElementById('f-status').value,
+                lastUpdated: new Date().toLocaleString()
+            };
+            
+            const fileContent = `const SITE_DATA = ${JSON.stringify(contentObject, null, 4)};`;
+            const encodedContent = btoa(fileContent);
+
+            try {
+                // 2. Get the current file SHA (GitHub needs this to overwrite)
+                const getUrl = `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`;
+                const getRes = await fetch(getUrl, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+                const getData = await getRes.json();
+                const sha = getData.sha;
+
+                // 3. Push the update
+                const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: `Update site content via Admin Terminal`,
+                        content: encodedContent,
+                        sha: sha,
+                        branch: branch
+                    })
+                });
+
+                if (putRes.ok) {
+                    alert("DEPLOY_SUCCESSFUL: Site will update in ~60 seconds.");
+                } else {
+                    alert("DEPLOY_FAILED: Check your token permissions.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("CONNECTION_ERROR: Check console.");
+            } finally {
+                btn.innerText = "Deploy to GitHub";
+                btn.style.opacity = "1";
+            }
         }
     </script>
 </body>
