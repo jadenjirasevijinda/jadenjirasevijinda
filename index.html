@@ -52,6 +52,57 @@
     <h1 class="hero-title">JADEN <br><span style="color:var(--accent)">JIRASEVIJINDA.</span></h1>
     <h2 class="hero-title" style="color:#222">BUILDING STUFF & <br>SOLVING PROBLEMS.</h2>
 </section>
+<footer class="sys-footer">
+    <div class="footer-segment">
+        <span class="f-label">LOCATION //</span>
+        <span class="f-data">LIVERMORE_CA [ 37.6819° N, 121.7681° W ]</span>
+    </div>
+    <div class="footer-segment">
+        <span class="f-label">SYSTEM_TIME //</span>
+        <span id="sys-clock" class="f-data">00:00:00</span>
+    </div>
+    <div class="footer-segment" style="text-align: right;">
+        <span class="f-label">VERSION //</span>
+        <span class="f-data">v4.2.0_STABLE</span>
+    </div>
+</footer>
 
+<style>
+    .sys-footer {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        padding: 30px 40px;
+        background: #000;
+        border-top: 1px solid var(--border);
+        font-family: 'JetBrains Mono', monospace;
+        margin-top: 50px;
+    }
+    .f-label {
+        color: #444;
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+    .f-data {
+        color: var(--accent);
+        font-size: 10px;
+        margin-left: 10px;
+    }
+    @media (max-width: 768px) {
+        .sys-footer { grid-template-columns: 1fr; gap: 15px; text-align: left !important; }
+        .f-data { display: block; margin-left: 0; margin-top: 5px; }
+    }
+</style>
+
+<script>
+    function updateClock() {
+        const now = new Date();
+        const timeStr = now.getHours().toString().padStart(2, '0') + ":" + 
+                        now.getMinutes().toString().padStart(2, '0') + ":" + 
+                        now.getSeconds().toString().padStart(2, '0');
+        document.getElementById('sys-clock').textContent = timeStr;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
 </body>
 </html>
