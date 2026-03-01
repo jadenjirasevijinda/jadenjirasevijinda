@@ -1,127 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects — Jaden Jirasevijinda</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    .proj-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-    .proj-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-    .proj-card:hover {
-      border-color: var(--border-md);
-      transform: translateY(-6px);
-      box-shadow: 0 32px 64px rgba(0,0,0,0.55);
-    }
-    .proj-card.featured { grid-column: span 2; }
-
-    .proj-thumb {
-      aspect-ratio: 16/8;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 60px; overflow: hidden;
-      transition: transform 0.6s var(--ease);
-    }
-    .proj-card.featured .proj-thumb { aspect-ratio: 16/6; font-size: 80px; }
-    .proj-card:hover .proj-thumb { transform: scale(1.04); }
-
-    .proj-body { padding: 24px 26px 26px; }
-    .proj-meta {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .proj-type { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
-
-    .proj-title { font-size: 20px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 8px; }
-    .proj-desc  { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 20px; }
-
-    .proj-footer { display: flex; align-items: center; justify-content: space-between; }
-    .proj-tags   { display: flex; gap: 6px; flex-wrap: wrap; }
-    .proj-tag    { font-size: 11px; color: var(--text-dim); border: 1px solid var(--border); border-radius: 980px; padding: 3px 10px; }
-
-    .proj-arrow {
-      width: 34px; height: 34px; border-radius: 50%;
-      background: var(--surface2); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; color: var(--text-muted);
-      transition: all 0.2s; flex-shrink: 0;
-    }
-    .proj-card:hover .proj-arrow {
-      background: var(--accent); border-color: var(--accent); color: #fff;
-    }
-
-    @media (max-width: 720px) {
-      .proj-grid { grid-template-columns: 1fr; }
-      .proj-card.featured { grid-column: span 1; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECTS // JADEN JIRASEVIJINDA</title>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
-  <nav id="site-nav"></nav>
+    <nav style="padding: 40px 0;">
+        <div class="container">
+            <a href="./index.html" class="mono-label" style="text-decoration: none;">← RETURN_TO_ROOT</a>
+        </div>
+    </nav>
 
-  <section class="page-hero section">
-    <div class="container">
-      <span class="label page-hero-label animate">Work</span>
-      <h1 class="display-xl page-hero-title animate" style="animation-delay:0.05s">
-        <span class="grad-light">Selected</span><br/>
-        <span class="grad-accent">Projects</span>
-      </h1>
-      <p class="body-lg muted page-hero-sub animate" style="animation-delay:0.1s">
-        Things I've built, led, shot, and shipped.
-      </p>
-    </div>
-  </section>
+    <section class="hero" style="padding-top: 60px; min-height: auto; padding-bottom: 80px;">
+        <div class="container">
+            <div class="hero-badge">ARCHIVE_V1.0</div>
+            <h1 class="display-xl">
+                SELECTED <br>
+                <span style="color:var(--accent)">PROJECTS</span>
+            </h1>
+            <p class="hero-description">
+                Technical builds <span style="color:var(--border)">|</span> Media production <span style="color:var(--border)">|</span> Engineering Documentation
+            </p>
+        </div>
+    </section>
 
-  <section class="section" style="padding-top:0">
-    <div class="container">
-      <div class="proj-grid" id="proj-grid"></div>
-    </div>
-  </section>
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="bento">
+                
+                <div class="bc">
+                    <span class="mono-label">BUILD_01 // ENGINEERING</span>
+                    <h3 style="margin-bottom:15px; text-transform: uppercase;">GEA Resource Dashboard</h3>
+                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">
+                        A centralized system for tracking academy assets and student engagement metrics. Built with speed and modularity in mind.
+                    </p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 25px;">
+                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">NEXT.JS</span>
+                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">TYPESCRIPT</span>
+                    </div>
+                    <a href="#" class="btn" style="padding: 8px 16px; font-size: 10px;">Open Documentation</a>
+                </div>
 
-  <footer id="site-footer"></footer>
+                <div class="bc">
+                    <span class="mono-label">BUILD_02 // MEDIA</span>
+                    <h3 style="margin-bottom:15px; text-transform: uppercase;">Cinematic Drone Reel</h3>
+                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">
+                        A collection of high-altitude cinematography showcasing industrial and natural landscapes in Northern California.
+                    </p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 25px;">
+                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">4K RAW</span>
+                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">DAVINCI RESOLVE</span>
+                    </div>
+                    <a href="#" class="btn" style="padding: 8px 16px; font-size: 10px;">Initialize Playback</a>
+                </div>
 
-  <script src="content.js"></script>
-  <script src="components.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const S = window.SITE;
-      if (!S) return;
+                <div class="bc">
+                    <span class="mono-label">BUILD_03 // SYSTEMS</span>
+                    <h3 style="margin-bottom:15px; text-transform: uppercase;">Automated Workflow Tools</h3>
+                    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">
+                        Python-based scripts designed to automate repetitive data entry for school organization and club management.
+                    </p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 25px;">
+                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">PYTHON</span>
+                        <span class="pill" style="font-family: var(--font-mono); font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); color: var(--text-dim);">AUTOMATION</span>
+                    </div>
+                    <a href="#" class="btn" style="padding: 8px 16px; font-size: 10px;">View Source</a>
+                </div>
 
-      const statusMap = { active: 'status-active', wip: 'status-wip', complete: 'status-complete' };
-      const statusLabel = { active: 'Active', wip: 'In Progress', complete: 'Complete' };
-
-      document.getElementById('proj-grid').innerHTML = S.projects.map((p, i) =>
-        `<a href="${p.url}" class="proj-card ${p.featured ? 'featured' : ''} animate" data-delay="${i*90}" ${p.url === '#' ? 'onclick="return false"' : 'target="_blank"'}>
-          <div class="proj-thumb" style="background:${p.bg}">${p.emoji}</div>
-          <div class="proj-body">
-            <div class="proj-meta">
-              <span class="proj-type">${p.type}</span>
-              <span class="status-badge ${statusMap[p.status]}">${statusLabel[p.status]}</span>
             </div>
-            <div class="proj-title">${p.title}</div>
-            <div class="proj-desc">${p.desc}</div>
-            <div class="proj-footer">
-              <div class="proj-tags">${p.tags.map(t=>`<span class="proj-tag">${t}</span>`).join('')}</div>
-              <div class="proj-arrow">↗</div>
-            </div>
-          </div>
-        </a>`
-      ).join('');
-    });
-  </script>
+        </div>
+    </section>
+
+    <footer style="padding: 60px 0; border-top: 1px solid var(--border);">
+        <div class="container">
+            <p style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase;">
+                &copy; 2026 Jaden Jirasevijinda // PROJECT_ARCHIVE_FINAL
+            </p>
+        </div>
+    </footer>
+
 </body>
 </html>
