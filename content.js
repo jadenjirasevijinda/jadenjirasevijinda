@@ -9,21 +9,26 @@ const SITE_DATA = {
         lastName: "JIRASEVIJINDA",
         heroAccent: "BUILDING SYSTEMS.",
         description: "Engineering-focused creator building at the intersection of CODE, MEDIA, and COMMUNITY.",
+        aboutLong: "I am a Junior at Livermore High School and the President of the Green Engineering Academy. My work focuses on creating technical solutions through mechanical engineering and software.",
         stats: [
             { val: "12", label: "ACTIVE_PROJECTS" },
             { val: "04", label: "YEARS_EXPERIENCE" },
             { val: "01", label: "GEA_PRESIDENCY" }
-        ]
+        ],
+        techStack: ["JAVASCRIPT", "PYTHON", "VEX_ROBOTICS", "CAD", "SOLIDWORKS"]
     },
     projects: [
         {
             id: "p1",
             title: "Robotics Controller",
             category: "ENGINEERING",
-            details: "Detailed breakdown of the mechanical and software systems used in the 2024 VEX competition."
+            details: "A custom interface designed for VRC high-stakes competition, optimizing driver latency."
+        },
+        {
+            id: "p2",
+            title: "Portfolio Terminal",
+            category: "SOFTWARE",
+            details: "A custom CMS-driven portfolio built with a machinist aesthetic and GitHub API integration."
         }
-    ],
-    photos: [
-        { url: "path/to/photo.jpg", caption: "GEA Workshop 2025" }
     ]
 };
