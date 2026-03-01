@@ -1,70 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>TERMINAL // OMNI_ADMIN</title>
+    <meta charset="UTF-8"><title>TERMINAL // OMNI_ADMIN_v4</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #0a0a0b; --panel: #111113; --border: #222224; --text: #e1e1e3; --accent: #ff5d22; }
-        body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; display: flex; margin: 0; }
-        .sidebar { width: 260px; height: 100vh; border-right: 1px solid var(--border); padding: 40px 20px; position: fixed; }
-        .main { margin-left: 260px; flex: 1; padding: 40px 60px 40px 200px; }
-        .card { background: var(--panel); border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; border-radius: 4px; }
-        input, textarea { width: 100%; background: #000; border: 1px solid var(--border); padding: 10px; color: #fff; font-family: 'JetBrains Mono'; margin: 10px 0; outline: none; }
+        body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; display: flex; margin: 0; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 260px; border-right: 1px solid var(--border); padding: 40px 20px; position: fixed; height: 100vh; background: var(--panel); }
+        .nav-btn { width: 100%; text-align: left; padding: 12px; background: none; border: none; color: #666; font-family: 'JetBrains Mono'; cursor: pointer; border-left: 2px solid transparent; }
+        .nav-btn.active { color: var(--accent); border-left-color: var(--accent); background: #1a1a1c; }
+
+        /* Content Area */
+        .main { margin-left: 260px; flex: 1; padding: 60px 100px; }
+        .card { background: var(--panel); border: 1px solid var(--border); padding: 30px; margin-bottom: 24px; position: relative; }
+        
+        input, textarea { width: 100%; background: #000; border: 1px solid var(--border); padding: 12px; color: #fff; font-family: 'JetBrains Mono'; margin-top: 8px; margin-bottom: 15px; outline: none; }
         input:focus { border-color: var(--accent); }
-        .btn { background: var(--accent); color: #000; border: none; padding: 12px 20px; cursor: pointer; font-family: 'JetBrains Mono'; font-weight: 700; font-size: 11px; }
-        .tab-btn { color: #666; background: none; border: none; font-family: 'JetBrains Mono'; display: block; padding: 10px 0; cursor: pointer; text-align: left; width: 100%; }
-        .tab-btn.active { color: var(--accent); }
+        
+        label { font-family: 'JetBrains Mono'; font-size: 10px; color: var(--accent); text-transform: uppercase; }
+
+        .btn-primary { background: var(--accent); color: #000; border: none; padding: 15px 30px; cursor: pointer; font-family: 'JetBrains Mono'; font-weight: 700; width: 100%; margin-top: 20px; }
+        .btn-add { background: #1a1a1c; color: var(--accent); border: 1px dashed var(--accent); padding: 15px; width: 100%; cursor: pointer; font-family: 'JetBrains Mono'; margin-bottom: 40px; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; color: #ff3b30; cursor: pointer; font-size: 10px; border: 1px solid #ff3b30; padding: 2px 5px; }
     </style>
 </head>
 <body>
+
     <div class="sidebar">
-        <div style="color:var(--accent); font-weight:700; margin-bottom:40px;">TERMINAL_v3.0</div>
-        <button class="tab-btn active" onclick="showTab('home')">01_HOME_PAGE</button>
-        <button class="tab-btn" onclick="showTab('projects')">02_PROJECTS_LIST</button>
-        <button class="tab-btn" onclick="showTab('photos')">03_GALLERY</button>
-    </div>
-    <div class="main">
-        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-            <div id="path-display" style="font-family:'JetBrains Mono'; font-size:11px;">ROOT / CONFIG / HOME</div>
-            <button class="btn" onclick="deploy()">DEPLOY TO GITHUB</button>
+        <div style="color:var(--accent); font-weight:700; margin-bottom:40px; letter-spacing:2px;">ADMIN_SYSTEM</div>
+        <button class="nav-btn active" onclick="showTab('home')">01_HOME_CONFIG</button>
+        <button class="nav-btn" onclick="showTab('projects')">02_PROJECT_MANAGER</button>
+        <div style="margin-top: auto; padding-top: 50px;">
+            <button class="btn-primary" onclick="deployAll()">DEPLOY TO LIVE</button>
         </div>
-        
-        <div class="card" style="border-style: dashed; border-color: #444;">
-            <div style="font-family:'JetBrains Mono'; color:var(--accent); font-size:10px; margin-bottom:10px;">// GITHUB_AUTH</div>
-            <input type="password" id="gh-token" placeholder="Token (ghp_...)">
-            <input type="text" id="gh-repo" placeholder="username/repo-name">
+    </div>
+
+    <div class="main">
+        <div class="card" style="border-style: dashed;">
+            <label>// AUTHENTICATION</label>
+            <input type="password" id="gh-token" placeholder="GitHub PAT (ghp_...)">
+            <input type="text" id="gh-repo" placeholder="username/repository">
         </div>
 
         <div id="home-tab" class="tab-content">
             <div class="card">
-                <div style="font-family:'JetBrains Mono'; color:var(--accent); font-size:10px;">// HERO_SETTINGS</div>
-                <input type="text" id="h-first" placeholder="First Name" value="JADEN">
-                <input type="text" id="h-last" placeholder="Last Name" value="JIRASEVIJINDA">
-                <textarea id="h-desc" placeholder="Bio Description"></textarea>
+                <label>// HERO_TEXT</label>
+                <input type="text" id="fname" value="JADEN">
+                <input type="text" id="lname" value="JIRASEVIJINDA">
+                <textarea id="h-desc" rows="3">Engineering-focused creator building at the intersection of CODE, MEDIA, and COMMUNITY.</textarea>
             </div>
         </div>
 
         <div id="projects-tab" class="tab-content" style="display:none;">
-            <div class="card">
-                <div style="font-family:'JetBrains Mono'; color:var(--accent); font-size:10px;">// PROJECT_01</div>
-                <input type="text" id="p1-title" placeholder="Project Title">
-                <textarea id="p1-details" placeholder="Full Project Details (will show in popup)"></textarea>
-            </div>
+            <div id="project-list">
+                </div>
+            <button class="btn-add" onclick="addNewProjectField()">+ ADD NEW PROJECT</button>
         </div>
     </div>
 
     <script>
-        function showTab(id) {
-            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-            document.getElementById(id + '-tab').style.display = 'block';
-            document.getElementById('path-display').innerText = `ROOT / CONFIG / ${id.toUpperCase()}`;
+        // Store projects in an array locally
+        let projects = [
+            { id: "p1", title: "Robotics Controller", category: "ENGINEERING", details: "VEX high-stakes optimization." }
+        ];
+
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tab + '-tab').style.display = 'block';
+            event.target.classList.add('active');
         }
 
-        async function deploy() {
-            // Logic to fetch SHA, JSON.stringify all inputs, and PUT to GitHub API
-            // (Same as previous script but gathering all tab data)
-            alert("Compiling site data and pushing to content.js...");
+        function addNewProjectField() {
+            const id = "p" + Date.now();
+            projects.push({ id: id, title: "", category: "", details: "" });
+            renderProjects();
         }
+
+        function removeProject(index) {
+            projects.splice(index, 1);
+            renderProjects();
+        }
+
+        function updateProject(index, field, value) {
+            projects[index][field] = value;
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('project-list');
+            container.innerHTML = '';
+            projects.forEach((p, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="delete-btn" onclick="removeProject(${index})">DELETE [X]</div>
+                    <label>PROJECT_TITLE</label>
+                    <input type="text" value="${p.title}" onchange="updateProject(${index}, 'title', this.value)">
+                    <label>CATEGORY</label>
+                    <input type="text" value="${p.category}" onchange="updateProject(${index}, 'category', this.value)">
+                    <label>LONG_DETAILS</label>
+                    <textarea onchange="updateProject(${index}, 'details', this.value)">${p.details}</textarea>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function deployAll() {
+            const token = document.getElementById('gh-token').value;
+            const repo = document.getElementById('gh-repo').value;
+            if(!token || !repo) return alert("Fill in GitHub Credentials first.");
+
+            const siteData = {
+                config: { accent: "#ff5d22", gutter: "200px" },
+                index: {
+                    firstName: document.getElementById('fname').value,
+                    lastName: document.getElementById('lname').value,
+                    description: document.getElementById('h-desc').value
+                },
+                projects: projects // The dynamic list we built
+            };
+
+            const fileContent = `const SITE_DATA = ${JSON.stringify(siteData, null, 4)};`;
+            
+            try {
+                // Fetch current file SHA
+                const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/content.js`);
+                const getData = await getRes.json();
+                
+                // Push update
+                const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/content.js`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: "Omni-Update: Added/Updated Projects",
+                        content: btoa(fileContent),
+                        sha: getData.sha
+                    })
+                });
+
+                if(putRes.ok) alert("SUCCESS: Site data updated!");
+            } catch (e) { console.error(e); alert("Deployment Failed."); }
+        }
+
+        // Initial Load
+        renderProjects();
     </script>
 </body>
 </html>
