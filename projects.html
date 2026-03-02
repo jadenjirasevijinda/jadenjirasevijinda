@@ -17,7 +17,7 @@
 
     /* Header */
     .works-header {
-      padding: 52px 40px 32px;
+      padding: 72px 40px 48px;
       border-bottom: 1px solid var(--border);
     }
     .works-eyebrow {
@@ -38,38 +38,32 @@
     /* Project grid */
     .project-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      padding: 32px 40px 60px;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1px;
+      background: var(--border);
     }
 
     .project-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 32px;
+      background: var(--bg);
+      padding: 50px 40px;
+      min-height: 320px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      justify-content: space-between;
       cursor: pointer;
-      transition: border-color .25s, background .25s, transform .25s;
+      transition: background .25s;
       position: relative;
       overflow: hidden;
     }
     .project-card::before {
       content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,93,34,0.07) 0%, transparent 60%);
-      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,93,34,0.06) 0%, transparent 60%);
       opacity: 0;
       transition: opacity .25s;
     }
     .project-card:hover::before { opacity: 1; }
-    .project-card:hover {
-      border-color: rgba(255,93,34,0.35);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(255,93,34,0.07);
-    }
+    .project-card:hover { background: #0d0d0f; }
     .project-card:hover .card-title { color: var(--accent); }
 
     .card-num {
@@ -77,9 +71,10 @@
       font-size: 10px;
       color: var(--accent);
       letter-spacing: 1px;
+      margin-bottom: 20px;
     }
     .card-title {
-      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
       font-weight: 800;
       text-transform: uppercase;
       line-height: .92;
@@ -87,20 +82,13 @@
       color: var(--text);
       transition: color .25s;
       flex: 1;
-    }
-    .card-desc-preview {
-      color: #555;
-      font-size: 13px;
-      line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
     }
     .card-footer {
-      margin-top: 8px;
+      margin-top: 24px;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
@@ -127,14 +115,6 @@
       letter-spacing: .3px;
       text-transform: uppercase;
     }
-    .card-cta {
-      font-family: 'JetBrains Mono';
-      font-size: 11px;
-      color: #333;
-      margin-top: 4px;
-      transition: color .25s;
-    }
-    .project-card:hover .card-cta { color: var(--accent); }
 
     /* ── Modal ─────────────────────────────────── */
     .modal-overlay {
@@ -252,10 +232,9 @@
       background: rgba(255,93,34,0.05);
     }
 
-    @media (max-width: 780px) {
-      .works-header { padding: 36px 20px 24px; }
-      .project-grid { grid-template-columns: 1fr; padding: 20px; }
-      .project-card { padding: 24px 20px; }
+    @media (max-width: 680px) {
+      .works-header { padding: 48px 20px 32px; }
+      .project-card { padding: 32px 20px; }
       .modal-box { padding: 24px 18px; }
     }
   </style>
@@ -290,7 +269,6 @@
       <div class="project-card" onclick="openProject('brainless')">
         <div class="card-num">#001 // VODCAST</div>
         <div class="card-title">BRAINLESS<br>EXPERTS</div>
-        <p class="card-desc-preview">A video podcast interviewing students on their talents and interests — exploring storytelling, videography, editing, and research.</p>
         <div class="card-footer">
           <span class="card-status">[ STATUS: ARCHIVED ]</span>
           <div class="card-skills">
@@ -299,13 +277,11 @@
             <span class="skill-tag">Management</span>
           </div>
         </div>
-        <span class="card-cta">> open_project() →</span>
       </div>
 
       <div class="project-card" onclick="openProject('housing')">
         <div class="card-num">#002 // ARCHITECTURE</div>
         <div class="card-title">AFFORDABLE<br>HOUSING</div>
-        <p class="card-desc-preview">Designed an affordable housing complex for the Leahy Square site in Livermore, serving as Project Manager for the full proposal.</p>
         <div class="card-footer">
           <span class="card-status">[ STATUS: ARCHIVED ]</span>
           <div class="card-skills">
@@ -313,7 +289,19 @@
             <span class="skill-tag">Leadership</span>
           </div>
         </div>
-        <span class="card-cta">> open_project() →</span>
+      </div>
+
+      <div class="project-card" onclick="openProject('portfolio')">
+        <div class="card-num">#003 // WEB_DEV</div>
+        <div class="card-title">PORTFOLIO<br>WEBSITE</div>
+        <div class="card-footer">
+          <span class="card-status">[ STATUS: ACTIVE ]</span>
+          <div class="card-skills">
+            <span class="skill-tag">Claude AI</span>
+            <span class="skill-tag">Vercel</span>
+            <span class="skill-tag">GitHub</span>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -362,6 +350,15 @@
         links: [
           { label: '> Final Presentation.pdf →', url: 'media/Affordable Housing Project Final Presentation.pdf', download: true },
           { label: '> Draft Site Plan.pdf →', url: 'media/Affordable Housing Project Draft Site Plan.pdf', download: true },
+        ]
+      }
+      portfolio: {
+        eyebrow: '[ #003 // WEB_DEV ]',
+        title: 'Portfolio Website',
+        desc: 'Experimenting with Claude and AI vibe coding to create a personal portfolio website that is being hosted on Vercel and all the files are on a GitHub repository.',
+        skills: ['Claude AI', 'Vibe Coding', 'Vercel', 'GitHub'],
+        links: [
+          { label: '> GitHub Repo →', url: 'https://github.com/jadenjirasevijinda/jadenjirasevijinda' },
         ]
       }
     };
