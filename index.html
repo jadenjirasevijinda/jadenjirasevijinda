@@ -5,241 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Jaden Jirasevijinda — Junior at Livermore High School, President of GEA, Board Member at Pillars of Tech." />
   <title>JADEN J. // TERMINAL</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --bg:#0a0a0b; --accent:#ff5d22; --border:#222224; --nav-h:70px; }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html, body {
-      height: 100%;
-    }
-    body {
-      background:var(--bg);
-      color:#e1e1e3;
-      font-family:'Space Grotesk', sans-serif;
-      height: 100vh;
-      overflow: hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    nav, section, footer { position:relative; z-index:2; }
-
-    /* DRIFTING DOTS CANVAS */
-    #dot-canvas {
-      position:fixed; inset:0;
-      z-index:-2;
-      pointer-events:none;
-    }
-    .spotlight{
-      position:fixed; inset:0;
-      background: radial-gradient(600px circle at var(--x) var(--y), rgba(255,93,34,0.07), transparent 40%);
-      z-index:-1;
-      pointer-events:none;
-    }
-
-    /* SUBTLE CRT SCREEN EFFECT — high z-index so it layers over everything, pointer-events:none so it doesn't block clicks */
-    .crt-overlay {
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.02),
-        rgba(255,255,255,0.02) 1px,
-        transparent 1px,
-        transparent 5px
-      );
-      opacity:.12;
-      z-index:999; /* above all content but below pointer events */
-    }
-
-    /* NAVIGATION */
-    nav{
-      position:fixed; top:0; left:0; right:0;
-      height:var(--nav-h);
-      background: rgba(10,10,11,0.9);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid var(--border);
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 40px;
-      z-index:1000;
-    }
-    .nav-logo{
-      font-family:'JetBrains Mono';
-      font-weight:700;
-      font-size:13px;
-      color:var(--accent);
-    }
-    .nav-links a{
-      font-family:'JetBrains Mono';
-      color:#666;
-      text-decoration:none;
-      font-size:11px;
-      margin-left:25px;
-      transition:.3s;
-    }
-    .nav-links a:hover,
-    .nav-links a.active { color:var(--accent); }
-
-    /* FOOTER */
-    .sys-footer{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      padding:18px 40px;
-      border-top:1px solid var(--border);
-      font-family:'JetBrains Mono';
-      background:#000;
-      flex-shrink: 0; /* prevent footer from being squished */
-    }
-    .f-label{ color:#444; font-size:9px; }
-    .f-data{ color:var(--accent); font-size:10px; margin-left:8px; }
-
-    /* PAGE STYLES (HOME) */
-    section {
-      flex: 1;
-      min-height: 0;
-      padding-top: var(--nav-h);
-      overflow-y: auto;
-      display: flex;
-      align-items: center;
-    }
-    .hero{
-      width: 100%;
-      padding: 52px 40px 28px;
-    }
-    .hero-title{
-      font-size: clamp(2.8rem, 8vw, 6rem);
-      font-weight:800;
-      text-transform:uppercase;
-      line-height:.85;
-      letter-spacing:-2px;
-    }
-    .accent{ color:var(--accent); }
-    .ghost{ color:#555; }
-
-    .hero-sub{
-      margin-top:18px;
-      color:#a9a9ad;
-      font-size:15px;
-      line-height:1.6;
-    }
-    .sep { color:#444; padding:0 6px; }
-    .subtle-link {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color .2s, color .2s;
-    }
-    .subtle-link:hover {
-      color: #e1e1e3;
-      border-bottom-color: #555;
-    }
-
-    /* CTA CARDS */
-    .cta-grid {
-      margin-top: 36px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-    .cta-card {
-      text-decoration: none;
-      border-radius: 14px;
-      padding: 22px 20px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.02);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: all .25s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,93,34,0.07) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity .25s;
-    }
-    .cta-card:hover::before { opacity: 1; }
-    .cta-card:hover {
-      border-color: rgba(255,93,34,0.35);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(255,93,34,0.08);
-    }
-    .cta-card.primary {
-      border-color: rgba(255,93,34,0.3);
-      background: rgba(255,93,34,0.05);
-    }
-    .cta-card.primary:hover {
-      border-color: rgba(255,93,34,0.55);
-      background: rgba(255,93,34,0.09);
-      box-shadow: 0 12px 40px rgba(255,93,34,0.15);
-    }
-    .cta-tag {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      color: #555;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .cta-card.primary .cta-tag { color: rgba(255,93,34,0.6); }
-    .cta-label {
-      font-size: 18px;
-      font-weight: 700;
-      color: #e1e1e3;
-      letter-spacing: -0.3px;
-    }
-    .cta-card.primary .cta-label { color: var(--accent); }
-    .cta-desc {
-      font-size: 12px;
-      color: #666;
-      line-height: 1.5;
-    }
-    .cta-arrow {
-      font-family: 'JetBrains Mono';
-      font-size: 18px;
-      color: #333;
-      margin-top: auto;
-      padding-top: 10px;
-      transition: color .25s, transform .25s;
-    }
-    .cta-card.primary .cta-arrow { color: rgba(255,93,34,0.4); }
-    .cta-card:hover .cta-arrow {
-      color: var(--accent);
-      transform: translateX(4px);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width:980px){
-      nav { padding:0 20px; }
-      .hero { padding: 42px 20px 24px; }
-      .cta-grid { grid-template-columns: 1fr; }
-      .sys-footer {
-        padding:16px 20px;
-        grid-template-columns: 1fr;
-        gap: 6px;
-      }
-      .sys-footer > div { text-align: left !important; }
-    }
-    @media (max-width: 680px) {
-      .cta-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-height: 780px){
-      .hero { padding-top: 32px; }
-      .hero-sub { font-size: 14px; }
-      .cta-grid { margin-top: 24px; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body onmousemove="document.documentElement.style.setProperty('--x', event.clientX + 'px'); document.documentElement.style.setProperty('--y', event.clientY + 'px')">
+<body onmousemove="
+  document.documentElement.style.setProperty('--x', event.clientX + 'px');
+  document.documentElement.style.setProperty('--y', event.clientY + 'px');
+">
   <canvas id="dot-canvas"></canvas>
   <div class="spotlight"></div>
   <div class="crt-overlay"></div>
-  
+
   <nav>
-    <div class="nav-logo">JADEN_JIRASEVIJINDA.SYS</div>
+    <a class="nav-logo" href="index.html">JADEN_JIRASEVIJINDA.SYS</a>
     <div class="nav-links">
       <a href="index.html" class="active">01_HOME</a>
       <a href="about.html">02_ABOUT</a>
@@ -250,12 +27,14 @@
   </nav>
 
   <section>
-    <div class="hero">
-      <h1 class="hero-title">JADEN <br><span class="accent">JIRASEVIJINDA.</span></h1>
-      <h2 class="hero-title ghost">BUILDING STUFF &amp; <br>SOLVING PROBLEMS.</h2>
-      <p class="hero-sub">
-        <a class="subtle-link" href="https://livermorehigh.livermoreschools.org/" target="_blank" rel="noopener">Junior at Livermore High School</a> <span class="sep">·</span>
-        President of GEA <span class="sep">·</span>
+    <div style="width:100%; padding: 52px 40px 28px;">
+      <h1 class="page-title">JADEN <br><span class="accent">JIRASEVIJINDA.</span></h1>
+      <h2 class="page-title ghost">BUILDING STUFF &amp; <br>SOLVING PROBLEMS.</h2>
+      <p class="page-sub">
+        <a class="subtle-link" href="https://livermorehigh.livermoreschools.org/" target="_blank" rel="noopener">Junior at Livermore High School</a>
+        <span class="sep">·</span>
+        President of GEA
+        <span class="sep">·</span>
         <a class="subtle-link" href="https://www.pillarsoftech.org/" target="_blank" rel="noopener">Board Member, Pillars of Tech</a>
       </p>
 
@@ -290,113 +69,6 @@
     <div style="text-align:right;"><span class="f-label">VER //</span><span class="f-data">4.2.1_STABLE</span></div>
   </footer>
 
-  <script>
-    // Live clock
-    function tick() {
-      const now = new Date();
-      document.getElementById('clock').textContent =
-        now.getHours().toString().padStart(2, '0') + ":" +
-        now.getMinutes().toString().padStart(2, '0') + ":" +
-        now.getSeconds().toString().padStart(2, '0');
-    }
-    setInterval(tick, 1000);
-    tick();
-
-    // Drifting dots
-    (function() {
-      const canvas = document.getElementById('dot-canvas');
-      const ctx = canvas.getContext('2d');
-      const DOT_COLOR = 'rgba(255,255,255,0.18)';
-      const DOT_RADIUS = 1;
-      const SPACING = 40;
-      let dots = [];
-      let W, H;
-
-      function resize() {
-        W = canvas.width  = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-        initDots();
-      }
-
-      function initDots() {
-        dots = [];
-        const cols = Math.ceil(W / SPACING) + 1;
-        const rows = Math.ceil(H / SPACING) + 1;
-        for (let r = 0; r < rows; r++) {
-          for (let c = 0; c < cols; c++) {
-            dots.push({
-              ox: c * SPACING,          // origin x
-              oy: r * SPACING,          // origin y
-              x:  c * SPACING,
-              y:  r * SPACING,
-              vx: (Math.random() - 0.5) * 0.18,
-              vy: (Math.random() - 0.5) * 0.18,
-              range: 6 + Math.random() * 6   // max wander distance from origin
-            });
-          }
-        }
-      }
-
-      // Track mouse
-      let mx = -9999, my = -9999;
-      window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-      window.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
-
-      const MOUSE_RADIUS = 100;   // repulsion radius in px
-      const MOUSE_FORCE  = 1.8;   // strength of push
-
-      function update() {
-        for (const d of dots) {
-          // Mouse repulsion
-          const mdx = d.x - mx;
-          const mdy = d.y - my;
-          const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-          if (mdist < MOUSE_RADIUS && mdist > 0) {
-            const strength = (1 - mdist / MOUSE_RADIUS) * MOUSE_FORCE;
-            d.vx += (mdx / mdist) * strength;
-            d.vy += (mdy / mdist) * strength;
-          }
-
-          d.x += d.vx;
-          d.y += d.vy;
-
-          // Soft spring back toward origin
-          const dx = d.ox - d.x;
-          const dy = d.oy - d.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist > d.range) {
-            d.vx += dx * 0.003;
-            d.vy += dy * 0.003;
-          }
-          // Tiny random nudge
-          d.vx += (Math.random() - 0.5) * 0.012;
-          d.vy += (Math.random() - 0.5) * 0.012;
-          // Dampen speed
-          d.vx *= 0.97;
-          d.vy *= 0.97;
-        }
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        ctx.fillStyle = DOT_COLOR;
-        for (const d of dots) {
-          ctx.beginPath();
-          ctx.arc(d.x, d.y, DOT_RADIUS, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      function loop() {
-        update();
-        draw();
-        requestAnimationFrame(loop);
-      }
-
-      window.addEventListener('resize', resize);
-      resize();
-      loop();
-    })();
-  </script>
+  <script src="portfolio.js"></script>
 </body>
 </html>
