@@ -8,20 +8,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================
-       BASE SYSTEM STYLES
-       (keep consistent across pages)
-    ========================= */
     :root { --bg:#0a0a0b; --accent:#ff5d22; --border:#222224; --nav-h:70px; }
     * { box-sizing:border-box; margin:0; padding:0; }
 
+    /* lock first view to one screen */
     body {
       background:var(--bg);
       color:#e1e1e3;
       font-family:'Space Grotesk', sans-serif;
-      padding-top:var(--nav-h);
-      overflow-x:hidden;
-      min-height:100vh;
+
+      height: 100vh;
+      overflow: hidden;
+
       display:flex;
       flex-direction:column;
     }
@@ -44,7 +42,8 @@
 
     /* NAVIGATION */
     nav{
-      position:fixed; top:0; width:100%; height:var(--nav-h);
+      position:fixed; top:0; left:0; right:0;
+      height:var(--nav-h);
       background: rgba(10,10,11,0.9);
       backdrop-filter: blur(12px);
       border-bottom:1px solid var(--border);
@@ -73,7 +72,7 @@
     .sys-footer{
       display:grid;
       grid-template-columns:1fr 1fr 1fr;
-      padding:25px 40px;
+      padding:18px 40px; /* thinner so it fits */
       border-top:1px solid var(--border);
       font-family:'JetBrains Mono';
       background:#000;
@@ -100,21 +99,28 @@
     /* =========================
        PAGE STYLES (HOME)
     ========================= */
-    section { flex-grow:1; }
+
+    /* page content sits between nav + footer */
+    section { flex: 1; min-height: 0; padding-top: var(--nav-h); }
 
     .hero{
       display:grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap:50px;
+      gap:46px;
       align-items:start;
-      padding:110px 40px 90px;
+
+      /* tighter to avoid scroll */
+      padding: 52px 40px 22px;
     }
+
+    .hero-left { min-width:0; }
+    .hero-right { display:grid; gap:18px; min-width:0; }
 
     .label{
       font-family:'JetBrains Mono';
       color:var(--accent);
       font-size:11px;
-      margin-bottom:15px;
+      margin-bottom:14px;
       display:block;
     }
 
@@ -130,15 +136,16 @@
     .ghost{ color:#222; }
 
     .hero-sub{
-      margin-top:22px;
+      margin-top:16px;
       max-width:560px;
       color:#a9a9ad;
       font-size:15px;
       line-height:1.6;
     }
+    .sep { color:#555; padding:0 6px; }
 
     .hero-actions{
-      margin-top:26px;
+      margin-top:18px;
       display:flex;
       flex-wrap:wrap;
       gap:14px;
@@ -173,8 +180,6 @@
       border-color: rgba(255,255,255,0.14);
       background: rgba(255,255,255,0.05);
     }
-
-    .hero-right { display:grid; gap:18px; }
 
     .panel{
       border:1px solid var(--border);
@@ -212,7 +217,7 @@
 
     .kv{
       display:grid;
-      grid-template-columns: 80px 1fr;
+      grid-template-columns: 90px 1fr;
       gap:10px 14px;
       padding:14px;
       font-family:'JetBrains Mono';
@@ -258,12 +263,20 @@
 
     @media (max-width:980px){
       nav { padding:0 20px; }
+      section { padding-top: var(--nav-h); }
       .hero{
         grid-template-columns: 1fr;
-        gap:24px;
-        padding:80px 20px 70px;
+        gap:18px;
+        padding: 42px 20px 18px;
       }
-      .sys-footer { padding:18px 20px; }
+      .sys-footer { padding:16px 20px; }
+    }
+
+    @media (max-height: 780px){
+      .hero { padding-top: 38px; }
+      .hero-sub { font-size: 14px; }
+      .hero-actions { margin-top: 14px; }
+      .panel { transform: scale(0.98); transform-origin: top right; }
     }
   </style>
 </head>
@@ -292,33 +305,35 @@
       <h2 class="hero-title ghost">BUILDING STUFF & <br>SOLVING PROBLEMS.</h2>
 
       <p class="hero-sub">
-        I ship systems for real-world events, teams, and projects — from idea → build → run.
+        Junior at Livermore High School <span class="sep">|</span>
+        President of GEA <span class="sep">|</span>
+        Board Member, Pillars of Tech
       </p>
 
       <div class="hero-actions">
         <a class="cmd" href="projects.html">> view_work()</a>
         <a class="cmd" href="contact.html">> connect()</a>
-        <a class="cmd faint" href="about.html">> read_me.txt</a>
+        <a class="cmd faint" href="about.html">> about_me.txt</a>
       </div>
     </div>
 
     <aside class="hero-right">
       <div class="panel">
         <div class="panel-head">
-          <span class="panel-title">[ CURRENT OPS ]</span>
+          <span class="panel-title">[ SIGNALS ]</span>
           <span class="panel-chip">LIVE</span>
         </div>
 
         <div class="kv">
-          <div class="k">focus</div><div class="v">event systems • design • automation</div>
-          <div class="k">mode</div><div class="v">build → test → deploy</div>
-          <div class="k">signal</div><div class="v">calm execution</div>
+          <div class="k">building</div><div class="v">tools teams can actually use</div>
+          <div class="k">style</div><div class="v">clean UI • fast workflows</div>
+          <div class="k">energy</div><div class="v">organized chaos → smooth event</div>
         </div>
 
         <div class="divider"></div>
 
         <div class="list">
-          <div class="list-head">[ NOW BUILDING ]</div>
+          <div class="list-head">[ IN PROGRESS ]</div>
           <div class="item"><span class="dot"></span>GEA Field Day Command Center</div>
           <div class="item"><span class="dot"></span>Earth Day Booth Tracking + Heatmap</div>
           <div class="item"><span class="dot"></span>Dashboards, kiosks, live timers</div>
@@ -327,14 +342,14 @@
 
       <div class="panel">
         <div class="panel-head">
-          <span class="panel-title">[ SYSTEM LOG ]</span>
+          <span class="panel-title">[ RECENT WINS ]</span>
           <span class="panel-chip muted">RECENT</span>
         </div>
 
         <div class="log">
-          <div class="row"><span class="t">2026.03</span><span class="m">terminal UI + reactive grid pass</span></div>
-          <div class="row"><span class="t">2026.02</span><span class="m">live admin + kiosk flows for events</span></div>
-          <div class="row"><span class="t">2026.01</span><span class="m">dashboards + reporting + iteration loops</span></div>
+          <div class="row"><span class="t">2026.03</span><span class="m">built the terminal site + interactive UI</span></div>
+          <div class="row"><span class="t">2026.02</span><span class="m">ran live event tools: admin, kiosks, timers</span></div>
+          <div class="row"><span class="t">2026.01</span><span class="m">designed dashboards that keep teams synced</span></div>
         </div>
       </div>
     </aside>
