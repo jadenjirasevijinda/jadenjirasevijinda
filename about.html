@@ -215,6 +215,64 @@
       .photo-side { padding: calc(var(--nav-h) + 40px) 20px 30px; border-right: none; border-bottom: 1px solid var(--border); }
       .text-side { padding: 40px 24px 60px; }
     }
+
+    /* Languages */
+    .lang-section { margin-top: 28px; }
+    .lang-label {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .lang-grid { display: grid; gap: 10px; }
+    .lang-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .lang-name {
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: var(--text);
+      font-weight: 700;
+      min-width: 72px;
+      letter-spacing: .4px;
+    }
+    .lang-skills {
+      display: flex;
+      gap: 5px;
+    }
+    .lang-skill {
+      font-family: 'JetBrains Mono';
+      font-size: 9px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: #444;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .lang-skill.active {
+      border-color: rgba(255,93,34,0.3);
+      color: var(--accent);
+      background: rgba(255,93,34,0.06);
+    }
+    .lang-skill.learning {
+      border-color: rgba(255,200,50,0.3);
+      color: #f5c842;
+      background: rgba(255,200,50,0.05);
+    }
+    .lang-level {
+      font-family: 'JetBrains Mono';
+      font-size: 9px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-left: auto;
+    }
+    .lang-level.fluent  { color: var(--accent); }
+    .lang-level.learning { color: #f5c842; }
   </style>
 </head>
 <body onmousemove="
@@ -266,6 +324,52 @@
           <span class="interest-tag">Photography</span>
           <span class="interest-tag">Web Design</span>
           <span class="interest-tag">Mechanical Engineering</span>
+        </div>
+
+        <div class="lang-section">
+          <p class="lang-label">[ LANGUAGES ]</p>
+          <div class="lang-grid">
+            <div class="lang-row">
+              <div class="lang-name">English</div>
+              <div class="lang-skills">
+                <span class="lang-skill active" title="Speak">speak</span>
+                <span class="lang-skill active" title="Read">read</span>
+                <span class="lang-skill active" title="Write">write</span>
+                <span class="lang-skill active" title="Listen">listen</span>
+              </div>
+              <div class="lang-level fluent">Fluent</div>
+            </div>
+            <div class="lang-row">
+              <div class="lang-name">Thai</div>
+              <div class="lang-skills">
+                <span class="lang-skill active" title="Speak">speak</span>
+                <span class="lang-skill active" title="Read">read</span>
+                <span class="lang-skill active" title="Write">write</span>
+                <span class="lang-skill active" title="Listen">listen</span>
+              </div>
+              <div class="lang-level fluent">Fluent</div>
+            </div>
+            <div class="lang-row">
+              <div class="lang-name">Mandarin</div>
+              <div class="lang-skills">
+                <span class="lang-skill active" title="Speak">speak</span>
+                <span class="lang-skill" title="Read">read</span>
+                <span class="lang-skill" title="Write">write</span>
+                <span class="lang-skill active" title="Listen">listen</span>
+              </div>
+              <div class="lang-level fluent">Fluent</div>
+            </div>
+            <div class="lang-row">
+              <div class="lang-name">Spanish</div>
+              <div class="lang-skills">
+                <span class="lang-skill learning" title="Speak">speak</span>
+                <span class="lang-skill learning" title="Read">read</span>
+                <span class="lang-skill learning" title="Write">write</span>
+                <span class="lang-skill learning" title="Listen">listen</span>
+              </div>
+              <div class="lang-level learning">Learning</div>
+            </div>
+          </div>
         </div>
       </div>
 
