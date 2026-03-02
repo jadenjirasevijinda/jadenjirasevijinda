@@ -86,19 +86,23 @@
 
 <div class="photo-grid" id="media-grid">
     
-    <div class="photo-item" data-type="video">
-        <div class="shield" 
-             onmouseover="this.nextElementSibling.play()" 
-             onmouseout="this.nextElementSibling.pause()">
-        </div>
-        <video preload="metadata" muted loop playsinline>
-            <source src="https://drive.google.com/uc?export=download&id=1FPk7FW78RZA_rZTEdUBNS5pJztIRe2tf" type="video/mp4">
-        </video>
-        <div class="meta-overlay">
-            <span class="m-title">Earth Day 2025 Timelapse</span>
-            <span class="m-specs">RES: 4K // FR: 60FPS // CODEC: H.264</span>
-        </div>
+   <div class="photo-item" data-type="video">
+    <div class="shield"></div>
+    
+    <iframe 
+        src="https://drive.google.com/file/d/1FPk7FW78RZA_rZTEdUBNS5pJztIRe2tf/preview" 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        allow="autoplay" 
+        style="border:none; pointer-events: all;">
+    </iframe>
+
+    <div class="meta-overlay">
+        <span class="m-title">Earth Day 2025 Timelapse</span>
+        <span class="m-specs">RES: 4K // FR: 60FPS // HOST: GOOGLE_DRIVE</span>
     </div>
+</div>
 
     <div class="photo-item" data-type="photo">
         <div class="shield"></div>
