@@ -1,187 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>WORKS // JADEN_J</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #0a0a0b; --accent: #ff5d22; --border: #222224; --nav-h: 70px; --modal-bg: rgba(10, 10, 11, 0.95); }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: #fff; font-family: 'Space Grotesk'; padding-top: var(--nav-h); min-height: 100vh; display: flex; flex-direction: column; }
-        
-        /* BACKGROUND EFFECTS */
-        .grid-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(var(--border) 1px, transparent 0); background-size: 40px 40px; z-index: -1; }
-        .spotlight { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(500px circle at var(--x) var(--y), rgba(255,93,34,0.06), transparent 40%); z-index: -1; pointer-events: none; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WORKS // JADEN J.</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { overflow-y: auto; overflow-x: hidden; }
 
-        /* NAV & FOOTER */
-        nav { position: fixed; top: 0; width: 100%; height: var(--nav-h); background: rgba(10,10,11,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 1000; }
-        .nav-logo { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 13px; font-weight: 700; }
-        .nav-links a { font-family: 'JetBrains Mono'; color: #666; text-decoration: none; font-size: 11px; margin-left: 25px; }
-        .nav-links a.active { color: var(--accent); }
-        .sys-footer { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 25px 40px; font-family: 'JetBrains Mono'; background: #000; border-top: 1px solid var(--border); }
-        .f-label { color: #444; font-size: 9px; } .f-data { color: var(--accent); font-size: 10px; margin-left: 8px; }
+    section {
+      display: block;
+      padding-top: var(--nav-h);
+      overflow-y: visible;
+      align-items: unset;
+    }
 
-        /* HEADER & GRID */
-        .header { padding: 80px 40px; border-bottom: 1px solid var(--border); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1px; background: var(--border); flex-grow: 1; }
-        
-        .card { 
-            background: var(--bg); padding: 50px 40px; height: 350px; 
-            display: flex; flex-direction: column; justify-content: space-between; 
-            cursor: pointer; transition: 0.3s; 
-        }
-        .card:hover { background: #0e0e10; }
-        .card:hover h3 { color: var(--accent); }
+    /* Header */
+    .works-header {
+      padding: 52px 40px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .works-eyebrow {
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .works-title {
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: .88;
+      letter-spacing: -2px;
+    }
 
-        /* --- MODAL (POPUP) STYLING --- */
-        #project-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--modal-bg); z-index: 2000;
-            display: none; /* Hidden by default */
-            align-items: center; justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-        .modal-content {
-            width: 90%; max-width: 800px; background: #0e0e10;
-            border: 1px solid var(--border); padding: 40px;
-            position: relative; animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes modalSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    /* Project grid */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
 
-        .close-btn { 
-            position: absolute; top: 20px; right: 20px; cursor: pointer;
-            font-family: 'JetBrains Mono'; color: var(--accent); font-size: 12px;
-        }
+    .project-card {
+      background: var(--bg);
+      padding: 40px;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: background .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,93,34,0.06) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .25s;
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-card:hover { background: #0d0d0f; }
+    .project-card:hover .card-title { color: var(--accent); }
 
-        .modal-header span { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 11px; }
-        .modal-header h2 { font-size: 3rem; text-transform: uppercase; margin: 10px 0 20px; }
-        .modal-body { color: #888; line-height: 1.6; margin-bottom: 30px; }
+    .card-num {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1;
+      letter-spacing: -1px;
+      color: var(--text);
+      transition: color .25s;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    .card-footer {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .card-status {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      color: #444;
+      letter-spacing: .5px;
+    }
+    .card-skills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .skill-tag {
+      font-family: 'JetBrains Mono';
+      font-size: 9px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: #555;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
 
-        .file-list { display: flex; gap: 10px; flex-wrap: wrap; }
-        .file-link {
-            padding: 10px 15px; border: 1px solid var(--border);
-            font-family: 'JetBrains Mono'; font-size: 10px; color: #fff;
-            text-decoration: none; transition: 0.3s;
-        }
-        .file-link:hover { border-color: var(--accent); color: var(--accent); }
+    /* ── Modal ─────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s;
+      padding: 20px;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
 
-        .modal-media img, .modal-media video { 
-            width: 100%; margin-top: 20px; border: 1px solid var(--border); 
-        }
-    </style>
+    .modal-box {
+      background: #0e0e10;
+      border: 1px solid rgba(255,93,34,0.2);
+      border-radius: 16px;
+      padding: 36px;
+      width: 100%;
+      max-width: 720px;
+      max-height: 88vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(16px);
+      transition: transform .28s cubic-bezier(.32,.72,0,1);
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: color .2s, border-color .2s;
+    }
+    .modal-close:hover { color: var(--accent); border-color: rgba(255,93,34,0.3); }
+
+    .modal-eyebrow {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .modal-title {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      line-height: .95;
+    }
+    .modal-desc {
+      color: #888;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    .modal-section-label {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    /* Skills row */
+    .modal-skills {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 28px;
+    }
+    .modal-skill {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,93,34,0.25);
+      color: var(--accent);
+      background: rgba(255,93,34,0.06);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+
+    /* Links row */
+    .modal-links {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 28px;
+    }
+    .modal-link {
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: var(--text);
+      text-decoration: none;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .modal-link:hover {
+      border-color: rgba(255,93,34,0.35);
+      color: var(--accent);
+      background: rgba(255,93,34,0.05);
+    }
+
+    @media (max-width: 680px) {
+      .works-header { padding: 36px 20px 24px; }
+      .project-card { padding: 28px 20px; }
+      .modal-box { padding: 24px 18px; }
+    }
+  </style>
 </head>
-<body onmousemove="document.documentElement.style.setProperty('--x', event.clientX + 'px'); document.documentElement.style.setProperty('--y', event.clientY + 'px')">
+<body onmousemove="
+  document.documentElement.style.setProperty('--x', event.clientX + 'px');
+  document.documentElement.style.setProperty('--y', event.clientY + 'px');
+">
+  <canvas id="dot-canvas"></canvas>
+  <div class="spotlight"></div>
+  <div class="crt-overlay"></div>
 
-<div class="grid-overlay"></div>
-<div class="spotlight"></div>
-
-<nav>
-    <div class="nav-logo">JADEN_JIRASEVIJINDA.SYS</div>
+  <nav>
+    <a class="nav-logo" href="index.html">JADEN_JIRASEVIJINDA.SYS</a>
     <div class="nav-links">
-        <a href="index.html">01_HOME</a>
-        <a href="about.html">02_ABOUT</a>
-        <a href="projects.html" class="active">03_WORKS</a>
-        <a href="photos.html">04_GALLERY</a>
-        <a href="contact.html">05_CONNECT</a>
+      <a href="index.html">01_HOME</a>
+      <a href="about.html">02_ABOUT</a>
+      <a href="projects.html" class="active">03_WORKS</a>
+      <a href="photos.html">04_GALLERY</a>
+      <a href="contact.html">05_CONNECT</a>
     </div>
-</nav>
+  </nav>
 
-<div class="header">
-    <span style="font-family:'JetBrains Mono'; color:var(--accent); font-size:11px;">[ FILE_03: SELECTED_PROJECTS ]</span>
-    <h1 style="font-size: 4rem; text-transform: uppercase; margin: 0;">Build <span style="color:var(--accent)">Log.</span></h1>
-</div>
-
-<div class="grid">
-    <div class="card" onclick="openProject('fusion360')">
-        <span style="font-family:'JetBrains Mono'; color:var(--accent); font-size:11px;">#001 // FUSION360</span>
-        <h3>MECHANICAL <br>ASSEMBLY</h3>
-        <p style="color:#555; font-family:'JetBrains Mono'; font-size:11px;">[ STATUS: ARCHIVED ]</p>
+  <section>
+    <div class="works-header">
+      <p class="works-eyebrow">[ FILE_03 // SELECTED_PROJECTS ]</p>
+      <h1 class="works-title">Build <span class="accent">Log.</span></h1>
     </div>
-    <div class="card" onclick="openProject('davinci')">
-        <span style="font-family:'JetBrains Mono'; color:var(--accent); font-size:11px;">#002 // DAVINCI_RESOLVE</span>
-        <h3>PRODUCTION <br>POST_PROCESS</h3>
-        <p style="color:#555; font-family:'JetBrains Mono'; font-size:11px;">[ STATUS: ACTIVE ]</p>
-    </div>
-</div>
 
-<div id="project-modal" onclick="closeProject(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="close-btn" onclick="closeProject()">[ CLOSE_X ]</div>
-        <div class="modal-header">
-            <span id="m-category">CATEGORY //</span>
-            <h2 id="m-title">PROJECT_TITLE</h2>
+    <div class="project-grid">
+
+      <div class="project-card" onclick="openProject('brainless')">
+        <div class="card-num">#001 // VODCAST</div>
+        <div class="card-title">BRAINLESS<br>EXPERTS</div>
+        <div class="card-footer">
+          <span class="card-status">[ STATUS: ARCHIVED ]</span>
+          <div class="card-skills">
+            <span class="skill-tag">DaVinci</span>
+            <span class="skill-tag">Rodecaster</span>
+            <span class="skill-tag">Management</span>
+          </div>
         </div>
-        <div id="m-description" class="modal-body">Description goes here...</div>
-        
-        <div class="file-list" id="m-files">
-            </div>
+      </div>
 
-        <div id="m-media" class="modal-media">
-            </div>
+      <div class="project-card" onclick="openProject('housing')">
+        <div class="card-num">#002 // ARCHITECTURE</div>
+        <div class="card-title">AFFORDABLE<br>HOUSING</div>
+        <div class="card-footer">
+          <span class="card-status">[ STATUS: ARCHIVED ]</span>
+          <div class="card-skills">
+            <span class="skill-tag">Revit</span>
+            <span class="skill-tag">Leadership</span>
+          </div>
+        </div>
+      </div>
+
     </div>
-</div>
+  </section>
 
-<footer class="sys-footer">
-    <div><span class="f-label">LOC //</span><span class="f-data">LIVERMORE_CA</span></div>
-    <div style="text-align: center;"><span class="f-label">SYS_TIME //</span><span id="clock" class="f-data">00:00:00</span></div>
-    <div style="text-align: right;"><span class="f-label">VER //</span><span class="f-data">4.2.0</span></div>
-</footer>
+  <footer class="sys-footer">
+    <div><span class="f-label">LOC //</span><span class="f-data">LIVERMORE_CA [37.68° N]</span></div>
+    <div style="text-align:center;"><span class="f-label">SYS_TIME //</span><span id="clock" class="f-data">00:00:00</span></div>
+    <div style="text-align:right;"><span class="f-label">VER //</span><span class="f-data">4.2.1_STABLE</span></div>
+  </footer>
 
-<script>
-    // --- CONFIGURE YOUR PROJECTS HERE ---
-    const projectData = {
-        'fusion360': {
-            title: "MECHANICAL ASSEMBLY",
-            category: "FUSION360 // DESIGN",
-            description: "Detailed 3D modeling of a custom mechanical linkage. This project focused on tolerance testing and assembly motion studies within Fusion 360.",
-            files: [
-                { name: "SPEC_SHEET.PDF", url: "files/spec.pdf" },
-                { name: "REVIT_MODEL.RVT", url: "files/model.rvt" }
-            ],
-            media: "img/fusion-render.jpg" // Put an image path here
-        },
-        'davinci': {
-            title: "PRODUCTION POST PROCESS",
-            category: "DAVINCI RESOLVE // EDITING",
-            description: "A deep dive into color grading and industrial sound design. This workflow uses DaVinci Resolve for high-fidelity output.",
-            files: [
-                { name: "PROJECT_ASSETS.ZIP", url: "files/assets.zip" }
-            ],
-            media: "" // Leave blank if no image
-        }
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeProject(event)">
+    <div class="modal-box" id="modal-box">
+      <button class="modal-close" onclick="closeProject()">[ CLOSE_X ]</button>
+      <p class="modal-eyebrow" id="m-eyebrow"></p>
+      <h2 class="modal-title" id="m-title"></h2>
+      <p class="modal-desc" id="m-desc"></p>
+
+      <p class="modal-section-label">// SKILLS</p>
+      <div class="modal-skills" id="m-skills"></div>
+
+      <p class="modal-section-label" id="m-links-label">// LINKS</p>
+      <div class="modal-links" id="m-links"></div>
+    </div>
+  </div>
+
+  <script src="portfolio.js"></script>
+  <script>
+    const projects = {
+      brainless: {
+        eyebrow: '[ #001 // VODCAST ]',
+        title: 'Brainless Experts',
+        desc: 'Brainless Experts is a video podcast or vodcast that focuses on interviewing students on their talents, interests, and more, with the hope that more people can learn more things as they listen. During my time at Brainless Experts, I have learned the importance of storytelling, videography, video editing, and research.',
+        skills: ['DaVinci Resolve', 'Rodecaster Pro', 'Management'],
+        links: [
+          { label: '> Website →', url: 'https://sites.google.com/view/brainless-experts-website/home' },
+          { label: '> YouTube →', url: 'https://www.youtube.com/@brainlessexperts8626/videos' },
+        ]
+      },
+      housing: {
+        eyebrow: '[ #002 // ARCHITECTURE ]',
+        title: 'Affordable Housing Project',
+        desc: 'For this project, our team designed an affordable housing complex for the Leahy Square site in Livermore. As Project Manager, I was responsible for ensuring the design met all codes, requirements, and site constraints; managing budget and financing responsibilities; delegating tasks; and maintaining the overall quality and completeness of the final proposal. I was responsible for designing the two-bedroom unit.',
+        skills: ['Revit', 'Leadership'],
+        links: [
+          { label: '> Final Presentation.pdf →', url: 'media/Affordable Housing Project Final Presentation.pdf', download: true },
+          { label: '> Draft Site Plan.pdf →', url: 'media/Affordable Housing Project Draft Site Plan.pdf', download: true },
+        ]
+      }
     };
 
     function openProject(id) {
-        const data = projectData[id];
-        if(!data) return;
+      const p = projects[id];
+      if (!p) return;
 
-        document.getElementById('m-title').innerText = data.title;
-        document.getElementById('m-category').innerText = "CATEGORY // " + data.category;
-        document.getElementById('m-description').innerText = data.description;
-        
-        // Handle Files
-        const fileContainer = document.getElementById('m-files');
-        fileContainer.innerHTML = "";
-        data.files.forEach(file => {
-            fileContainer.innerHTML += `<a href="${file.url}" class="file-link" download>${file.name}</a>`;
-        });
+      document.getElementById('m-eyebrow').textContent = p.eyebrow;
+      document.getElementById('m-title').textContent   = p.title;
+      document.getElementById('m-desc').textContent    = p.desc;
 
-        // Handle Media
-        const mediaContainer = document.getElementById('m-media');
-        mediaContainer.innerHTML = data.media ? `<img src="${data.media}">` : "";
+      // Skills
+      document.getElementById('m-skills').innerHTML = p.skills
+        .map(s => `<span class="modal-skill">${s}</span>`).join('');
 
-        document.getElementById('project-modal').style.display = 'flex';
+      // Links
+      const linksEl = document.getElementById('m-links');
+      const linksLabel = document.getElementById('m-links-label');
+      if (p.links && p.links.length) {
+        linksLabel.style.display = '';
+        linksEl.innerHTML = p.links.map(l =>
+          `<a class="modal-link" href="${l.url}" ${l.download ? 'download' : 'target="_blank" rel="noopener"'}>${l.label}</a>`
+        ).join('');
+      } else {
+        linksLabel.style.display = 'none';
+        linksEl.innerHTML = '';
+      }
+
+      document.getElementById('modal-overlay').classList.add('open');
     }
 
-    function closeProject() {
-        document.getElementById('project-modal').style.display = 'none';
+    function closeProject(e) {
+      if (e && e.target !== document.getElementById('modal-overlay')) return;
+      document.getElementById('modal-overlay').classList.remove('open');
     }
 
-    // System Clock
-    function tick() {
-        const now = new Date();
-        document.getElementById('clock').textContent = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') + ":" + now.getSeconds().toString().padStart(2, '0');
-    }
-    setInterval(tick, 1000); tick();
-</script>
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') document.getElementById('modal-overlay').classList.remove('open');
+    });
+  </script>
 </body>
 </html>
