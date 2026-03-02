@@ -124,6 +124,16 @@
       line-height:1.6;
     }
     .sep { color:#444; padding:0 6px; }
+    .subtle-link {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s, color .2s;
+    }
+    .subtle-link:hover {
+      color: #e1e1e3;
+      border-bottom-color: #555;
+    }
 
     /* CTA CARDS */
     .cta-grid {
@@ -246,9 +256,9 @@
       <h1 class="hero-title">JADEN <br><span class="accent">JIRASEVIJINDA.</span></h1>
       <h2 class="hero-title ghost">BUILDING STUFF &amp; <br>SOLVING PROBLEMS.</h2>
       <p class="hero-sub">
-        Junior at Livermore High School <span class="sep">·</span>
+        <a class="subtle-link" href="https://livermorehigh.livermoreschools.org/" target="_blank" rel="noopener">Junior at Livermore High School</a> <span class="sep">·</span>
         President of GEA <span class="sep">·</span>
-        Board Member, Pillars of Tech
+        <a class="subtle-link" href="https://www.pillarsoftech.org/" target="_blank" rel="noopener">Board Member, Pillars of Tech</a>
       </p>
 
       <div class="cta-grid">
