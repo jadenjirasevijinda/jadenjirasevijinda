@@ -38,32 +38,38 @@
     /* Project grid */
     .project-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1px;
-      background: var(--border);
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 32px 40px 60px;
     }
 
     .project-card {
-      background: var(--bg);
-      padding: 40px;
-      min-height: 300px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: 16px;
       cursor: pointer;
-      transition: background .25s;
+      transition: border-color .25s, background .25s, transform .25s;
       position: relative;
       overflow: hidden;
     }
     .project-card::before {
       content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,93,34,0.06) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(255,93,34,0.07) 0%, transparent 60%);
+      border-radius: 14px;
       opacity: 0;
       transition: opacity .25s;
     }
     .project-card:hover::before { opacity: 1; }
-    .project-card:hover { background: #0d0d0f; }
+    .project-card:hover {
+      border-color: rgba(255,93,34,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(255,93,34,0.07);
+    }
     .project-card:hover .card-title { color: var(--accent); }
 
     .card-num {
@@ -71,26 +77,33 @@
       font-size: 10px;
       color: var(--accent);
       letter-spacing: 1px;
-      margin-bottom: 20px;
     }
     .card-title {
-      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
       font-weight: 800;
       text-transform: uppercase;
-      line-height: 1;
-      letter-spacing: -1px;
+      line-height: .92;
+      letter-spacing: -1.5px;
       color: var(--text);
       transition: color .25s;
       flex: 1;
-      display: flex;
-      align-items: center;
+    }
+    .card-desc-preview {
+      color: #555;
+      font-size: 13px;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .card-footer {
-      margin-top: 24px;
+      margin-top: 8px;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       gap: 10px;
+      flex-wrap: wrap;
     }
     .card-status {
       font-family: 'JetBrains Mono';
@@ -114,6 +127,14 @@
       letter-spacing: .3px;
       text-transform: uppercase;
     }
+    .card-cta {
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: #333;
+      margin-top: 4px;
+      transition: color .25s;
+    }
+    .project-card:hover .card-cta { color: var(--accent); }
 
     /* ── Modal ─────────────────────────────────── */
     .modal-overlay {
@@ -231,9 +252,10 @@
       background: rgba(255,93,34,0.05);
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 780px) {
       .works-header { padding: 36px 20px 24px; }
-      .project-card { padding: 28px 20px; }
+      .project-grid { grid-template-columns: 1fr; padding: 20px; }
+      .project-card { padding: 24px 20px; }
       .modal-box { padding: 24px 18px; }
     }
   </style>
@@ -268,6 +290,7 @@
       <div class="project-card" onclick="openProject('brainless')">
         <div class="card-num">#001 // VODCAST</div>
         <div class="card-title">BRAINLESS<br>EXPERTS</div>
+        <p class="card-desc-preview">A video podcast interviewing students on their talents and interests — exploring storytelling, videography, editing, and research.</p>
         <div class="card-footer">
           <span class="card-status">[ STATUS: ARCHIVED ]</span>
           <div class="card-skills">
@@ -276,11 +299,13 @@
             <span class="skill-tag">Management</span>
           </div>
         </div>
+        <span class="card-cta">> open_project() →</span>
       </div>
 
       <div class="project-card" onclick="openProject('housing')">
         <div class="card-num">#002 // ARCHITECTURE</div>
         <div class="card-title">AFFORDABLE<br>HOUSING</div>
+        <p class="card-desc-preview">Designed an affordable housing complex for the Leahy Square site in Livermore, serving as Project Manager for the full proposal.</p>
         <div class="card-footer">
           <span class="card-status">[ STATUS: ARCHIVED ]</span>
           <div class="card-skills">
@@ -288,6 +313,7 @@
             <span class="skill-tag">Leadership</span>
           </div>
         </div>
+        <span class="card-cta">> open_project() →</span>
       </div>
 
     </div>
