@@ -1,150 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GALLERY // JADEN_J</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #0a0a0b; --accent: #ff5d22; --border: #222224; --nav-h: 70px; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: #fff; font-family: 'Space Grotesk'; padding-top: var(--nav-h); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
-        
-        /* BACKGROUND EFFECTS */
-        .grid-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(var(--border) 1px, transparent 0); background-size: 40px 40px; z-index: -1; }
-        .spotlight { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(500px circle at var(--x) var(--y), rgba(255,93,34,0.06), transparent 40%); z-index: -1; pointer-events: none; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GALLERY // JADEN J.</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { overflow-y: auto; overflow-x: hidden; }
 
-        /* NAVIGATION */
-        nav { position: fixed; top: 0; width: 100%; height: var(--nav-h); background: rgba(10,10,11,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 1000; }
-        .nav-logo { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 13px; font-weight: 700; }
-        .nav-links a { font-family: 'JetBrains Mono'; color: #666; text-decoration: none; font-size: 11px; margin-left: 25px; transition: 0.3s; }
-        .nav-links a.active { color: var(--accent); }
-        
-        .header { padding: 60px 40px 20px; }
-        .filter-bar { padding: 0 40px 30px; display: flex; gap: 20px; }
-        .filter-btn { background: none; border: 1px solid var(--border); color: #666; font-family: 'JetBrains Mono'; font-size: 10px; padding: 8px 16px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .filter-btn.active { border-color: var(--accent); color: var(--accent); }
+    section {
+      display: block;
+      padding-top: var(--nav-h);
+      overflow-y: visible;
+      align-items: unset;
+    }
 
-        /* GALLERY GRID */
-        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 15px; padding: 0 40px 40px; }
-        
-        .photo-item { 
-            width: 100%; aspect-ratio: 16/9; background: #111; border: 1px solid var(--border); 
-            overflow: hidden; position: relative; cursor: crosshair;
-            clip-path: polygon(5% 0, 100% 0, 100% 90%, 95% 100%, 0 100%, 0 10%);
-        }
+    /* Header */
+    .gallery-header {
+      padding: 48px 40px 20px;
+    }
+    .gallery-eyebrow {
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .gallery-title {
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: .9;
+      letter-spacing: -2px;
+    }
 
-        .shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; background: transparent; }
+    /* Filter bar */
+    .filter-bar {
+      padding: 0 40px 28px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .filter-btn:hover { color: var(--text); border-color: #444; }
+    .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255,93,34,0.06); }
 
-        /* TECHNICAL DATA OVERLAY */
-        .meta-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            z-index: 15; transform: translateY(100%); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            font-family: 'JetBrains Mono';
-        }
-        .photo-item:hover .meta-overlay { transform: translateY(0); }
-        .m-title { color: var(--accent); font-size: 12px; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        .m-specs { color: #666; font-size: 9px; letter-spacing: 1px; }
+    /* Grid */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 14px;
+      padding: 0 40px 60px;
+    }
 
-        .photo-item video, .photo-item img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            opacity: 0.4; filter: grayscale(1); transition: 0.5s; 
-        }
-        .photo-item:hover video, .photo-item:hover img { opacity: 1; filter: grayscale(0); transform: scale(1.03); }
+    /* Item */
+    .media-item {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      clip-path: polygon(5% 0, 100% 0, 100% 90%, 95% 100%, 0 100%, 0 10%);
+      transition: border-color .25s;
+    }
+    .media-item:hover { border-color: rgba(255,93,34,0.35); }
 
-        .sys-footer { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 25px 40px; font-family: 'JetBrains Mono'; background: #000; border-top: 1px solid var(--border); }
-        .f-label { color: #444; font-size: 9px; } .f-data { color: var(--accent); font-size: 10px; margin-left: 8px; }
-    </style>
+    .media-item img,
+    .media-item iframe {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border: none;
+      display: block;
+    }
+
+    .media-item img {
+      opacity: .45;
+      filter: grayscale(1);
+      transition: opacity .4s, filter .4s, transform .4s;
+    }
+    .media-item:hover img {
+      opacity: 1;
+      filter: grayscale(0);
+      transform: scale(1.03);
+    }
+
+    /* Meta overlay */
+    .meta-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 16px 14px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.88));
+      font-family: 'JetBrains Mono';
+      transform: translateY(100%);
+      transition: transform .35s cubic-bezier(.16,1,.3,1);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .media-item:hover .meta-overlay { transform: translateY(0); }
+    /* iframes don't fire hover on parent reliably — always show meta for video embeds */
+    .media-item.is-video .meta-overlay { transform: translateY(0); }
+
+    .m-title {
+      display: block;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 4px;
+    }
+    .m-specs {
+      color: #666;
+      font-size: 9px;
+      letter-spacing: .8px;
+    }
+
+    @media (max-width: 680px) {
+      .gallery-header { padding: 36px 20px 16px; }
+      .filter-bar { padding: 0 20px 20px; }
+      .media-grid { grid-template-columns: 1fr; padding: 0 20px 40px; gap: 12px; }
+    }
+  </style>
 </head>
-<body onmousemove="document.documentElement.style.setProperty('--x', event.clientX + 'px'); document.documentElement.style.setProperty('--y', event.clientY + 'px')">
+<body onmousemove="
+  document.documentElement.style.setProperty('--x', event.clientX + 'px');
+  document.documentElement.style.setProperty('--y', event.clientY + 'px');
+">
+  <canvas id="dot-canvas"></canvas>
+  <div class="spotlight"></div>
+  <div class="crt-overlay"></div>
 
-<div class="grid-overlay"></div>
-<div class="spotlight"></div>
-
-<nav>
-    <div class="nav-logo">JADEN_JIRASEVIJINDA.SYS</div>
+  <nav>
+    <a class="nav-logo" href="index.html">JADEN_JIRASEVIJINDA.SYS</a>
     <div class="nav-links">
-        <a href="index.html">01_HOME</a>
-        <a href="about.html">02_ABOUT</a>
-        <a href="projects.html">03_WORKS</a>
-        <a href="photos.html" class="active">04_GALLERY</a>
-        <a href="contact.html">05_CONNECT</a>
+      <a href="index.html">01_HOME</a>
+      <a href="about.html">02_ABOUT</a>
+      <a href="projects.html">03_WORKS</a>
+      <a href="photos.html" class="active">04_GALLERY</a>
+      <a href="contact.html">05_CONNECT</a>
     </div>
-</nav>
+  </nav>
 
-<div class="header">
-    <span style="font-family:'JetBrains Mono'; color:var(--accent); font-size:11px;">[ FILE_04: MEDIA_GALLERY ]</span>
-    <h1 style="font-size: 3.5rem; text-transform: uppercase; margin-top: 10px;">Visual <span style="color:var(--accent)">Capture.</span></h1>
-</div>
-
-<div class="filter-bar">
-    <button class="filter-btn active" onclick="filterMedia('all')">// ALL_MEDIA</button>
-    <button class="filter-btn" onclick="filterMedia('photo')">// PHOTOS</button>
-    <button class="filter-btn" onclick="filterMedia('video')">// VIDEOS</button>
-</div>
-
-<div class="photo-grid" id="media-grid">
-    
- <div class="photo-item" data-type="video" style="position: relative;">
-    
-    <div class="shield" style="pointer-events: none;"></div>
-    
-    <iframe 
-        src="https://drive.google.com/file/d/1FPk7FW78RZA_rZTEdUBNS5pJztIRe2tf/preview" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        allow="autoplay"
-        style="border:none; position: relative; z-index: 5;">
-    </iframe>
-
-    <div class="meta-overlay">
-        <span class="m-title">Earth Day 2025 Timelapse</span>
-        <span class="m-specs">RES: 4K // FR: 60FPS // STATUS: READY_TO_PLAY</span>
+  <section>
+    <div class="gallery-header">
+      <p class="gallery-eyebrow">[ FILE_04 // MEDIA_GALLERY ]</p>
+      <h1 class="gallery-title">Visual <span class="accent">Capture.</span></h1>
     </div>
-</div>
 
-    <div class="photo-item" data-type="photo">
-        <div class="shield"></div>
-        <img src="media/shot1.jpg" alt="Photography">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterMedia('all', this)">// ALL_MEDIA</button>
+      <button class="filter-btn" onclick="filterMedia('photo', this)">// PHOTOS</button>
+      <button class="filter-btn" onclick="filterMedia('video', this)">// VIDEOS</button>
+    </div>
+
+    <div class="media-grid" id="media-grid">
+
+      <!-- YouTube: The Math Genius Who Changed Calculus -->
+      <div class="media-item is-video" data-type="video">
+        <iframe
+          src="https://www.youtube.com/embed/-Zo48A-v5tM"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
         <div class="meta-overlay">
-            <span class="m-title">Industrial Capture 01</span>
-            <span class="m-specs">ISO: 100 // SHUTTER: 1/250 // F: 2.8</span>
+          <span class="m-title">The Math Genius Who Changed Calculus</span>
+          <span class="m-specs">TYPE: VIDEO // PLATFORM: YOUTUBE</span>
         </div>
+      </div>
+
+      <!-- YouTube: The Great Gatsby -->
+      <div class="media-item is-video" data-type="video">
+        <iframe
+          src="https://www.youtube.com/embed/i2x2A8O9adQ"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="meta-overlay">
+          <span class="m-title">How The Great Gatsby Turns Dreams Into Destruction</span>
+          <span class="m-specs">TYPE: VIDEO // PLATFORM: YOUTUBE</span>
+        </div>
+      </div>
+
+      <!-- YouTube: Catcher in the Rye -->
+      <div class="media-item is-video" data-type="video">
+        <iframe
+          src="https://www.youtube.com/embed/tRyBXCNcafs"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="meta-overlay">
+          <span class="m-title">Catcher in the Rye Summary</span>
+          <span class="m-specs">TYPE: VIDEO // PLATFORM: YOUTUBE</span>
+        </div>
+      </div>
+
+      <!-- Google Drive video: Earth Day Timelapse -->
+      <div class="media-item is-video" data-type="video">
+        <iframe
+          src="https://drive.google.com/file/d/1FPk7FW78RZA_rZTEdUBNS5pJztIRe2tf/preview"
+          allow="autoplay">
+        </iframe>
+        <div class="meta-overlay">
+          <span class="m-title">Earth Day 2025 Timelapse</span>
+          <span class="m-specs">RES: 4K // FR: 60FPS // PLATFORM: DRIVE</span>
+        </div>
+      </div>
+
+      <!-- Photo -->
+      <div class="media-item" data-type="photo">
+        <img src="media/shot1.jpg" alt="Industrial Capture 01" draggable="false" />
+        <div class="meta-overlay">
+          <span class="m-title">Industrial Capture 01</span>
+          <span class="m-specs">ISO: 100 // SHUTTER: 1/250 // F: 2.8</span>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-</div>
+  <footer class="sys-footer">
+    <div><span class="f-label">LOC //</span><span class="f-data">LIVERMORE_CA [37.68° N]</span></div>
+    <div style="text-align:center;"><span class="f-label">SYS_TIME //</span><span id="clock" class="f-data">00:00:00</span></div>
+    <div style="text-align:right;"><span class="f-label">VER //</span><span class="f-data">4.2.1_STABLE</span></div>
+  </footer>
 
-<footer class="sys-footer">
-    <div><span class="f-label">LOC //</span><span class="f-data">LIVERMORE_CA</span></div>
-    <div style="text-align: center;"><span class="f-label">SYS_TIME //</span><span id="clock" class="f-data">00:00:00</span></div>
-    <div style="text-align: right;"><span class="f-label">VER //</span><span class="f-data">4.2.0</span></div>
-</footer>
-
-<script>
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('dragstart', e => e.preventDefault());
-
-    function filterMedia(type) {
-        const buttons = document.querySelectorAll('.filter-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        const items = document.querySelectorAll('.photo-item');
-        items.forEach(item => {
-            if (type === 'all' || item.getAttribute('data-type') === type) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
+  <script src="portfolio.js"></script>
+  <script>
+    function filterMedia(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.media-item').forEach(item => {
+        item.style.display = (type === 'all' || item.dataset.type === type) ? '' : 'none';
+      });
     }
-
-    function tick() {
-        const now = new Date();
-        document.getElementById('clock').textContent = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') + ":" + now.getSeconds().toString().padStart(2, '0');
-    }
-    setInterval(tick, 1000); tick();
-</script>
+  </script>
 </body>
 </html>
