@@ -1,335 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WORKS // JADEN J.</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Works — Jaden Jirasevijinda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    body { overflow-y: auto; overflow-x: hidden; }
+    html, body { overflow: hidden; }
 
-    section {
-      display: block;
-      padding-top: var(--nav-h);
-      overflow-y: visible;
-      align-items: unset;
-    }
-
-    /* Header */
-    .works-header {
-      padding: 72px 40px 72px;
-      border-bottom: 1px solid var(--border);
-    }
-    .works-eyebrow {
-      font-family: 'JetBrains Mono';
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-    .works-title {
-      font-size: clamp(2.5rem, 7vw, 4.5rem);
-      font-weight: 800;
-      text-transform: uppercase;
-      line-height: .88;
-      letter-spacing: -2px;
-    }
-
-    /* Project grid */
-    .project-grid {
+    .page-shell {
+      height: 100vh; width: 100vw;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
+      grid-template-columns: 1fr 420px;
+      padding-top: var(--nav-h);
+      position: relative; z-index: 1;
+    }
+
+    /* LEFT — heading */
+    .works-left {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 52px 60px 52px 48px;
+      border-right: 1px solid var(--line);
+      animation: up .5s .05s ease both;
+      overflow: hidden; position: relative;
+    }
+
+    .page-eyebrow {
+      font-size: 11px; font-weight: 500;
+      color: var(--sub); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .page-heading {
+      font-size: clamp(3rem, 7vw, 7rem);
+      font-weight: 800; letter-spacing: -.04em;
+      line-height: .9; text-transform: uppercase;
+      margin-bottom: 0;
+    }
+    .page-heading .ac { color: var(--accent); }
+
+    .works-count {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 1.4vw, 1.2rem);
+      color: var(--sub);
+    }
+
+    /* Ticker */
+    .ticker-wrap {
+      position: absolute; bottom: 60px; left: 0; right: 0;
+      overflow: hidden; pointer-events: none; opacity: .04;
+    }
+    .ticker {
+      display: flex; gap: 60px; white-space: nowrap;
+      animation: ticker-scroll 20s linear infinite;
+    }
+    .ticker span {
+      font-size: clamp(5rem, 9vw, 10rem);
+      font-weight: 800; letter-spacing: -.04em;
+      color: var(--text); flex-shrink: 0;
+    }
+
+    /* RIGHT — project cards */
+    .works-right {
+      display: flex; flex-direction: column;
+      padding: 32px 28px; gap: 8px;
+      animation: up .5s .15s ease both;
+      overflow-y: auto;
+    }
+    .right-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--sub); letter-spacing: .12em;
+      text-transform: uppercase; margin-bottom: 4px; padding: 0 4px;
     }
 
     .project-card {
-      background: var(--bg);
-      padding: 48px 40px 40px;
-      min-height: 340px;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      transition: background .25s;
-      position: relative;
-      overflow: hidden;
+      background: var(--s1); border: 1px solid var(--line);
+      border-radius: 16px; padding: 22px 24px;
+      display: flex; align-items: center; gap: 18px;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: background .22s, border-color .22s, transform .2s;
     }
     .project-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,93,34,0.06) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity .25s;
+      content: ''; position: absolute; inset: 0;
+      background: var(--adim); opacity: 0;
+      transition: opacity .22s; border-radius: 16px;
     }
+    .project-card:hover { background: var(--s2); border-color: rgba(42,143,163,.3); transform: translateX(5px); }
     .project-card:hover::before { opacity: 1; }
-    .project-card:hover { background: #0d0d0f; }
-    .project-card:hover .card-title { color: var(--accent); }
+    .project-card:hover .pc-arrow { color: var(--accent); transform: translate(3px,-3px); }
+    .project-card:hover .pc-num   { color: var(--accent); opacity: 1; }
 
-    .card-num {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: 1px;
-      margin-bottom: 28px;
+    .pc-num {
+      font-size: 10px; font-weight: 700;
+      color: var(--sub); letter-spacing: .1em;
+      opacity: .5; flex-shrink: 0; width: 22px;
+      transition: color .2s, opacity .2s;
     }
-    .card-title {
-      font-size: clamp(1.5rem, 2.5vw, 2rem);
-      font-weight: 800;
-      text-transform: uppercase;
-      line-height: .92;
-      letter-spacing: -1.5px;
-      color: var(--text);
-      transition: color .25s;
-      margin-bottom: 16px;
+    .pc-body { flex: 1; }
+    .pc-title {
+      font-size: 17px; font-weight: 700;
+      letter-spacing: -.02em; line-height: 1; margin-bottom: 4px;
     }
-    .card-desc {
-      font-size: 12px;
-      color: #555;
-      line-height: 1.65;
-      flex: 1;
+    .pc-meta { display: flex; align-items: center; gap: 8px; }
+    .pc-type {
+      font-size: 10px; font-weight: 600;
+      color: var(--accent); letter-spacing: .08em; text-transform: uppercase;
     }
-    .card-footer {
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .pc-status {
+      font-size: 10px; color: var(--sub);
+      letter-spacing: .04em; text-transform: uppercase;
     }
-    .card-status {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      color: #444;
-      letter-spacing: .5px;
+    .pc-skills { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+    .pc-skill {
+      font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      border: 1px solid var(--line); color: var(--sub);
     }
-    .card-skills {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .skill-tag {
-      font-family: 'JetBrains Mono';
-      font-size: 9px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      color: #555;
-      letter-spacing: .3px;
-      text-transform: uppercase;
+    .pc-arrow {
+      font-size: 17px; color: var(--faint);
+      transition: color .2s, transform .2s; flex-shrink: 0;
     }
 
-    /* ── Modal ─────────────────────────────────── */
+    /* Modal */
     .modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.82);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 9999;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity .2s;
-      padding: 20px;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 20px;
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
-
     .modal-box {
-      background: #0e0e10;
-      border: 1px solid rgba(255,93,34,0.2);
-      border-radius: 16px;
-      padding: 36px;
-      width: 100%;
-      max-width: 720px;
-      max-height: 88vh;
-      overflow-y: auto;
-      position: relative;
-      transform: translateY(16px);
+      background: #161616; border: 1px solid rgba(42,143,163,.25);
+      border-radius: 20px; padding: 36px; width: 100%; max-width: 480px;
+      position: relative; transform: translateY(14px);
       transition: transform .28s cubic-bezier(.32,.72,0,1);
+      max-height: 90vh; overflow-y: auto;
     }
     .modal-overlay.open .modal-box { transform: translateY(0); }
-
     .modal-close {
-      position: absolute; top: 16px; right: 16px;
-      font-family: 'JetBrains Mono';
-      font-size: 11px;
-      color: var(--muted);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 5px 10px;
-      cursor: pointer;
-      transition: color .2s, border-color .2s;
+      position: absolute; top: 16px; right: 18px;
+      background: none; border: none; cursor: pointer;
+      font-size: 18px; color: var(--sub); font-family: inherit;
+      transition: color .2s;
     }
-    .modal-close:hover { color: var(--accent); border-color: rgba(255,93,34,0.3); }
-
-    .modal-eyebrow {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: 1px;
-      margin-bottom: 10px;
+    .modal-close:hover { color: var(--text); }
+    .modal-tag {
+      font-size: 11px; font-weight: 600;
+      color: var(--accent); letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: 8px;
     }
     .modal-title {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -1px;
-      margin-bottom: 20px;
-      line-height: .95;
+      font-size: 26px; font-weight: 800;
+      letter-spacing: -.03em; line-height: 1; margin-bottom: 16px;
     }
     .modal-desc {
-      color: #888;
-      font-size: 0.95rem;
-      line-height: 1.75;
-      margin-bottom: 28px;
+      font-size: 14px; color: var(--sub);
+      line-height: 1.75; margin-bottom: 24px;
     }
-
+    .modal-section { margin-bottom: 20px; }
     .modal-section-label {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
+      font-size: 10px; font-weight: 700;
+      color: var(--sub); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 10px;
     }
-
-    /* Skills row */
-    .modal-skills {
-      display: flex; flex-wrap: wrap; gap: 8px;
-      margin-bottom: 28px;
-    }
+    .modal-skills { display: flex; flex-wrap: wrap; gap: 6px; }
     .modal-skill {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      padding: 5px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,93,34,0.25);
-      color: var(--accent);
-      background: rgba(255,93,34,0.06);
-      letter-spacing: .4px;
-      text-transform: uppercase;
+      font-size: 11px; padding: 4px 12px; border-radius: 999px;
+      border: 1px solid rgba(42,143,163,.3);
+      color: var(--accent); background: rgba(42,143,163,.06);
     }
-
-    /* Links row */
-    .modal-links {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      margin-bottom: 28px;
-    }
+    .modal-links { display: flex; flex-direction: column; gap: 8px; }
     .modal-link {
-      font-family: 'JetBrains Mono';
-      font-size: 11px;
-      color: var(--text);
-      text-decoration: none;
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: rgba(255,255,255,0.03);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: border-color .2s, color .2s, background .2s;
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px; border-radius: 12px;
+      border: 1px solid var(--line); background: var(--s2);
+      color: var(--text); text-decoration: none; font-size: 13px;
+      transition: border-color .2s, background .2s;
     }
-    .modal-link:hover {
-      border-color: rgba(255,93,34,0.35);
-      color: var(--accent);
-      background: rgba(255,93,34,0.05);
-    }
+    .modal-link:hover { border-color: rgba(42,143,163,.4); background: var(--s1); }
 
-    section { isolation: auto !important; z-index: auto !important; }
-    @media (max-width: 680px) {
-      .works-header { padding: 48px 20px 32px; }
-      .project-card { padding: 32px 20px; }
-      .modal-box { padding: 24px 18px; }
+    @media (max-width: 960px) {
+      html, body { overflow: auto; }
+      .page-shell { grid-template-columns: 1fr; height: auto; }
+      .works-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px 24px; overflow: visible; }
+      .ticker-wrap { display: none; }
+      .works-right { padding: 20px; }
     }
   </style>
 </head>
-<body onmousemove="
-  document.documentElement.style.setProperty('--x', event.clientX + 'px');
-  document.documentElement.style.setProperty('--y', event.clientY + 'px');
-">
+<body>
   <canvas id="dot-canvas"></canvas>
-  <div class="spotlight"></div>
-  <div class="crt-overlay"></div>
+  <div class="glow"></div>
 
   <nav>
-    <a class="nav-logo" href="index.html">JADEN_JIRASEVIJINDA.SYS</a>
-    <div class="nav-links">
-      <a href="index.html">01_HOME</a>
-      <a href="about.html">02_ABOUT</a>
-      <a href="projects.html" class="active">03_WORKS</a>
-      <a href="photos.html">04_GALLERY</a>
-      <a href="contact.html">05_CONNECT</a>
+    <a class="nav-logo" href="index.html">JADEN JIRASEVIJINDA</a>
+    <ul class="nav-links">
+      <li><a href="index.html">01_HOME</a></li>
+      <li><a href="about.html">02_ABOUT</a></li>
+      <li><a href="projects.html" class="active">03_WORKS</a></li>
+      <li><a href="photos.html">04_GALLERY</a></li>
+      <li><a href="contact.html">05_CONNECT</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-time" id="clock">00:00:00</div>
     </div>
   </nav>
 
-  <section>
-    <div class="works-header">
-      <p class="works-eyebrow">[ FILE_03 // SELECTED_PROJECTS ]</p>
-      <h1 class="works-title">Build <span class="accent">Log.</span></h1>
+  <div class="page-shell">
+    <div class="works-left">
+      <div class="ticker-wrap" aria-hidden="true">
+        <div class="ticker">
+          <span>BUILD LOG</span><span>BUILD LOG</span><span>BUILD LOG</span>
+        </div>
+      </div>
+      <div>
+        <div class="page-eyebrow">03 — Works</div>
+        <h1 class="page-heading">BUILD<br><span class="ac">LOG.</span></h1>
+      </div>
+      <div class="works-count">3 projects — click any to explore</div>
     </div>
 
-    <div class="project-grid">
+    <div class="works-right">
+      <div class="right-label">Projects</div>
 
       <div class="project-card" onclick="openProject('brainless')">
-        <div class="card-num">#001 // VODCAST</div>
-        <div class="card-title">BRAINLESS<br>EXPERTS</div>
-        <p class="card-desc">A video podcast interviewing students on their talents and interests, exploring storytelling, videography, editing, and research.</p>
-        <div class="card-footer">
-          <span class="card-status">[ STATUS: ARCHIVED ]</span>
-          <div class="card-skills">
-            <span class="skill-tag">DaVinci</span>
-            <span class="skill-tag">Rodecaster</span>
-            <span class="skill-tag">Management</span>
+        <span class="pc-num">01</span>
+        <div class="pc-body">
+          <div class="pc-title">Brainless Experts</div>
+          <div class="pc-meta">
+            <span class="pc-type">Vodcast</span>
+            <span class="pc-status">· Archived</span>
+          </div>
+          <div class="pc-skills">
+            <span class="pc-skill">DaVinci Resolve</span>
+            <span class="pc-skill">Rodecaster Pro</span>
+            <span class="pc-skill">Management</span>
           </div>
         </div>
+        <span class="pc-arrow">→</span>
       </div>
 
       <div class="project-card" onclick="openProject('housing')">
-        <div class="card-num">#002 // ARCHITECTURE</div>
-        <div class="card-title">AFFORDABLE<br>HOUSING</div>
-        <p class="card-desc">Designed an affordable housing complex for the Leahy Square site in Livermore as Project Manager, overseeing design, budget, and the two-bedroom unit.</p>
-        <div class="card-footer">
-          <span class="card-status">[ STATUS: ARCHIVED ]</span>
-          <div class="card-skills">
-            <span class="skill-tag">Revit</span>
-            <span class="skill-tag">Leadership</span>
+        <span class="pc-num">02</span>
+        <div class="pc-body">
+          <div class="pc-title">Affordable Housing Project</div>
+          <div class="pc-meta">
+            <span class="pc-type">Architecture</span>
+            <span class="pc-status">· Archived</span>
+          </div>
+          <div class="pc-skills">
+            <span class="pc-skill">Revit</span>
+            <span class="pc-skill">Leadership</span>
           </div>
         </div>
+        <span class="pc-arrow">→</span>
       </div>
 
       <div class="project-card" onclick="openProject('portfolio')">
-        <div class="card-num">#003 // WEB_DEV</div>
-        <div class="card-title">PORTFOLIO<br>WEBSITE</div>
-        <p class="card-desc">AI vibe coding with Claude to build a personal portfolio hosted on Vercel with all files managed through GitHub.</p>
-        <div class="card-footer">
-          <span class="card-status">[ STATUS: ACTIVE ]</span>
-          <div class="card-skills">
-            <span class="skill-tag">Claude AI</span>
-            <span class="skill-tag">Vercel</span>
-            <span class="skill-tag">GitHub</span>
+        <span class="pc-num">03</span>
+        <div class="pc-body">
+          <div class="pc-title">Portfolio Website</div>
+          <div class="pc-meta">
+            <span class="pc-type">Web Dev</span>
+            <span class="pc-status">· Active</span>
+          </div>
+          <div class="pc-skills">
+            <span class="pc-skill">Claude AI</span>
+            <span class="pc-skill">Vibe Coding</span>
+            <span class="pc-skill">Vercel</span>
+            <span class="pc-skill">GitHub</span>
           </div>
         </div>
+        <span class="pc-arrow">→</span>
       </div>
-
     </div>
-  </section>
-
-  <footer class="sys-footer">
-    <div><span class="f-label">LOC //</span><span class="f-data">LIVERMORE_CA [37.68° N]</span></div>
-    <div style="text-align:center;"><span class="f-label">SYS_TIME //</span><span id="clock" class="f-data">00:00:00</span></div>
-    <div style="text-align:right;"><span class="f-label">VER //</span><span class="f-data">4.2.1_STABLE</span></div>
-  </footer>
+  </div>
 
   <!-- Modal -->
-  <div class="modal-overlay" id="modal-overlay" onclick="closeProject()">
-    <div class="modal-box" id="modal-box" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeProject()">[ CLOSE_X ]</button>
-      <p class="modal-eyebrow" id="m-eyebrow"></p>
-      <h2 class="modal-title" id="m-title"></h2>
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('open')">✕</button>
+      <div class="modal-tag" id="m-tag"></div>
+      <div class="modal-title" id="m-title"></div>
       <p class="modal-desc" id="m-desc"></p>
-
-      <p class="modal-section-label">// SKILLS</p>
-      <div class="modal-skills" id="m-skills"></div>
-
-      <p class="modal-section-label" id="m-links-label">// LINKS</p>
-      <div class="modal-links" id="m-links"></div>
+      <div class="modal-section">
+        <div class="modal-section-label">Skills Used</div>
+        <div class="modal-skills" id="m-skills"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-label">Links</div>
+        <div class="modal-links" id="m-links"></div>
+      </div>
     </div>
   </div>
 
@@ -337,70 +300,53 @@
   <script>
     const projects = {
       brainless: {
-        eyebrow: '[ #001 // VODCAST ]',
+        tag: 'Vodcast · Archived',
         title: 'Brainless Experts',
-        desc: 'Brainless Experts is a video podcast or vodcast that focuses on interviewing students on their talents, interests, and more, with the hope that more people can learn more things as they listen. During my time at Brainless Experts, I have learned the importance of storytelling, videography, video editing, and research.',
-        skills: ['DaVinci Resolve', 'Rodecaster Pro', 'Management'],
+        desc: 'A video podcast interviewing students on their talents, interests, and more, with the hope that more people can learn as they listen. During my time at Brainless Experts I learned the importance of storytelling, videography, video editing, and research.',
+        skills: ['DaVinci Resolve', 'Rodecaster Pro', 'Management', 'Storytelling'],
         links: [
-          { label: '> Website →', url: 'https://sites.google.com/view/brainless-experts-website/home' },
-          { label: '> YouTube →', url: 'https://www.youtube.com/@brainlessexperts8626/videos' },
+          { label: 'Website', url: 'https://sites.google.com/view/brainless-experts-website/home' },
+          { label: 'YouTube Channel', url: 'https://www.youtube.com/@brainlessexperts8626/videos' },
         ]
       },
       housing: {
-        eyebrow: '[ #002 // ARCHITECTURE ]',
+        tag: 'Architecture · Archived',
         title: 'Affordable Housing Project',
-        desc: 'For this project, our team designed an affordable housing complex for the Leahy Square site in Livermore. As Project Manager, I was responsible for ensuring the design met all codes, requirements, and site constraints; managing budget and financing responsibilities; delegating tasks; and maintaining the overall quality and completeness of the final proposal. I was responsible for designing the two-bedroom unit.',
-        skills: ['Revit', 'Leadership'],
+        desc: 'Our team designed an affordable housing complex for the Leahy Square site in Livermore. As Project Manager I ensured the design met all codes and site constraints, managed budget and financing, delegated tasks, and was personally responsible for designing the two-bedroom unit.',
+        skills: ['Revit', 'Leadership', 'Project Management', 'Architecture'],
         links: [
-          { label: '> Final Presentation.pdf →', url: 'media/Affordable Housing Project Final Presentation.pdf', download: true },
-          { label: '> Draft Site Plan.pdf →', url: 'media/Affordable Housing Project Draft Site Plan.pdf', download: true },
+          { label: 'Final Presentation (PDF)', url: 'media/Affordable Housing Project Final Presentation.pdf', download: true },
+          { label: 'Draft Site Plan (PDF)', url: 'media/Affordable Housing Project Draft Site Plan.pdf', download: true },
         ]
       },
       portfolio: {
-        eyebrow: '[ #003 // WEB_DEV ]',
+        tag: 'Web Dev · Active',
         title: 'Portfolio Website',
-        desc: 'Experimenting with Claude and AI vibe coding to create a personal portfolio website that is being hosted on Vercel and all the files are on a GitHub repository.',
-        skills: ['Claude AI', 'Vibe Coding', 'Vercel', 'GitHub'],
+        desc: 'Experimenting with Claude and AI vibe coding to create this personal portfolio website, hosted on Vercel with all files managed through GitHub.',
+        skills: ['Claude AI', 'Vibe Coding', 'Vercel', 'GitHub', 'HTML/CSS/JS'],
         links: [
-          { label: '> GitHub Repo →', url: 'https://github.com/jadenjirasevijinda/jadenjirasevijinda' },
+          { label: 'GitHub Repository', url: 'https://github.com/jadenjirasevijinda/jadenjirasevijinda' },
         ]
       }
     };
 
-    function openProject(id) {
-      const p = projects[id];
-      if (!p) return;
-
-      document.getElementById('m-eyebrow').textContent = p.eyebrow;
-      document.getElementById('m-title').textContent   = p.title;
-      document.getElementById('m-desc').textContent    = p.desc;
-
-      // Skills
-      document.getElementById('m-skills').innerHTML = p.skills
-        .map(s => `<span class="modal-skill">${s}</span>`).join('');
-
-      // Links
-      const linksEl = document.getElementById('m-links');
-      const linksLabel = document.getElementById('m-links-label');
-      if (p.links && p.links.length) {
-        linksLabel.style.display = '';
-        linksEl.innerHTML = p.links.map(l =>
-          `<a class="modal-link" href="${l.url}" ${l.download ? 'download' : 'target="_blank" rel="noopener"'}>${l.label}</a>`
-        ).join('');
-      } else {
-        linksLabel.style.display = 'none';
-        linksEl.innerHTML = '';
-      }
-
+    function openProject(key) {
+      const p = projects[key];
+      document.getElementById('m-tag').textContent   = p.tag;
+      document.getElementById('m-title').textContent = p.title;
+      document.getElementById('m-desc').textContent  = p.desc;
+      document.getElementById('m-skills').innerHTML  = p.skills.map(s =>
+        `<span class="modal-skill">${s}</span>`).join('');
+      document.getElementById('m-links').innerHTML   = p.links.map(l =>
+        `<a class="modal-link" href="${l.url}" ${l.download ? 'download' : 'target="_blank" rel="noopener"'}>${l.label} →</a>`).join('');
       document.getElementById('modal-overlay').classList.add('open');
     }
-
-    function closeProject() {
-      document.getElementById('modal-overlay').classList.remove('open');
+    function closeModal(e) {
+      if (e.target === document.getElementById('modal-overlay'))
+        document.getElementById('modal-overlay').classList.remove('open');
     }
-
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeProject();
+      if (e.key === 'Escape') document.getElementById('modal-overlay').classList.remove('open');
     });
   </script>
 </body>
