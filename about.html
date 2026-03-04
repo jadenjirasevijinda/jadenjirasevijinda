@@ -1,396 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ABOUT // JADEN J.</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Jaden Jirasevijinda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    /* ── About-specific layout ── */
-    body { overflow: hidden; }
+    html, body { overflow: hidden; }
 
-    section {
-      align-items: stretch;
-      padding-top: 0;
-      overflow: hidden;
-    }
-
-    .about-grid {
+    .page-shell {
+      height: 100vh; width: 100vw;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Photo side */
-    .photo-side {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid var(--border);
-      background: rgba(13,13,15,0.4);
+      grid-template-columns: 1fr 420px;
       padding-top: var(--nav-h);
+      position: relative; z-index: 1;
     }
 
-    .headshot-wrap {
-      width: 300px;
-      height: 300px;
-      position: relative;
-      clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);
-      background: #111;
-      overflow: hidden;
-    }
-
-    .headshot-wrap img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform .4s ease, filter .4s ease;
-      pointer-events: none;
-      user-select: none;
-    }
-    .headshot-wrap:hover img {
-      transform: scale(1.04);
-      filter: contrast(1.1) brightness(1.05);
-    }
-
-    /* Accent border around clip shape — pseudo outline trick */
-    .headshot-outer {
-      padding: 2px;
-      background: var(--accent);
-      clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);
-    }
-
-    /* Text side */
-    .text-side {
-      display: flex;
-      flex-direction: column;
+    .about-left {
+      display: flex; flex-direction: column;
       justify-content: center;
-      padding: calc(var(--nav-h) + 40px) 70px 40px;
+      padding: 52px 60px 52px 48px;
+      border-right: 1px solid var(--line);
+      position: relative; overflow: hidden;
+      animation: up .5s .05s ease both;
     }
 
-    .bio-eyebrow {
-      font-family: 'JetBrains Mono';
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: 1px;
-      margin-bottom: 18px;
+    .page-eyebrow {
+      font-size: 11px; font-weight: 500;
+      color: var(--sub); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 20px;
     }
-
-    .bio-title {
-      font-size: clamp(2.2rem, 4vw, 3.6rem);
-      font-weight: 800;
-      text-transform: uppercase;
-      line-height: .9;
-      letter-spacing: -2px;
+    .page-heading {
+      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+      font-weight: 800; letter-spacing: -.04em;
+      line-height: .9; text-transform: uppercase;
       margin-bottom: 28px;
     }
+    .page-heading .ac { color: var(--accent); }
 
-    .bio-body {
-      color: #888;
-      line-height: 1.85;
-      font-size: 1rem;
-      max-width: 480px;
+    .about-photo-wrap {
+      width: 200px; height: 200px;
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--line); margin-bottom: 28px;
     }
+    .about-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform .4s ease;
+    }
+    .about-photo-wrap:hover img { transform: scale(1.04); }
 
-    /* Org trigger buttons */
-    .org-link {
-      color: #888;
-      background: none;
-      border: none;
-      border-bottom: 1px solid transparent;
-      font: inherit;
-      cursor: pointer;
-      padding: 0;
+    .about-bio {
+      font-size: 14px; color: var(--sub);
+      line-height: 1.8; max-width: 420px;
+    }
+    .about-bio button {
+      background: none; border: none;
+      border-bottom: 1px solid var(--sub);
+      color: var(--text); font: inherit;
+      cursor: pointer; padding: 0;
       transition: color .2s, border-color .2s;
     }
-    .org-link:hover {
-      color: var(--accent);
-      border-bottom-color: rgba(255,93,34,0.4);
-    }
-    /* Always show underline on org links */
-    .org-link { border-bottom-color: #555; }
+    .about-bio button:hover { color: var(--accent); border-color: var(--accent); }
 
-    /* Org popup overlay */
-    .org-popup-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.72);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 2000;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity .2s;
-    }
-    .org-popup-overlay.open { opacity: 1; pointer-events: all; }
-    .org-popup {
-      background: #0f0f10;
-      border: 1px solid rgba(255,93,34,0.25);
-      border-radius: 16px;
-      padding: 28px;
-      max-width: 380px;
-      width: calc(100% - 40px);
-      position: relative;
-      transform: translateY(14px);
-      transition: transform .25s cubic-bezier(.32,.72,0,1);
-    }
-    .org-popup-overlay.open .org-popup { transform: translateY(0); }
-    .org-popup-close {
-      position: absolute; top: 14px; right: 14px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      width: 28px; height: 28px;
-      font-size: 14px; cursor: pointer;
-      color: var(--muted);
-      display: flex; align-items: center; justify-content: center;
-      transition: background .15s;
-    }
-    .org-popup-close:hover { background: rgba(255,255,255,0.1); color: #ccc; }
-    .org-popup-tag {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .org-popup-name {
-      font-size: 1.3rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.5px;
-      margin-bottom: 12px;
-      color: var(--text);
-    }
-    .org-popup-desc {
-      color: #888;
-      font-size: 0.9rem;
-      line-height: 1.75;
-      margin-bottom: 20px;
-    }
-    .org-popup-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono';
-      font-size: 11px;
-      color: var(--accent);
-      text-decoration: none;
-      padding: 10px 14px;
-      border: 1px solid rgba(255,93,34,0.3);
-      border-radius: 10px;
-      background: rgba(255,93,34,0.06);
-      transition: background .2s, border-color .2s;
-      letter-spacing: .3px;
-    }
-    .org-popup-btn:hover {
-      background: rgba(255,93,34,0.12);
-      border-color: rgba(255,93,34,0.5);
-    }
-
-    /* Interests tags */
-    .interests {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 28px;
+    .interest-tags {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 22px;
     }
     .interest-tag {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,93,34,0.25);
-      color: var(--accent);
-      background: rgba(255,93,34,0.05);
-      letter-spacing: .5px;
-      text-transform: uppercase;
+      font-size: 10px; font-weight: 500;
+      padding: 4px 11px; border-radius: 999px;
+      border: 1px solid rgba(42,143,163,.3);
+      color: var(--accent); background: rgba(42,143,163,.06);
+      letter-spacing: .06em; text-transform: uppercase;
     }
 
-    @media (max-width: 900px) {
-      body { overflow-y: auto; }
-      section { overflow-y: auto; align-items: flex-start; }
-      .about-grid { grid-template-columns: 1fr; }
-      .photo-side { padding: calc(var(--nav-h) + 40px) 20px 30px; border-right: none; border-bottom: 1px solid var(--border); }
-      .text-side { padding: 40px 24px 60px; }
+    .about-right {
+      display: flex; flex-direction: column;
+      padding: 32px 28px; gap: 8px;
+      animation: up .5s .15s ease both;
+      overflow-y: auto;
+    }
+    .right-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--sub); letter-spacing: .12em;
+      text-transform: uppercase; margin-bottom: 4px; padding: 0 4px;
     }
 
-    /* Languages */
-    .lang-section { margin-top: 28px; }
-    .lang-label {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
+    .info-card {
+      background: var(--s1); border: 1px solid var(--line);
+      border-radius: 16px; padding: 18px 22px;
+      display: flex; flex-direction: column; gap: 4px;
     }
-    .lang-grid { display: grid; gap: 10px; }
-    .lang-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+    .info-card-label {
+      font-size: 10px; font-weight: 700;
+      color: var(--sub); letter-spacing: .1em; text-transform: uppercase;
     }
-    .lang-name {
-      font-family: 'JetBrains Mono';
-      font-size: 11px;
-      color: var(--text);
-      font-weight: 700;
-      min-width: 72px;
-      letter-spacing: .4px;
+    .info-card-value { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+    .info-card-sub   { font-size: 12px; color: var(--sub); }
+
+    .lang-card {
+      background: var(--s1); border: 1px solid var(--line);
+      border-radius: 16px; padding: 18px 22px;
+      display: flex; flex-direction: column; gap: 14px; flex: 1;
     }
-    .lang-skills {
-      display: flex;
-      gap: 5px;
+    .lang-row { display: flex; align-items: center; gap: 12px; }
+    .lang-flag { font-size: 17px; flex-shrink: 0; }
+    .lang-name { font-size: 13px; font-weight: 600; flex: 1; }
+    .lang-pips { display: flex; gap: 4px; }
+    .pip {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--faint); border: 1px solid var(--sub);
     }
-    .lang-skill {
-      font-family: 'JetBrains Mono';
-      font-size: 9px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-    }
-    .lang-skill.active {
-      border-color: rgba(255,93,34,0.3);
-      color: var(--accent);
-      background: rgba(255,93,34,0.06);
-    }
-    .lang-skill.learning {
-      border-color: rgba(255,200,50,0.3);
-      color: #f5c842;
-      background: rgba(255,200,50,0.05);
-    }
+    .pip.on      { background: var(--accent); border-color: var(--accent); }
+    .pip.partial { background: transparent; border-color: var(--accent); }
     .lang-level {
-      font-family: 'JetBrains Mono';
-      font-size: 9px;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      margin-left: auto;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
     }
-    .lang-level.fluent  { color: var(--accent); }
-    .lang-level.learning { color: #f5c842; }
+    .lang-level.fluent   { color: var(--accent); }
+    .lang-level.progress { color: #f5c842; }
+
+    /* Org modal */
+    .org-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 20px;
+    }
+    .org-overlay.open { opacity: 1; pointer-events: all; }
+    .org-modal {
+      background: #161616; border: 1px solid rgba(42,143,163,.25);
+      border-radius: 18px; padding: 32px; width: 100%; max-width: 380px;
+      position: relative; transform: translateY(12px);
+      transition: transform .25s cubic-bezier(.32,.72,0,1);
+    }
+    .org-overlay.open .org-modal { transform: translateY(0); }
+    .org-close {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; cursor: pointer;
+      font-size: 18px; color: var(--sub); font-family: inherit;
+      transition: color .2s;
+    }
+    .org-close:hover { color: var(--text); }
+    .org-tag  { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+    .org-name { font-size: 20px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; }
+    .org-desc { font-size: 13px; color: var(--sub); line-height: 1.75; margin-bottom: 20px; }
+    .org-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--accent); text-decoration: none;
+      padding: 10px 16px; border: 1px solid rgba(42,143,163,.3);
+      border-radius: 10px; background: rgba(42,143,163,.06);
+      transition: background .2s, border-color .2s;
+    }
+    .org-link:hover { background: rgba(42,143,163,.14); border-color: rgba(42,143,163,.5); }
+
+    @media (max-width: 960px) {
+      html, body { overflow: auto; }
+      .page-shell { grid-template-columns: 1fr; height: auto; }
+      .about-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px 24px; }
+      .about-right { padding: 20px; }
+    }
   </style>
 </head>
-<body onmousemove="
-  document.documentElement.style.setProperty('--x', event.clientX + 'px');
-  document.documentElement.style.setProperty('--y', event.clientY + 'px');
-">
+<body>
   <canvas id="dot-canvas"></canvas>
-  <div class="spotlight"></div>
-  <div class="crt-overlay"></div>
+  <div class="glow"></div>
 
   <nav>
-    <a class="nav-logo" href="index.html">JADEN_JIRASEVIJINDA.SYS</a>
-    <div class="nav-links">
-      <a href="index.html">01_HOME</a>
-      <a href="about.html" class="active">02_ABOUT</a>
-      <a href="projects.html">03_WORKS</a>
-      <a href="photos.html">04_GALLERY</a>
-      <a href="contact.html">05_CONNECT</a>
+    <a class="nav-logo" href="index.html">JADEN JIRASEVIJINDA</a>
+    <ul class="nav-links">
+      <li><a href="index.html">01_HOME</a></li>
+      <li><a href="about.html" class="active">02_ABOUT</a></li>
+      <li><a href="projects.html">03_WORKS</a></li>
+      <li><a href="photos.html">04_GALLERY</a></li>
+      <li><a href="contact.html">05_CONNECT</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-time" id="clock">00:00:00</div>
     </div>
   </nav>
 
-  <section>
-    <div class="about-grid">
-
-      <div class="photo-side">
-        <div class="headshot-outer">
-          <div class="headshot-wrap">
-            <img src="media/me.jpg" alt="Jaden Jirasevijinda" draggable="false" />
-          </div>
-        </div>
+  <div class="page-shell">
+    <div class="about-left">
+      <div class="page-eyebrow">02 — About Me</div>
+      <div class="about-photo-wrap">
+        <img src="media/me.jpg" alt="Jaden Jirasevijinda"/>
       </div>
-
-      <div class="text-side">
-        <p class="bio-eyebrow">[ FILE_01 // BIOGRAPHY ]</p>
-        <h1 class="bio-title">
-          JADEN <span class="accent">JIRASEVIJINDA.</span>
-        </h1>
-        <p class="bio-body">
-          I am a Junior at Livermore High School currently serving as the President of the
-          <button class="org-link" onclick="openPopup('gea')">Green Engineering Academy</button>.
-          I am also a board member of
-          <button class="org-link" onclick="openPopup('pot')">Pillars of Tech</button>.
-          Some things I am interested in are videography, photography, and web design —
-          and I hope to one day become a mechanical engineer.
-        </p>
-
-        <div class="interests">
-          <span class="interest-tag">Videography</span>
-          <span class="interest-tag">Photography</span>
-          <span class="interest-tag">Web Design</span>
-          <span class="interest-tag">Mechanical Engineering</span>
-        </div>
-
-        <div class="lang-section">
-          <p class="lang-label">[ LANGUAGES ]</p>
-          <div class="lang-grid">
-            <div class="lang-row">
-              <div class="lang-name">English</div>
-              <div class="lang-skills">
-                <span class="lang-skill active" title="Speak">speak</span>
-                <span class="lang-skill active" title="Read">read</span>
-                <span class="lang-skill active" title="Write">write</span>
-                <span class="lang-skill active" title="Listen">listen</span>
-              </div>
-              <div class="lang-level fluent">Fluent</div>
-            </div>
-            <div class="lang-row">
-              <div class="lang-name">Thai</div>
-              <div class="lang-skills">
-                <span class="lang-skill active" title="Speak">speak</span>
-                <span class="lang-skill active" title="Read">read</span>
-                <span class="lang-skill active" title="Write">write</span>
-                <span class="lang-skill active" title="Listen">listen</span>
-              </div>
-              <div class="lang-level fluent">Fluent</div>
-            </div>
-            <div class="lang-row">
-              <div class="lang-name">Mandarin</div>
-              <div class="lang-skills">
-                <span class="lang-skill active" title="Speak">speak</span>
-                <span class="lang-skill" title="Read">read</span>
-                <span class="lang-skill" title="Write">write</span>
-                <span class="lang-skill active" title="Listen">listen</span>
-              </div>
-              <div class="lang-level fluent">Fluent</div>
-            </div>
-            <div class="lang-row">
-              <div class="lang-name">Spanish</div>
-              <div class="lang-skills">
-                <span class="lang-skill learning" title="Speak">speak</span>
-                <span class="lang-skill learning" title="Read">read</span>
-                <span class="lang-skill learning" title="Write">write</span>
-                <span class="lang-skill learning" title="Listen">listen</span>
-              </div>
-              <div class="lang-level learning">Learning</div>
-            </div>
-          </div>
-        </div>
+      <h1 class="page-heading">JADEN<br><span class="ac">JIRASEVIJINDA.</span></h1>
+      <p class="about-bio">
+        I'm a Junior at Livermore High School serving as President of the
+        <button onclick="openOrg('gea')">Green Engineering Academy</button>.
+        I'm also a Board Member of
+        <button onclick="openOrg('pot')">Pillars of Tech</button>.
+        Passionate about videography, photography, and web design —
+        working toward a future in mechanical engineering.
+      </p>
+      <div class="interest-tags">
+        <span class="interest-tag">Videography</span>
+        <span class="interest-tag">Photography</span>
+        <span class="interest-tag">Web Design</span>
+        <span class="interest-tag">Mechanical Engineering</span>
       </div>
-
     </div>
-  </section>
 
-  <footer class="sys-footer">
-    <div><span class="f-label">LOC //</span><span class="f-data">LIVERMORE_CA [37.68° N]</span></div>
-    <div style="text-align:center;"><span class="f-label">SYS_TIME //</span><span id="clock" class="f-data">00:00:00</span></div>
-    <div style="text-align:right;"><span class="f-label">VER //</span><span class="f-data">4.2.1_STABLE</span></div>
-  </footer>
+    <div class="about-right">
+      <div class="right-label">Details</div>
+      <div class="info-card">
+        <div class="info-card-label">Location</div>
+        <div class="info-card-value">Livermore, California</div>
+        <div class="info-card-sub">San Francisco Bay Area</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Education</div>
+        <div class="info-card-value">Livermore High School</div>
+        <div class="info-card-sub">Junior · Class of 2026</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Goal</div>
+        <div class="info-card-value">Mechanical Engineering</div>
+        <div class="info-card-sub">Future university major</div>
+      </div>
 
+      <div class="right-label" style="margin-top:8px;">Languages</div>
+      <div class="lang-card">
+        <div class="lang-row">
+          <span class="lang-flag">🇺🇸</span>
+          <span class="lang-name">English</span>
+          <div class="lang-pips">
+            <div class="pip on"></div><div class="pip on"></div>
+            <div class="pip on"></div><div class="pip on"></div>
+          </div>
+          <span class="lang-level fluent">Fluent</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-flag">🇹🇭</span>
+          <span class="lang-name">Thai</span>
+          <div class="lang-pips">
+            <div class="pip on"></div><div class="pip on"></div>
+            <div class="pip on"></div><div class="pip on"></div>
+          </div>
+          <span class="lang-level fluent">Fluent</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-flag">🇨🇳</span>
+          <span class="lang-name">Mandarin</span>
+          <div class="lang-pips">
+            <div class="pip on"></div><div class="pip partial"></div>
+            <div class="pip partial"></div><div class="pip on"></div>
+          </div>
+          <span class="lang-level fluent">Fluent</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-flag">🇪🇸</span>
+          <span class="lang-name">Spanish</span>
+          <div class="lang-pips">
+            <div class="pip partial"></div><div class="pip partial"></div>
+            <div class="pip"></div><div class="pip"></div>
+          </div>
+          <span class="lang-level progress">Learning</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Org popups -->
-  <div class="org-popup-overlay" id="popup-overlay" onclick="closePopup(event)">
-    <div class="org-popup" id="popup-box">
-      <button class="org-popup-close" onclick="closePopup()">&times;</button>
-      <p class="org-popup-tag" id="popup-tag"></p>
-      <h2 class="org-popup-name" id="popup-name"></h2>
-      <p class="org-popup-desc" id="popup-desc"></p>
-      <a class="org-popup-btn" id="popup-link" href="#" target="_blank" rel="noopener">> visit_site() →</a>
+  <div class="org-overlay" id="org-overlay" onclick="closeOrg(event)">
+    <div class="org-modal">
+      <button class="org-close" onclick="document.getElementById('org-overlay').classList.remove('open')">✕</button>
+      <div class="org-tag" id="org-tag"></div>
+      <div class="org-name" id="org-name"></div>
+      <p class="org-desc" id="org-desc"></p>
+      <a class="org-link" id="org-url" href="#" target="_blank" rel="noopener">Visit Site →</a>
     </div>
   </div>
 
@@ -398,35 +279,32 @@
   <script>
     const orgs = {
       gea: {
-        tag: '[ ORG_01 // ACADEMY ]',
+        tag: 'Organization · Academy',
         name: 'Green Engineering Academy',
-        desc: 'GEA is a California Partnership Academy at Livermore High School that blends academic coursework with career technical education. Using the Project Lead the Way curriculum, students are prepared for careers in engineering, architecture, and related fields. All courses are UC/CSU approved, with themes of green technology, sustainability, and environmental issues woven throughout.',
+        desc: 'GEA is a California Partnership Academy at Livermore High School that blends academic coursework with career technical education. Students are prepared for careers in engineering and architecture using Project Lead the Way curriculum.',
         url: 'https://livermorehigh.livermoreschools.org/academics/green-engineering-academy'
       },
       pot: {
-        tag: '[ ORG_02 // NONPROFIT ]',
+        tag: 'Organization · Nonprofit',
         name: 'Pillars of Tech',
         desc: 'Pillars of Tech is a group of passionate high school students dedicated to spreading STEM education and technology access to communities that need it the most.',
         url: 'https://www.pillarsoftech.org/'
       }
     };
-
-    function openPopup(key) {
-      const org = orgs[key];
-      document.getElementById('popup-tag').textContent  = org.tag;
-      document.getElementById('popup-name').textContent = org.name;
-      document.getElementById('popup-desc').textContent = org.desc;
-      document.getElementById('popup-link').href        = org.url;
-      document.getElementById('popup-overlay').classList.add('open');
+    function openOrg(key) {
+      const o = orgs[key];
+      document.getElementById('org-tag').textContent  = o.tag;
+      document.getElementById('org-name').textContent = o.name;
+      document.getElementById('org-desc').textContent = o.desc;
+      document.getElementById('org-url').href         = o.url;
+      document.getElementById('org-overlay').classList.add('open');
     }
-
-    function closePopup(e) {
-      if (e && e.target !== document.getElementById('popup-overlay')) return;
-      document.getElementById('popup-overlay').classList.remove('open');
+    function closeOrg(e) {
+      if (e.target === document.getElementById('org-overlay'))
+        document.getElementById('org-overlay').classList.remove('open');
     }
-
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') document.getElementById('popup-overlay').classList.remove('open');
+      if (e.key === 'Escape') document.getElementById('org-overlay').classList.remove('open');
     });
   </script>
 </body>
