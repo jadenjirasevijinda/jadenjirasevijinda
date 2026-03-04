@@ -1,110 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Jaden Jirasevijinda — Junior at Livermore High School, <a class="subtle-link" href="https://linktr.ee/livermoregea" target="_blank" rel="noopener">President of GEA</a>, Board Member at Pillars of Tech." />
-  <title>JADEN J. // TERMINAL</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    .socials {
-      margin-top: 22px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .social-link {
-      font-family: 'JetBrains Mono';
-      font-size: 11px;
-      color: #555;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      transition: color .2s;
-      letter-spacing: .3px;
-    }
-    .social-link:hover { color: var(--accent); }
-    .social-sep {
-      font-family: 'JetBrains Mono';
-      font-size: 10px;
-      color: #2a2a2a;
-    }
-  </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jaden Jirasevijinda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body onmousemove="
-  document.documentElement.style.setProperty('--x', event.clientX + 'px');
-  document.documentElement.style.setProperty('--y', event.clientY + 'px');
-">
-  <canvas id="dot-canvas"></canvas>
-  <div class="spotlight"></div>
-  <div class="crt-overlay"></div>
+<body>
 
+  <!-- Dot canvas (animated by portfolio.js) -->
+  <canvas id="dot-canvas"></canvas>
+
+  <!-- Ambient glow -->
+  <div class="glow"></div>
+
+  <!-- ── NAV ── -->
   <nav>
-    <a class="nav-logo" href="index.html">JADEN_JIRASEVIJINDA.SYS</a>
-    <div class="nav-links">
-      <a href="index.html" class="active">01_HOME</a>
-      <a href="about.html">02_ABOUT</a>
-      <a href="projects.html">03_WORKS</a>
-      <a href="photos.html">04_GALLERY</a>
-      <a href="contact.html">05_CONNECT</a>
+    <a class="nav-logo" href="#">JADEN JIRASEVIJINDA</a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">01_HOME</a></li>
+      <li><a href="about.html">02_ABOUT</a></li>
+      <li><a href="projects.html">03_WORKS</a></li>
+      <li><a href="photos.html">04_GALLERY</a></li>
+      <li><a href="contact.html">05_CONNECT</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-time" id="clock">00:00:00</div>
     </div>
   </nav>
 
-  <section>
-    <div style="width:100%; padding: 52px 40px 28px;">
-      <h1 class="page-title">JADEN <br><span class="accent">JIRASEVIJINDA.</span></h1>
-      <p class="page-sub">
-        <a class="subtle-link" href="https://livermorehigh.livermoreschools.org/" target="_blank" rel="noopener">Junior at Livermore High School</a>
-        <span class="sep">·</span>
-        <a class="subtle-link" href="https://linktr.ee/livermoregea" target="_blank" rel="noopener">President of GEA</a>
-        <span class="sep">·</span>
-        <a class="subtle-link" href="https://www.pillarsoftech.org/" target="_blank" rel="noopener">Board Member, Pillars of Tech</a>
-      </p>
+  <!-- ── SHELL ── -->
+  <div class="shell">
 
-      <div class="cta-grid">
-        <a class="cta-card primary" href="about.html">
-          <span class="cta-tag">02 // ABOUT</span>
-          <span class="cta-label">About Me</span>
-          <span class="cta-arrow">→</span>
-        </a>
-        <a class="cta-card primary" href="projects.html">
-          <span class="cta-tag">03 // WORKS</span>
-          <span class="cta-label">View My Projects</span>
-          <span class="cta-arrow">→</span>
-        </a>
-        <a class="cta-card primary" href="photos.html">
-          <span class="cta-tag">04 // GALLERY</span>
-          <span class="cta-label">Photos</span>
-          <span class="cta-arrow">→</span>
-        </a>
-        <a class="cta-card primary" href="contact.html">
-          <span class="cta-tag">05 // CONNECT</span>
-          <span class="cta-label">Get In Touch</span>
-          <span class="cta-arrow">→</span>
-        </a>
+    <!-- LEFT PANEL -->
+    <div class="left">
+
+      <!-- Scrolling ticker -->
+      <div class="ticker-wrap" aria-hidden="true">
+        <div class="ticker">
+          <span>JADEN JIRASEVIJINDA</span>
+          <span>JADEN JIRASEVIJINDA</span>
+          <span>JADEN JIRASEVIJINDA</span>
+        </div>
       </div>
 
-      <div class="socials">
-        <a class="social-link" href="https://www.youtube.com/@thereal_jasian" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          <span>@thereal_jasian</span>
-        </a>
-        <span class="social-sep">//</span>
-        <a class="social-link" href="https://www.instagram.com/thereal_jasian" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-          <span>@thereal_jasian</span>
-        </a>
+      <!-- Hero content -->
+      <div class="left-top">
+        <div class="hero-eyebrow">Portfolio · Livermore, CA</div>
+        <h1 class="hero-name">
+          <span class="first">JADEN</span>
+          <span class="last">JIRASEVIJINDA.</span>
+        </h1>
+        <p class="hero-desc" style="white-space:nowrap;">
+          Junior at <a href="https://livermorehigh.livermoreschools.org/" target="_blank">Livermore High School</a>
+          &nbsp;·&nbsp; President of <a href="https://linktr.ee/livermoregea" target="_blank">GEA</a>
+          &nbsp;·&nbsp; Board Member of <a href="https://www.pillarsoftech.org/" target="_blank">Pillars of Tech</a>
+        </p>
       </div>
+
+      <!-- Socials + language chips -->
+      <div class="left-bot">
+        <div class="socials">
+          <a class="soc" href="https://www.youtube.com/@thereal_jasian" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            YouTube
+          </a>
+          <a class="soc" href="https://www.instagram.com/thereal_jasian" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            Instagram
+          </a>
+          <a class="soc" href="https://www.linkedin.com/in/jadenjirasevijinda" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+        <div class="lang-chips">
+          <button class="chip lang-btn" data-lang="english">English</button>
+          <button class="chip lang-btn" data-lang="thai">Thai</button>
+          <button class="chip lang-btn" data-lang="mandarin">Mandarin</button>
+          <button class="chip lang-btn" data-lang="spanish">Spanish</button>
+        </div>
+      </div>
+
     </div>
-  </section>
 
-  <footer class="sys-footer">
-    <div><span class="f-label">LOC //</span><span class="f-data">LIVERMORE_CA [37.68° N]</span></div>
-    <div style="text-align:center;"><span class="f-label">SYS_TIME //</span><span id="clock" class="f-data">00:00:00</span></div>
-    <div style="text-align:right;"><span class="f-label">VER //</span><span class="f-data">4.2.1_STABLE</span></div>
-  </footer>
+    <!-- RIGHT PANEL — nav cards -->
+    <div class="right">
+      <div class="right-label">Navigate</div>
 
+      <a class="nav-card" href="about.html">
+        <span class="nc-num">02</span>
+        <div class="nc-body">
+          <div class="nc-title">About Me</div>
+        </div>
+        <span class="nc-arrow">→</span>
+      </a>
+
+      <a class="nav-card" href="projects.html">
+        <span class="nc-num">03</span>
+        <div class="nc-body">
+          <div class="nc-title">My Projects</div>
+        </div>
+        <span class="nc-arrow">→</span>
+      </a>
+
+      <a class="nav-card" href="photos.html">
+        <span class="nc-num">04</span>
+        <div class="nc-body">
+          <div class="nc-title">Gallery</div>
+        </div>
+        <span class="nc-arrow">→</span>
+      </a>
+
+      <a class="nav-card accent" href="contact.html">
+        <span class="nc-num">05</span>
+        <div class="nc-body">
+          <div class="nc-title">Get In Touch</div>
+        </div>
+        <span class="nc-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── LANGUAGE MODAL ── -->
+  <div class="lang-overlay" id="lang-overlay" onclick="closeLang(event)">
+    <div class="lang-modal" id="lang-modal">
+      <button class="lang-modal-close" onclick="closeLangBtn()">✕</button>
+      <div class="lang-modal-flag" id="lm-flag"></div>
+      <div class="lang-modal-name" id="lm-name"></div>
+      <div class="lang-modal-level" id="lm-level"></div>
+      <div class="lang-skills" id="lm-skills"></div>
+    </div>
+  </div>
+
+  <!-- ── SCRIPTS ── -->
   <script src="portfolio.js"></script>
+  <script>
+    const langData = {
+      english: {
+        flag: '🇺🇸', name: 'English', level: 'Fluent',
+        skills: [
+          { can: true,  label: 'Speak fluently' },
+          { can: true,  label: 'Read & write at a native level' },
+          { can: true,  label: 'Listen & comprehend fully' },
+          { can: true,  label: 'Think & dream in English' },
+        ]
+      },
+      thai: {
+        flag: '🇹🇭', name: 'Thai', level: 'Fluent',
+        skills: [
+          { can: true,  label: 'Speak fluently' },
+          { can: true,  label: 'Read & understand Thai script' },
+          { can: true,  label: 'Listen & comprehend fully' },
+          { can: true,  label: 'Write formally' },
+        ]
+      },
+      mandarin: {
+        flag: '🇨🇳', name: 'Mandarin', level: 'Fluent',
+        skills: [
+          { can: true,  label: 'Speak & hold conversations' },
+          { can: true,  label: 'Listen & comprehend' },
+          { can: false, label: 'Read Chinese characters — limited' },
+          { can: false, label: 'Write limited characters' },
+        ]
+      },
+      spanish: {
+        flag: '🇪🇸', name: 'Spanish', level: 'In Progress',
+        skills: [
+          { can: true,  label: 'Basic speaking & greetings' },
+          { can: true,  label: 'Read simple sentences' },
+          { can: false, label: 'Hold a full conversation — not yet' },
+          { can: false, label: 'Write fluently — still learning' },
+        ]
+      }
+    };
+
+    function openLang(key) {
+      const d = langData[key]; if (!d) return;
+      document.getElementById('lm-flag').textContent  = d.flag;
+      document.getElementById('lm-name').textContent  = d.name;
+      document.getElementById('lm-level').textContent = d.level;
+      document.getElementById('lm-skills').innerHTML  = d.skills.map(s =>
+        `<div class="lang-skill">
+          <div class="skill-dot ${s.can ? 'yes' : 'no'}"></div>
+          <div class="skill-label">${s.label}</div>
+        </div>`
+      ).join('');
+      document.getElementById('lang-overlay').classList.add('open');
+    }
+
+    function closeLang(e) {
+      if (e.target === document.getElementById('lang-overlay'))
+        document.getElementById('lang-overlay').classList.remove('open');
+    }
+    function closeLangBtn() {
+      document.getElementById('lang-overlay').classList.remove('open');
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') document.getElementById('lang-overlay').classList.remove('open');
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => openLang(btn.dataset.lang));
+    });
+  </script>
+
 </body>
 </html>
