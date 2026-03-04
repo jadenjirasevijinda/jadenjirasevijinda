@@ -20,7 +20,7 @@
     .about-left {
       display: flex; flex-direction: column;
       justify-content: center;
-      padding: 52px 60px 52px 48px;
+      padding: 36px 60px 36px 48px;
       border-right: 1px solid var(--line);
       position: relative; overflow: hidden;
       animation: up .5s .05s ease both;
@@ -63,6 +63,12 @@
       transition: color .2s, border-color .2s;
     }
     .about-bio button:hover { color: var(--accent); border-color: var(--accent); }
+    .about-bio a {
+      color: var(--text); text-decoration: none;
+      border-bottom: 1px solid var(--sub);
+      padding-bottom: 1px; transition: color .2s, border-color .2s;
+    }
+    .about-bio a:hover { color: var(--accent); border-color: var(--accent); }
 
     .interest-tags {
       display: flex; flex-wrap: wrap; gap: 6px; margin-top: 22px;
@@ -156,6 +162,46 @@
     }
     .org-link:hover { background: rgba(42,143,163,.14); border-color: rgba(42,143,163,.5); }
 
+
+    .lang-clickable {
+      cursor: pointer; border-radius: 10px;
+      padding: 4px 6px; margin: -4px -6px;
+      transition: background .18s;
+    }
+    .lang-clickable:hover { background: rgba(42,143,163,.1); }
+
+    .lang-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 3000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 20px;
+    }
+    .lang-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .lang-modal-box {
+      background: #161616; border: 1px solid rgba(42,143,163,.25);
+      border-radius: 18px; padding: 32px; width: 100%; max-width: 360px;
+      position: relative; transform: translateY(12px);
+      transition: transform .25s cubic-bezier(.32,.72,0,1);
+    }
+    .lang-modal-overlay.open .lang-modal-box { transform: translateY(0); }
+    .lm-close {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; cursor: pointer;
+      font-size: 18px; color: var(--sub); font-family: inherit;
+      transition: color .2s;
+    }
+    .lm-close:hover { color: var(--text); }
+    .lm-flag  { font-size: 32px; margin-bottom: 8px; }
+    .lm-name  { font-size: 20px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 4px; }
+    .lm-level { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .lm-skills { display: flex; flex-direction: column; gap: 8px; }
+    .lm-skill  { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+    .skill-dot      { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .skill-dot.yes  { background: var(--accent); }
+    .skill-dot.no   { background: var(--faint); border: 1px solid var(--sub); }
+    .skill-label    { color: var(--sub); }
+
     @media (max-width: 960px) {
       html, body { overflow: auto; }
       .page-shell { grid-template-columns: 1fr; height: auto; }
@@ -190,18 +236,19 @@
       </div>
       <h1 class="page-heading">JADEN<br><span class="ac">JIRASEVIJINDA.</span></h1>
       <p class="about-bio">
-        I'm a Junior at Livermore High School serving as President of the
+        I'm a Junior at <a href="https://livermorehigh.livermoreschools.org/" target="_blank">Livermore High School</a> serving as President of the
         <button onclick="openOrg('gea')">Green Engineering Academy</button>.
-        I'm also a Board Member of
-        <button onclick="openOrg('pot')">Pillars of Tech</button>.
-        Passionate about videography, photography, and web design —
-        working toward a future in mechanical engineering.
+        I'm also a Board Member of <button onclick="openOrg('pot')">Pillars of Tech</button>.
+        I am passionate about videography, photography, and networking.
+        I am working towards a future in mechanical engineering because I enjoy seeing how things work
+        and designing systems that make those things work.
       </p>
       <div class="interest-tags">
         <span class="interest-tag">Videography</span>
         <span class="interest-tag">Photography</span>
         <span class="interest-tag">Web Design</span>
         <span class="interest-tag">Mechanical Engineering</span>
+        <span class="interest-tag" style="opacity:.45;border-style:dashed;">and more!</span>
       </div>
     </div>
 
@@ -215,7 +262,7 @@
       <div class="info-card">
         <div class="info-card-label">Education</div>
         <div class="info-card-value">Livermore High School</div>
-        <div class="info-card-sub">Junior · Class of 2026</div>
+        <div class="info-card-sub">Junior · Class of 2027</div>
       </div>
       <div class="info-card">
         <div class="info-card-label">Goal</div>
@@ -225,7 +272,7 @@
 
       <div class="right-label" style="margin-top:8px;">Languages</div>
       <div class="lang-card">
-        <div class="lang-row">
+        <div class="lang-row lang-clickable" onclick="openLang('english')">
           <span class="lang-flag">🇺🇸</span>
           <span class="lang-name">English</span>
           <div class="lang-pips">
@@ -234,7 +281,7 @@
           </div>
           <span class="lang-level fluent">Fluent</span>
         </div>
-        <div class="lang-row">
+        <div class="lang-row lang-clickable" onclick="openLang('thai')">
           <span class="lang-flag">🇹🇭</span>
           <span class="lang-name">Thai</span>
           <div class="lang-pips">
@@ -243,16 +290,16 @@
           </div>
           <span class="lang-level fluent">Fluent</span>
         </div>
-        <div class="lang-row">
+        <div class="lang-row lang-clickable" onclick="openLang('mandarin')">
           <span class="lang-flag">🇨🇳</span>
           <span class="lang-name">Mandarin</span>
           <div class="lang-pips">
-            <div class="pip on"></div><div class="pip partial"></div>
-            <div class="pip partial"></div><div class="pip on"></div>
+            <div class="pip on"></div><div class="pip on"></div>
+            <div class="pip"></div><div class="pip"></div>
           </div>
           <span class="lang-level fluent">Fluent</span>
         </div>
-        <div class="lang-row">
+        <div class="lang-row lang-clickable" onclick="openLang('spanish')">
           <span class="lang-flag">🇪🇸</span>
           <span class="lang-name">Spanish</span>
           <div class="lang-pips">
@@ -307,5 +354,76 @@
       if (e.key === 'Escape') document.getElementById('org-overlay').classList.remove('open');
     });
   </script>
+
+  <!-- Language detail modal -->
+  <div class="lang-modal-overlay" id="lang-modal-overlay" onclick="closeLangModal(event)">
+    <div class="lang-modal-box">
+      <button class="lm-close" onclick="document.getElementById('lang-modal-overlay').classList.remove('open')">✕</button>
+      <div class="lm-flag" id="lm-flag"></div>
+      <div class="lm-name" id="lm-name"></div>
+      <div class="lm-level" id="lm-level"></div>
+      <div class="lm-skills" id="lm-skills"></div>
+    </div>
+  </div>
+  <script>
+    const langData = {
+      english: {
+        flag: '🇺🇸', name: 'English', level: 'Fluent',
+        skills: [
+          { can: true,  label: 'Speak fluently' },
+          { can: true,  label: 'Read & write at a native level' },
+          { can: true,  label: 'Listen & comprehend fully' },
+          { can: true,  label: 'Think & dream in English' },
+        ]
+      },
+      thai: {
+        flag: '🇹🇭', name: 'Thai', level: 'Fluent',
+        skills: [
+          { can: true,  label: 'Speak fluently' },
+          { can: true,  label: 'Read & understand Thai script' },
+          { can: true,  label: 'Listen & comprehend fully' },
+          { can: true,  label: 'Write formally' },
+        ]
+      },
+      mandarin: {
+        flag: '🇨🇳', name: 'Mandarin', level: 'Fluent',
+        skills: [
+          { can: true,  label: 'Speak & hold conversations' },
+          { can: true,  label: 'Listen & comprehend' },
+          { can: false, label: 'Read Chinese characters — limited' },
+          { can: false, label: 'Write limited characters' },
+        ]
+      },
+      spanish: {
+        flag: '🇪🇸', name: 'Spanish', level: 'In Progress',
+        skills: [
+          { can: true,  label: 'Basic speaking & greetings' },
+          { can: true,  label: 'Read simple sentences' },
+          { can: false, label: 'Hold a full conversation — not yet' },
+          { can: false, label: 'Write fluently — still learning' },
+        ]
+      }
+    };
+    function openLang(key) {
+      const d = langData[key]; if (!d) return;
+      document.getElementById('lm-flag').textContent  = d.flag;
+      document.getElementById('lm-name').textContent  = d.name;
+      document.getElementById('lm-level').textContent = d.level;
+      document.getElementById('lm-skills').innerHTML  = d.skills.map(s =>
+        `<div class="lm-skill">
+          <div class="skill-dot ${s.can ? 'yes' : 'no'}"></div>
+          <div class="skill-label">${s.label}</div>
+        </div>`).join('');
+      document.getElementById('lang-modal-overlay').classList.add('open');
+    }
+    function closeLangModal(e) {
+      if (e.target === document.getElementById('lang-modal-overlay'))
+        document.getElementById('lang-modal-overlay').classList.remove('open');
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') document.getElementById('lang-modal-overlay').classList.remove('open');
+    });
+  </script>
+
 </body>
 </html>
