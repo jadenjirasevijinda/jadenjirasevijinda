@@ -1,1 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resources — Jaden Jirasevijinda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    html, body { overflow: hidden; }
 
+    .page-shell {
+      height: 100vh; width: 100vw;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      padding-top: var(--nav-h);
+      position: relative; z-index: 1;
+    }
+
+    /* ── LEFT ── */
+    .res-left {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 44px 32px 44px 48px;
+      border-right: 1px solid var(--line);
+      animation: up .5s .05s ease both;
+      position: relative; overflow: hidden;
+    }
+
+    .page-eyebrow { font-size: 11px; font-weight: 500; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 20px; }
+    .page-heading { font-size: clamp(2.4rem, 4vw, 4.2rem); font-weight: 800; letter-spacing: -.04em; line-height: .9; text-transform: uppercase; margin-bottom: 24px; }
+    .page-heading .ac { color: var(--accent); }
+    .res-desc { font-size: 13px; color: var(--sub); line-height: 1.7; }
+
+    .filter-group { display: flex; flex-direction: column; gap: 6px; }
+    .filter-label { font-size: 10px; font-weight: 700; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+    .filter-btn { background: var(--s1); border: 1px solid var(--line); border-radius: 10px; padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--sub); cursor: pointer; font-family: inherit; letter-spacing: .02em; text-align: left; transition: color .2s, border-color .2s, background .2s; }
+    .filter-btn:hover { color: var(--text); }
+    .filter-btn.active { color: var(--accent); border-color: rgba(42,143,163,.35); background: rgba(42,143,163,.07); }
+
+    .res-count { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 13px; color: var(--sub); }
+
+    .ticker-wrap { position: absolute; bottom: 40px; left: 0; right: 0; overflow: hidden; pointer-events: none; opacity: .04; }
+    .ticker { display: flex; gap: 60px; white-space: nowrap; animation: ticker-scroll 22s linear infinite; }
+    .ticker span { font-size: clamp(4rem, 8vw, 9rem); font-weight: 800; letter-spacing: -.04em; color: var(--text); flex-shrink: 0; }
+
+    /* ── RIGHT — resource list ── */
+    .res-right {
+      padding: 28px;
+      overflow-y: auto;
+      animation: up .5s .1s ease both;
+    }
+
+    .right-label { font-size: 11px; font-weight: 600; color: var(--sub); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; padding: 0 2px; }
+
+    /* Resource row — inline link card */
+    .res-card {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: var(--s1); border: 1px solid var(--line);
+      border-radius: 14px; margin-bottom: 8px;
+      text-decoration: none; color: var(--text);
+      transition: background .22s, border-color .22s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .res-card::before { content: ''; position: absolute; inset: 0; background: var(--adim); opacity: 0; transition: opacity .22s; }
+    .res-card:hover { background: var(--s2); border-color: rgba(42,143,163,.3); transform: translateX(5px); }
+    .res-card:hover::before { opacity: 1; }
+    .res-card:hover .res-arrow { color: var(--accent); transform: translate(3px,-3px); }
+    .res-card.hidden { display: none; }
+
+    .res-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: rgba(42,143,163,.08); border: 1px solid rgba(42,143,163,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; flex-shrink: 0;
+    }
+    .res-body { flex: 1; }
+    .res-name { font-size: 14px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 2px; }
+    .res-meta { display: flex; gap: 8px; align-items: center; }
+    .res-cat { font-size: 10px; font-weight: 600; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; }
+    .res-note { font-size: 11px; color: var(--sub); }
+    .res-arrow { font-size: 16px; color: var(--faint); transition: color .2s, transform .2s; flex-shrink: 0; }
+
+    @media (max-width: 960px) {
+      html, body { overflow: auto; }
+      .page-shell { grid-template-columns: 1fr; height: auto; }
+      .res-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px 24px; overflow: visible; }
+      .ticker-wrap { display: none; }
+      .filter-group { flex-direction: row; flex-wrap: wrap; }
+      .res-right { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="dot-canvas"></canvas>
+  <div class="glow"></div>
+
+  <nav>
+    <a class="nav-logo" href="index.html">JADEN JIRASEVIJINDA</a>
+    <ul class="nav-links">
+      <li><a href="index.html">01_HOME</a></li>
+      <li><a href="about.html">02_ABOUT</a></li>
+      <li><a href="projects.html">03_WORKS</a></li>
+      <li><a href="photos.html">04_GALLERY</a></li>
+      <li><a href="contact.html">05_CONNECT</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="more-btn" id="more-btn" onclick="openMore()">More</button>
+      <div class="nav-time" id="clock">00:00:00</div>
+    </div>
+  </nav>
+
+  <div class="page-shell">
+    <div class="res-left">
+      <div class="ticker-wrap" aria-hidden="true">
+        <div class="ticker"><span>RESOURCES</span><span>RESOURCES</span><span>RESOURCES</span></div>
+      </div>
+      <div>
+        <div class="page-eyebrow">More — Learning</div>
+        <h1 class="page-heading">RE<br><span class="ac">SOURCES.</span></h1>
+        <p class="res-desc">Tools, apps, and links I actually use — across video, photo, web, and learning.</p>
+      </div>
+      <div>
+        <div class="filter-group">
+          <div class="filter-label">Category</div>
+          <button class="filter-btn active" onclick="filterRes('all', this)">All</button>
+          <button class="filter-btn" onclick="filterRes('video', this)">Video</button>
+          <button class="filter-btn" onclick="filterRes('photo', this)">Photo</button>
+          <button class="filter-btn" onclick="filterRes('web', this)">Web</button>
+          <button class="filter-btn" onclick="filterRes('learn', this)">Learning</button>
+        </div>
+      </div>
+      <div class="res-count" id="res-count">14 resources</div>
+    </div>
+
+    <div class="res-right">
+      <div class="right-label">Links & Tools</div>
+
+      <a class="res-card" data-cat="video" href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" rel="noopener">
+        <div class="res-icon">🎬</div>
+        <div class="res-body"><div class="res-name">DaVinci Resolve</div><div class="res-meta"><span class="res-cat">Video</span><span class="res-note">· Free editing & color grading</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="video" href="https://www.youtube.com/c/YCImaging" target="_blank" rel="noopener">
+        <div class="res-icon">📹</div>
+        <div class="res-body"><div class="res-name">YC Imaging (YouTube)</div><div class="res-meta"><span class="res-cat">Video</span><span class="res-note">· Sony camera tips & tricks</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="video" href="https://rode.com/en/interfaces-and-mixers/rodecaster-series/rodecaster-pro" target="_blank" rel="noopener">
+        <div class="res-icon">🎙️</div>
+        <div class="res-body"><div class="res-name">RØDE Rodecaster Pro</div><div class="res-meta"><span class="res-cat">Video · Audio</span><span class="res-note">· Official product page</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="video" href="https://www.premiumbeat.com/blog/davinci-resolve-keyboard-shortcuts/" target="_blank" rel="noopener">
+        <div class="res-icon">⌨️</div>
+        <div class="res-body"><div class="res-name">DaVinci Resolve Shortcuts</div><div class="res-meta"><span class="res-cat">Video</span><span class="res-note">· Speed up your edit workflow</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="photo" href="https://helpx.adobe.com/lightroom-classic/user-guide.html" target="_blank" rel="noopener">
+        <div class="res-icon">🌄</div>
+        <div class="res-body"><div class="res-name">Adobe Lightroom Guide</div><div class="res-meta"><span class="res-cat">Photo</span><span class="res-note">· Official Adobe documentation</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="photo" href="https://unsplash.com" target="_blank" rel="noopener">
+        <div class="res-icon">🖼️</div>
+        <div class="res-body"><div class="res-name">Unsplash</div><div class="res-meta"><span class="res-cat">Photo</span><span class="res-note">· Free high-res stock photos</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="photo" href="https://www.adobe.com/products/photoshop-lightroom/presets.html" target="_blank" rel="noopener">
+        <div class="res-icon">🎨</div>
+        <div class="res-body"><div class="res-name">Lightroom Presets</div><div class="res-meta"><span class="res-cat">Photo</span><span class="res-note">· Adobe preset library</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="web" href="https://claude.ai" target="_blank" rel="noopener">
+        <div class="res-icon">🤖</div>
+        <div class="res-body"><div class="res-name">Claude AI</div><div class="res-meta"><span class="res-cat">Web</span><span class="res-note">· AI coding & vibe coding partner</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="web" href="https://vercel.com" target="_blank" rel="noopener">
+        <div class="res-icon">▲</div>
+        <div class="res-body"><div class="res-name">Vercel</div><div class="res-meta"><span class="res-cat">Web</span><span class="res-note">· Free hosting with GitHub integration</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="web" href="https://github.com" target="_blank" rel="noopener">
+        <div class="res-icon">🐙</div>
+        <div class="res-body"><div class="res-name">GitHub</div><div class="res-meta"><span class="res-cat">Web</span><span class="res-note">· Version control & code storage</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="web" href="https://fonts.google.com" target="_blank" rel="noopener">
+        <div class="res-icon">🔤</div>
+        <div class="res-body"><div class="res-name">Google Fonts</div><div class="res-meta"><span class="res-cat">Web</span><span class="res-note">· Free web fonts for any project</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="learn" href="https://www.youtube.com" target="_blank" rel="noopener">
+        <div class="res-icon">▶️</div>
+        <div class="res-body"><div class="res-name">YouTube</div><div class="res-meta"><span class="res-cat">Learning</span><span class="res-note">· Best free learning platform</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="learn" href="https://www.coursera.org" target="_blank" rel="noopener">
+        <div class="res-icon">🎓</div>
+        <div class="res-body"><div class="res-name">Coursera</div><div class="res-meta"><span class="res-cat">Learning</span><span class="res-note">· University courses online</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+      <a class="res-card" data-cat="learn" href="https://www.khanacademy.org" target="_blank" rel="noopener">
+        <div class="res-icon">📚</div>
+        <div class="res-body"><div class="res-name">Khan Academy</div><div class="res-meta"><span class="res-cat">Learning</span><span class="res-note">· Free math, science & more</span></div></div>
+        <span class="res-arrow">↗</span>
+      </a>
+
+    </div>
+  </div>
+
+  <script src="portfolio.js"></script>
+  <script>
+    function filterRes(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cards = document.querySelectorAll('.res-card');
+      let count = 0;
+      cards.forEach(c => {
+        const match = cat === 'all' || c.dataset.cat === cat;
+        c.classList.toggle('hidden', !match);
+        if (match) count++;
+      });
+      document.getElementById('res-count').textContent = count + ' resource' + (count !== 1 ? 's' : '');
+    }
+    document.getElementById('res-count').textContent =
+      document.querySelectorAll('.res-card').length + ' resources';
+  </script>
+
+  <style>
+    .more-btn { background: none; border: 1px solid var(--line); border-radius: 8px; padding: 5px 14px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--sub); cursor: pointer; font-family: inherit; transition: color .2s, border-color .2s, background .2s; }
+    .more-btn:hover, .more-btn.open { color: var(--accent); border-color: rgba(42,143,163,.4); background: rgba(42,143,163,.07); }
+    .more-overlay { position: fixed; inset: 0; z-index: 800; pointer-events: none; }
+    .more-overlay.open { pointer-events: all; }
+    .more-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.4); opacity: 0; transition: opacity .3s; }
+    .more-overlay.open .more-backdrop { opacity: 1; }
+    .more-sidebar { position: absolute; top: 0; right: 0; width: 380px; height: 100%; background: #111; border-left: 1px solid var(--line); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .35s cubic-bezier(.32,.72,0,1); overflow-y: auto; }
+    .more-overlay.open .more-sidebar { transform: translateX(0); }
+    .more-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+    .more-header-title { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sub); }
+    .more-close { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--sub); font-family: inherit; transition: color .2s; }
+    .more-close:hover { color: var(--text); }
+    .more-section { padding: 20px 24px 0; }
+    .more-section-label { font-size: 10px; font-weight: 700; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+    .more-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--s1); text-decoration: none; color: var(--text); margin-bottom: 8px; cursor: pointer; transition: background .2s, border-color .2s, transform .15s; }
+    .more-item:hover { background: var(--s2); border-color: rgba(42,143,163,.3); transform: translateX(3px); }
+    .more-item-icon { width: 34px; height: 34px; border-radius: 9px; background: rgba(42,143,163,.08); border: 1px solid rgba(42,143,163,.2); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; font-size: 15px; }
+    .more-item-body { flex: 1; }
+    .more-item-title { font-size: 13px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 2px; }
+    .more-item-sub { font-size: 11px; color: var(--sub); line-height: 1.45; }
+    .more-item-arrow { font-size: 14px; color: var(--faint); align-self: center; flex-shrink: 0; transition: color .2s, transform .2s; }
+    .more-item:hover .more-item-arrow { color: var(--accent); transform: translateX(3px); }
+    .more-divider { height: 1px; background: var(--line); margin: 20px 24px 0; }
+    .more-footer { padding: 20px 24px; margin-top: auto; }
+    .more-footer-text { font-size: 11px; color: var(--sub); }
+  </style>
+  <div class="more-overlay" id="more-overlay" onclick="handleMoreOverlayClick(event)">
+    <div class="more-backdrop"></div>
+    <div class="more-sidebar">
+      <div class="more-header"><span class="more-header-title">More</span><button class="more-close" onclick="closeMore()">✕</button></div>
+      <div class="more-section">
+        <div class="more-section-label">Equipment</div>
+        <a class="more-item" href="equipment.html"><div class="more-item-icon">⚡</div><div class="more-item-body"><div class="more-item-title">Quickstart + Usage</div><div class="more-item-sub">Jump right in</div></div><span class="more-item-arrow">→</span></a>
+      </div>
+      <div class="more-divider"></div>
+      <div class="more-section" style="padding-top:20px;">
+        <div class="more-section-label">Learning</div>
+        <a class="more-item" href="tutorials.html"><div class="more-item-icon">📖</div><div class="more-item-body"><div class="more-item-title">Tutorials</div><div class="more-item-sub">Step-by-step guides</div></div><span class="more-item-arrow">→</span></a>
+        <a class="more-item" href="resources.html"><div class="more-item-icon">🔗</div><div class="more-item-body"><div class="more-item-title">Resources</div><div class="more-item-sub">Tools I actually use</div></div><span class="more-item-arrow">→</span></a>
+      </div>
+      <div class="more-divider"></div>
+      <div class="more-section" style="padding-top:20px;">
+        <div class="more-section-label">Other</div>
+        <a class="more-item" href="https://github.com/jadenjirasevijinda/jadenjirasevijinda" target="_blank" rel="noopener"><div class="more-item-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></div><div class="more-item-body"><div class="more-item-title">Source Code</div><div class="more-item-sub">GitHub repo</div></div><span class="more-item-arrow">↗</span></a>
+      </div>
+      <div class="more-footer"><div class="more-footer-text">Built with Claude AI · Hosted on Vercel</div></div>
+    </div>
+  </div>
+  <script>
+    function openMore()  { document.getElementById('more-overlay').classList.add('open');    document.getElementById('more-btn').classList.add('open'); }
+    function closeMore() { document.getElementById('more-overlay').classList.remove('open'); document.getElementById('more-btn').classList.remove('open'); }
+    function handleMoreOverlayClick(e) { if (e.target === document.getElementById('more-overlay') || e.target.classList.contains('more-backdrop')) closeMore(); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMore(); });
+  </script>
+</body>
+</html>
