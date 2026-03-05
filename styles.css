@@ -24,7 +24,7 @@
 
 /* ── Reset ────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
+html, body { height: 100%; }
 
 body {
   background: var(--bg);
@@ -350,6 +350,181 @@ nav {
 .skill-dot.no    { background: var(--faint); border: 1px solid var(--sub); }
 .skill-label     { color: var(--sub); }
 .skill-label b   { color: var(--text); font-weight: 500; }
+
+/* ════════════════════════════════════════════════
+   MORE BUTTON
+════════════════════════════════════════════════ */
+.more-btn {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 5px 14px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--sub); cursor: pointer;
+  font-family: inherit;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.more-btn:hover,
+.more-btn.open {
+  color: var(--accent);
+  border-color: rgba(42,143,163,.4);
+  background: rgba(42,143,163,.07);
+}
+
+/* ════════════════════════════════════════════════
+   MORE SIDEBAR
+════════════════════════════════════════════════ */
+.more-overlay {
+  position: fixed; inset: 0;
+  z-index: 800;
+  pointer-events: none;
+}
+.more-overlay.open { pointer-events: all; }
+
+.more-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.45);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.more-overlay.open .more-backdrop { opacity: 1; }
+
+.more-sidebar {
+  position: absolute;
+  top: 0; right: 0;
+  width: 380px; height: 100%;
+  background: #111;
+  border-left: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.32,.72,0,1);
+  overflow-y: auto;
+}
+.more-overlay.open .more-sidebar { transform: translateX(0); }
+
+.more-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.more-header-title {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sub);
+}
+.more-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: var(--sub);
+  font-family: inherit;
+  transition: color .2s;
+}
+.more-close:hover { color: var(--text); }
+
+.more-section { padding: 20px 24px 0; }
+.more-section-label {
+  font-size: 10px; font-weight: 700;
+  color: var(--sub); letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+
+.more-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--s1);
+  text-decoration: none; color: var(--text);
+  margin-bottom: 8px; cursor: pointer;
+  transition: background .2s, border-color .2s, transform .15s;
+  position: relative; overflow: hidden;
+}
+.more-item:hover {
+  background: var(--s2);
+  border-color: rgba(42,143,163,.3);
+  transform: translateX(3px);
+}
+.more-item-icon {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: rgba(42,143,163,.08);
+  border: 1px solid rgba(42,143,163,.2);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); flex-shrink: 0; font-size: 15px;
+}
+.more-item-body { flex: 1; }
+.more-item-title {
+  font-size: 13px; font-weight: 600;
+  letter-spacing: -.01em; margin-bottom: 2px;
+}
+.more-item-sub {
+  font-size: 11px; color: var(--sub); line-height: 1.45;
+}
+.more-item-arrow {
+  font-size: 14px; color: var(--faint);
+  align-self: center; flex-shrink: 0;
+  transition: color .2s, transform .2s;
+}
+.more-item:hover .more-item-arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+.more-divider {
+  height: 1px; background: var(--line);
+  margin: 20px 24px 0;
+}
+
+.more-footer {
+  padding: 20px 24px;
+  margin-top: auto;
+}
+.more-footer-text {
+  font-size: 11px; color: var(--sub);
+  letter-spacing: .02em; line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════════
+   SHARED MODAL (org popup, lang, more content)
+════════════════════════════════════════════════ */
+.overlay-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+  padding: 20px;
+}
+.overlay-modal.open { opacity: 1; pointer-events: all; }
+.overlay-modal-box {
+  background: #161616;
+  border: 1px solid rgba(42,143,163,.25);
+  border-radius: 18px; padding: 32px;
+  width: 100%; max-width: 420px;
+  position: relative;
+  transform: translateY(12px);
+  transition: transform .25s cubic-bezier(.32,.72,0,1);
+  max-height: 90vh; overflow-y: auto;
+}
+.overlay-modal.open .overlay-modal-box { transform: translateY(0); }
+.overlay-modal-close {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: var(--sub);
+  font-family: inherit; transition: color .2s;
+}
+.overlay-modal-close:hover { color: var(--text); }
+
+/* ════════════════════════════════════════════════
+   TICKER KEYFRAME (shared across pages)
+════════════════════════════════════════════════ */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
 
 /* ════════════════════════════════════════════════
    RESPONSIVE
