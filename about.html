@@ -6,332 +6,6 @@
   <title>About — Jaden Jirasevijinda</title>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    html, body { overflow: hidden; }
-
-    .page-shell {
-      height: 100vh; width: 100vw;
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      padding-top: var(--nav-h);
-      position: relative; z-index: 1;
-    }
-
-    .about-left {
-      display: flex; flex-direction: column;
-      justify-content: center;
-      padding: 36px 60px 36px 48px;
-      border-right: 1px solid var(--line);
-      position: relative; overflow: hidden;
-      animation: up .5s .05s ease both;
-    }
-
-    .page-eyebrow {
-      font-size: 11px; font-weight: 500;
-      color: var(--sub); letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 20px;
-    }
-    .page-heading {
-      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
-      font-weight: 800; letter-spacing: -.04em;
-      line-height: .9; text-transform: uppercase;
-      margin-bottom: 28px;
-    }
-    .page-heading .ac { color: var(--accent); }
-
-    .about-photo-wrap {
-      width: 280px; height: 280px;
-      border-radius: 16px; overflow: hidden;
-      border: 1px solid var(--line); margin-bottom: 28px;
-    }
-    .about-photo-wrap img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
-      transition: transform .4s ease;
-    }
-    .about-photo-wrap:hover img { transform: scale(1.04); }
-
-    .about-bio {
-      font-size: 14px; color: var(--sub);
-      line-height: 1.8; max-width: 420px;
-    }
-    .about-bio button {
-      background: none; border: none;
-      border-bottom: 1px solid var(--sub);
-      color: var(--text); font: inherit;
-      cursor: pointer; padding: 0;
-      transition: color .2s, border-color .2s;
-    }
-    .about-bio button:hover { color: var(--accent); border-color: var(--accent); }
-    .about-bio a {
-      color: var(--text); text-decoration: none;
-      border-bottom: 1px solid var(--sub);
-      padding-bottom: 1px; transition: color .2s, border-color .2s;
-    }
-    .about-bio a:hover { color: var(--accent); border-color: var(--accent); }
-
-    .interest-tags {
-      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 22px;
-    }
-    .interest-tag {
-      font-size: 10px; font-weight: 500;
-      padding: 4px 11px; border-radius: 999px;
-      border: 1px solid rgba(42,143,163,.3);
-      color: var(--accent); background: rgba(42,143,163,.06);
-      letter-spacing: .06em; text-transform: uppercase;
-    }
-
-    .about-right {
-      display: flex; flex-direction: column;
-      padding: 24px 22px; gap: 6px;
-      animation: up .5s .15s ease both;
-      overflow-y: auto;
-    }
-    .right-label {
-      font-size: 11px; font-weight: 600;
-      color: var(--sub); letter-spacing: .12em;
-      text-transform: uppercase; margin-bottom: 4px; padding: 0 4px;
-    }
-
-    .info-card {
-      background: var(--s1); border: 1px solid var(--line);
-      border-radius: 16px; padding: 12px 18px;
-      display: flex; flex-direction: column; gap: 3px;
-    }
-    .info-card-label {
-      font-size: 10px; font-weight: 700;
-      color: var(--sub); letter-spacing: .1em; text-transform: uppercase;
-    }
-    .info-card-value { font-size: 14px; font-weight: 600; letter-spacing: -.01em; }
-    .info-card-sub   { font-size: 11px; color: var(--sub); }
-
-    .lang-card {
-      background: var(--s1); border: 1px solid var(--line);
-      border-radius: 16px; padding: 14px 18px;
-      display: flex; flex-direction: column;
-      gap: 10px;
-    }
-    .lang-row { display: flex; align-items: center; gap: 12px; }
-    .lang-flag { font-size: 20px; flex-shrink: 0; }
-    .lang-name { font-size: 15px; font-weight: 600; flex: 1; }
-    .lang-pips { display: flex; gap: 5px; }
-    .pip {
-      width: 9px; height: 9px; border-radius: 50%;
-      background: var(--faint); border: 1px solid var(--sub);
-    }
-    .pip.on      { background: var(--accent); border-color: var(--accent); }
-    .pip.partial { background: transparent; border-color: var(--accent); }
-    .lang-level {
-      font-size: 11px; font-weight: 600;
-      letter-spacing: .08em; text-transform: uppercase;
-    }
-    .lang-level.fluent   { color: var(--accent); }
-    .lang-level.progress { color: #f5c842; }
-
-    /* Org modal */
-    .org-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.6);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      z-index: 2000; display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 20px;
-    }
-    .org-overlay.open { opacity: 1; pointer-events: all; }
-    .org-modal {
-      background: #161616; border: 1px solid rgba(42,143,163,.25);
-      border-radius: 18px; padding: 32px; width: 100%; max-width: 380px;
-      position: relative; transform: translateY(12px);
-      transition: transform .25s cubic-bezier(.32,.72,0,1);
-    }
-    .org-overlay.open .org-modal { transform: translateY(0); }
-    .org-close {
-      position: absolute; top: 14px; right: 16px;
-      background: none; border: none; cursor: pointer;
-      font-size: 18px; color: var(--sub); font-family: inherit;
-      transition: color .2s;
-    }
-    .org-close:hover { color: var(--text); }
-    .org-tag  { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
-    .org-name { font-size: 20px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; }
-    .org-desc { font-size: 13px; color: var(--sub); line-height: 1.75; margin-bottom: 20px; }
-    .org-link {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; color: var(--accent); text-decoration: none;
-      padding: 10px 16px; border: 1px solid rgba(42,143,163,.3);
-      border-radius: 10px; background: rgba(42,143,163,.06);
-      transition: background .2s, border-color .2s;
-    }
-    .org-link:hover { background: rgba(42,143,163,.14); border-color: rgba(42,143,163,.5); }
-
-
-    .lang-clickable {
-      cursor: pointer; border-radius: 10px;
-      padding: 4px 6px; margin: -4px -6px;
-      transition: background .18s;
-    }
-    .lang-clickable:hover { background: rgba(42,143,163,.1); }
-
-    .lang-modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.6);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      z-index: 3000; display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 20px;
-    }
-    .lang-modal-overlay.open { opacity: 1; pointer-events: all; }
-    .lang-modal-box {
-      background: #161616; border: 1px solid rgba(42,143,163,.25);
-      border-radius: 18px; padding: 32px; width: 100%; max-width: 360px;
-      position: relative; transform: translateY(12px);
-      transition: transform .25s cubic-bezier(.32,.72,0,1);
-    }
-    .lang-modal-overlay.open .lang-modal-box { transform: translateY(0); }
-    .lm-close {
-      position: absolute; top: 14px; right: 16px;
-      background: none; border: none; cursor: pointer;
-      font-size: 18px; color: var(--sub); font-family: inherit;
-      transition: color .2s;
-    }
-    .lm-close:hover { color: var(--text); }
-    .lm-flag  { font-size: 32px; margin-bottom: 8px; }
-    .lm-name  { font-size: 20px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 4px; }
-    .lm-level { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
-    .lm-skills { display: flex; flex-direction: column; gap: 8px; }
-    .lm-skill  { display: flex; align-items: center; gap: 10px; font-size: 12px; }
-    .skill-dot      { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .skill-dot.yes  { background: var(--accent); }
-    .skill-dot.no   { background: var(--faint); border: 1px solid var(--sub); }
-    .skill-label    { color: var(--sub); }
-
-    @media (max-width: 960px) {
-      html, body { overflow: auto; }
-      .page-shell { grid-template-columns: 1fr; height: auto; }
-      .about-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px 24px; }
-      .about-right { padding: 20px; }
-    }
-
-    /* ── More sidebar ── */
-    .more-btn {
-      background: none; border: 1px solid var(--line);
-      border-radius: 8px; padding: 5px 14px;
-      font-size: 11px; font-weight: 600;
-      letter-spacing: .08em; text-transform: uppercase;
-      color: var(--sub); cursor: pointer;
-      font-family: inherit;
-      transition: color .2s, border-color .2s, background .2s;
-    }
-    .more-btn:hover,
-    .more-btn.open { color: var(--accent); border-color: rgba(42,143,163,.4); background: rgba(42,143,163,.07); }
-
-    .more-overlay {
-      position: fixed; inset: 0;
-      z-index: 800;
-      pointer-events: none;
-    }
-    .more-overlay.open { pointer-events: all; }
-
-    .more-backdrop {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,.4);
-      opacity: 0;
-      transition: opacity .3s;
-    }
-    .more-overlay.open .more-backdrop { opacity: 1; }
-
-    .more-sidebar {
-      position: absolute;
-      top: 0; right: 0;
-      width: 380px; height: 100%;
-      background: #111;
-      border-left: 1px solid var(--line);
-      display: flex; flex-direction: column;
-      transform: translateX(100%);
-      transition: transform .35s cubic-bezier(.32,.72,0,1);
-      overflow-y: auto;
-    }
-    .more-overlay.open .more-sidebar { transform: translateX(0); }
-
-    .more-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--line);
-      flex-shrink: 0;
-    }
-    .more-header-title {
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .1em; text-transform: uppercase; color: var(--sub);
-    }
-    .more-close {
-      background: none; border: none; cursor: pointer;
-      font-size: 18px; color: var(--sub); font-family: inherit;
-      transition: color .2s;
-    }
-    .more-close:hover { color: var(--text); }
-
-    .more-section {
-      padding: 20px 24px 0;
-    }
-    .more-section-label {
-      font-size: 10px; font-weight: 700;
-      color: var(--sub); letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 10px;
-    }
-
-    .more-item {
-      display: flex; align-items: flex-start; gap: 14px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: var(--s1);
-      text-decoration: none;
-      color: var(--text);
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: background .2s, border-color .2s, transform .15s;
-      position: relative; overflow: hidden;
-    }
-    .more-item::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--adim); opacity: 0; transition: opacity .2s;
-    }
-    .more-item:hover { background: var(--s2); border-color: rgba(42,143,163,.3); transform: translateX(3px); }
-    .more-item:hover::before { opacity: 1; }
-
-    .more-item-icon {
-      width: 34px; height: 34px; border-radius: 9px;
-      background: rgba(42,143,163,.08); border: 1px solid rgba(42,143,163,.2);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent); flex-shrink: 0; font-size: 15px;
-    }
-    .more-item-body { flex: 1; }
-    .more-item-title {
-      font-size: 13px; font-weight: 600;
-      letter-spacing: -.01em; margin-bottom: 2px;
-    }
-    .more-item-sub {
-      font-size: 11px; color: var(--sub); line-height: 1.45;
-    }
-    .more-item-arrow {
-      font-size: 14px; color: var(--faint);
-      align-self: center; flex-shrink: 0;
-      transition: color .2s, transform .2s;
-    }
-    .more-item:hover .more-item-arrow { color: var(--accent); transform: translateX(3px); }
-
-    .more-divider {
-      height: 1px; background: var(--line);
-      margin: 20px 24px 0;
-    }
-
-    .more-footer {
-      padding: 20px 24px;
-      margin-top: auto;
-    }
-    .more-footer-text {
-      font-size: 11px; color: var(--sub); letter-spacing: .02em; line-height: 1.6;
-    }
-
-  </style>
 </head>
 <body>
   <canvas id="dot-canvas"></canvas>
@@ -547,6 +221,81 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') document.getElementById('lang-modal-overlay').classList.remove('open');
     });
+  </script>
+
+
+  <!-- ── More Sidebar ── -->
+  <div class="more-overlay" id="more-overlay" onclick="handleMoreOverlayClick(event)">
+    <div class="more-backdrop"></div>
+    <div class="more-sidebar" id="more-sidebar">
+      <div class="more-header">
+        <span class="more-header-title">More</span>
+        <button class="more-close" onclick="closeMore()">✕</button>
+      </div>
+      <div class="more-section">
+        <div class="more-section-label">Equipment</div>
+        <a class="more-item" href="equipment.html">
+          <div class="more-item-icon">⚡</div>
+          <div class="more-item-body">
+            <div class="more-item-title">Quickstart + Usage</div>
+            <div class="more-item-sub">Jump right in — what you need to get started</div>
+          </div>
+          <span class="more-item-arrow">→</span>
+        </a>
+      </div>
+      <div class="more-divider"></div>
+      <div class="more-section" style="padding-top:20px;">
+        <div class="more-section-label">Learning</div>
+        <a class="more-item" href="tutorials.html">
+          <div class="more-item-icon">📖</div>
+          <div class="more-item-body">
+            <div class="more-item-title">Tutorials</div>
+            <div class="more-item-sub">Step-by-step guides for video &amp; audio</div>
+          </div>
+          <span class="more-item-arrow">→</span>
+        </a>
+        <a class="more-item" href="resources.html">
+          <div class="more-item-icon">🔗</div>
+          <div class="more-item-body">
+            <div class="more-item-title">Resources</div>
+            <div class="more-item-sub">Tools, apps, and gear links I use</div>
+          </div>
+          <span class="more-item-arrow">→</span>
+        </a>
+      </div>
+      <div class="more-divider"></div>
+      <div class="more-section" style="padding-top:20px;">
+        <div class="more-section-label">Other</div>
+        <a class="more-item" href="https://github.com/jadenjirasevijinda/jadenjirasevijinda" target="_blank" rel="noopener">
+          <div class="more-item-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          </div>
+          <div class="more-item-body">
+            <div class="more-item-title">Source Code</div>
+            <div class="more-item-sub">This site on GitHub</div>
+          </div>
+          <span class="more-item-arrow">↗</span>
+        </a>
+      </div>
+      <div class="more-footer">
+        <div class="more-footer-text">Built with Claude AI · Hosted on Vercel</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function openMore()  {
+      document.getElementById('more-overlay').classList.add('open');
+      document.getElementById('more-btn').classList.add('open');
+    }
+    function closeMore() {
+      document.getElementById('more-overlay').classList.remove('open');
+      document.getElementById('more-btn').classList.remove('open');
+    }
+    function handleMoreOverlayClick(e) {
+      if (e.target === document.getElementById('more-overlay') ||
+          e.target.classList.contains('more-backdrop')) closeMore();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMore(); });
   </script>
 
 </body>
