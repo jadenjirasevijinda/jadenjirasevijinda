@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tutorials — Jaden Jirasevijinda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    html, body { overflow: hidden; }
+
+    .page-shell {
+      height: 100vh; width: 100vw;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      padding-top: var(--nav-h);
+      position: relative; z-index: 1;
+    }
+
+    /* ── LEFT ── */
+    .tut-left {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 44px 32px 44px 48px;
+      border-right: 1px solid var(--line);
+      animation: up .5s .05s ease both;
+      position: relative; overflow: hidden;
+    }
+
+    .page-eyebrow {
+      font-size: 11px; font-weight: 500;
+      color: var(--sub); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .page-heading {
+      font-size: clamp(2.4rem, 4vw, 4.2rem);
+      font-weight: 800; letter-spacing: -.04em;
+      line-height: .9; text-transform: uppercase; margin-bottom: 24px;
+    }
+    .page-heading .ac { color: var(--accent); }
+
+    .tut-desc {
+      font-size: 13px; color: var(--sub); line-height: 1.7;
+    }
+
+    /* Category filter */
+    .filter-group { display: flex; flex-direction: column; gap: 6px; }
+    .filter-label { font-size: 10px; font-weight: 700; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+    .filter-btn {
+      background: var(--s1); border: 1px solid var(--line);
+      border-radius: 10px; padding: 10px 16px;
+      font-size: 12px; font-weight: 500; color: var(--sub);
+      cursor: pointer; font-family: inherit; letter-spacing: .02em; text-align: left;
+      transition: color .2s, border-color .2s, background .2s;
+    }
+    .filter-btn:hover { color: var(--text); }
+    .filter-btn.active { color: var(--accent); border-color: rgba(42,143,163,.35); background: rgba(42,143,163,.07); }
+
+    .tut-count { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 13px; color: var(--sub); }
+
+    /* Ticker */
+    .ticker-wrap { position: absolute; bottom: 40px; left: 0; right: 0; overflow: hidden; pointer-events: none; opacity: .04; }
+    .ticker { display: flex; gap: 60px; white-space: nowrap; animation: ticker-scroll 22s linear infinite; }
+    .ticker span { font-size: clamp(4rem, 8vw, 9rem); font-weight: 800; letter-spacing: -.04em; color: var(--text); flex-shrink: 0; }
+
+    /* ── RIGHT — tutorial cards ── */
+    .tut-right {
+      padding: 28px;
+      overflow-y: auto;
+      animation: up .5s .1s ease both;
+    }
+
+    .right-label { font-size: 11px; font-weight: 600; color: var(--sub); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; padding: 0 2px; }
+
+    /* Tutorial card — numbered steps style */
+    .tut-card {
+      background: var(--s1); border: 1px solid var(--line);
+      border-radius: 16px; margin-bottom: 8px; overflow: hidden;
+      transition: border-color .2s;
+    }
+    .tut-card.open { border-color: rgba(42,143,163,.3); }
+    .tut-card.hidden { display: none; }
+
+    .tut-card-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 22px; cursor: pointer;
+      transition: background .2s;
+    }
+    .tut-card-header:hover { background: var(--s2); }
+
+    .tut-num {
+      font-size: 11px; font-weight: 700; color: var(--sub);
+      letter-spacing: .08em; opacity: .5; flex-shrink: 0; width: 24px;
+      transition: color .2s, opacity .2s;
+    }
+    .tut-card.open .tut-num { color: var(--accent); opacity: 1; }
+
+    .tut-header-body { flex: 1; }
+    .tut-title { font-size: 15px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 3px; }
+    .tut-meta { display: flex; gap: 8px; align-items: center; }
+    .tut-cat { font-size: 10px; font-weight: 600; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; }
+    .tut-level { font-size: 10px; color: var(--sub); letter-spacing: .04em; }
+
+    .tut-chevron { font-size: 12px; color: var(--sub); transition: transform .25s, color .2s; flex-shrink: 0; }
+    .tut-card.open .tut-chevron { transform: rotate(90deg); color: var(--accent); }
+
+    .tut-body { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.32,.72,0,1); }
+    .tut-card.open .tut-body { max-height: 800px; }
+
+    .tut-body-inner { padding: 18px 22px 20px; border-top: 1px solid var(--line); }
+
+    /* Numbered steps */
+    .steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .step { display: flex; gap: 14px; }
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(42,143,163,.12); border: 1px solid rgba(42,143,163,.3);
+      color: var(--accent); font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-text { font-size: 13px; color: var(--sub); line-height: 1.65; }
+    .step-text strong { color: var(--text); font-weight: 600; }
+
+    .tut-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tut-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--accent); text-decoration: none;
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid rgba(42,143,163,.3); background: rgba(42,143,163,.06);
+      transition: background .2s, border-color .2s;
+    }
+    .tut-link:hover { background: rgba(42,143,163,.14); border-color: rgba(42,143,163,.5); }
+
+    @media (max-width: 960px) {
+      html, body { overflow: auto; }
+      .page-shell { grid-template-columns: 1fr; height: auto; }
+      .tut-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px 24px; overflow: visible; }
+      .ticker-wrap { display: none; }
+      .filter-group { flex-direction: row; flex-wrap: wrap; }
+      .tut-right { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="dot-canvas"></canvas>
+  <div class="glow"></div>
+
+  <nav>
+    <a class="nav-logo" href="index.html">JADEN JIRASEVIJINDA</a>
+    <ul class="nav-links">
+      <li><a href="index.html">01_HOME</a></li>
+      <li><a href="about.html">02_ABOUT</a></li>
+      <li><a href="projects.html">03_WORKS</a></li>
+      <li><a href="photos.html">04_GALLERY</a></li>
+      <li><a href="contact.html">05_CONNECT</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="more-btn" id="more-btn" onclick="openMore()">More</button>
+      <div class="nav-time" id="clock">00:00:00</div>
+    </div>
+  </nav>
+
+  <div class="page-shell">
+    <div class="tut-left">
+      <div class="ticker-wrap" aria-hidden="true">
+        <div class="ticker"><span>TUTORIALS</span><span>TUTORIALS</span><span>TUTORIALS</span></div>
+      </div>
+      <div>
+        <div class="page-eyebrow">More — Learning</div>
+        <h1 class="page-heading">TUTOR<br><span class="ac">IALS.</span></h1>
+        <p class="tut-desc">Step-by-step guides for video, photo, and web. Click any card to expand the steps.</p>
+      </div>
+      <div>
+        <div class="filter-group">
+          <div class="filter-label">Category</div>
+          <button class="filter-btn active" onclick="filterTut('all', this)">All</button>
+          <button class="filter-btn" onclick="filterTut('video', this)">Video</button>
+          <button class="filter-btn" onclick="filterTut('photo', this)">Photo</button>
+          <button class="filter-btn" onclick="filterTut('web', this)">Web</button>
+          <button class="filter-btn" onclick="filterTut('audio', this)">Audio</button>
+        </div>
+      </div>
+      <div class="tut-count" id="tut-count">6 tutorials</div>
+    </div>
+
+    <div class="tut-right">
+      <div class="right-label">Guides</div>
+
+      <div class="tut-card" data-cat="video" onclick="toggleTut(this)">
+        <div class="tut-card-header">
+          <span class="tut-num">01</span>
+          <div class="tut-header-body">
+            <div class="tut-title">Editing in DaVinci Resolve</div>
+            <div class="tut-meta"><span class="tut-cat">Video</span><span class="tut-level">· Beginner</span></div>
+          </div>
+          <span class="tut-chevron">›</span>
+        </div>
+        <div class="tut-body">
+          <div class="tut-body-inner">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Import footage</strong> — open the Media page, drag your files into the Media Pool.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Create a timeline</strong> — drag clips from the pool to the Edit page timeline.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Cut and trim</strong> — use the Blade tool (B) to cut, drag edges to trim.</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Color grade</strong> — jump to the Color page, apply a LUT, then dial in your nodes.</div></div>
+              <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Export</strong> — go to Deliver, choose YouTube preset, hit Add to Render Queue then Render All.</div></div>
+            </div>
+            <div class="tut-links">
+              <a class="tut-link" href="https://www.blackmagicdesign.com/products/davinciresolve/training" target="_blank" rel="noopener">Official Training →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="video" onclick="toggleTut(this)">
+        <div class="tut-card-header">
+          <span class="tut-num">02</span>
+          <div class="tut-header-body">
+            <div class="tut-title">YouTube Upload Workflow</div>
+            <div class="tut-meta"><span class="tut-cat">Video</span><span class="tut-level">· Beginner</span></div>
+          </div>
+          <span class="tut-chevron">›</span>
+        </div>
+        <div class="tut-body">
+          <div class="tut-body-inner">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Export at 1080p or 4K</strong> — H.264 or H.265, high bitrate for YouTube's compression.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Write your title & description</strong> — include keywords naturally, add timestamps.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Design a thumbnail</strong> — high contrast, readable text, bold face or object in frame.</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Add tags and a category</strong> — helps YouTube understand what your video is about.</div></div>
+              <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Schedule or publish</strong> — publish at peak hours for your audience (typically eve/weekend).</div></div>
+            </div>
+            <div class="tut-links">
+              <a class="tut-link" href="https://support.google.com/youtube/answer/57407" target="_blank" rel="noopener">YouTube Help →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="photo" onclick="toggleTut(this)">
+        <div class="tut-card-header">
+          <span class="tut-num">03</span>
+          <div class="tut-header-body">
+            <div class="tut-title">Photography Basics</div>
+            <div class="tut-meta"><span class="tut-cat">Photo</span><span class="tut-level">· Beginner</span></div>
+          </div>
+          <span class="tut-chevron">›</span>
+        </div>
+        <div class="tut-body">
+          <div class="tut-body-inner">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Understand the exposure triangle</strong> — ISO, Shutter Speed, and Aperture work together.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Shoot in RAW</strong> — gives you far more flexibility when editing in Lightroom.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Use the rule of thirds</strong> — place your subject off-center for a more dynamic composition.</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Focus carefully</strong> — use single-point AF for portraits, continuous AF for moving subjects.</div></div>
+              <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Edit in Lightroom</strong> — adjust exposure, then whites/blacks, then color, then sharpness last.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="photo" onclick="toggleTut(this)">
+        <div class="tut-card-header">
+          <span class="tut-num">04</span>
+          <div class="tut-header-body">
+            <div class="tut-title">Color Grading in Lightroom</div>
+            <div class="tut-meta"><span class="tut-cat">Photo</span><span class="tut-level">· Intermediate</span></div>
+          </div>
+          <span class="tut-chevron">›</span>
+        </div>
+        <div class="tut-body">
+          <div class="tut-body-inner">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Start with a neutral base</strong> — set white balance, then bring exposure to a natural level.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Use the tone curve</strong> — create an S-curve for contrast; lift blacks for a matte look.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Adjust HSL</strong> — shift hue of specific colors (e.g. make greens more teal, skin more golden).</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Color grading panel</strong> — add a color cast to shadows, midtones, or highlights for mood.</div></div>
+              <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Save as a preset</strong> — sync across your whole shoot with one click.</div></div>
+            </div>
+            <div class="tut-links">
+              <a class="tut-link" href="https://helpx.adobe.com/lightroom-classic/user-guide.html" target="_blank" rel="noopener">Adobe Guide →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="audio" onclick="toggleTut(this)">
+        <div class="tut-card-header">
+          <span class="tut-num">05</span>
+          <div class="tut-header-body">
+            <div class="tut-title">Recording Audio with Rodecaster Pro</div>
+            <div class="tut-meta"><span class="tut-cat">Audio</span><span class="tut-level">· Beginner</span></div>
+          </div>
+          <span class="tut-chevron">›</span>
+        </div>
+        <div class="tut-body">
+          <div class="tut-body-inner">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Connect your mic</strong> — XLR into Channel 1, enable phantom power if condenser mic.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Set gain</strong> — speak at normal volume, aim for peaks around -12 to -6 dB.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Enable APHEX processing</strong> — Aural Exciter and Big Bottom give your voice warmth and clarity.</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Record via USB</strong> — select the Rodecaster as your audio input in DaVinci or your DAW.</div></div>
+              <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Monitor with headphones</strong> — always track with cans on so you catch any issues live.</div></div>
+            </div>
+            <div class="tut-links">
+              <a class="tut-link" href="https://rode.com/en/interfaces-and-mixers/rodecaster-series/rodecaster-pro" target="_blank" rel="noopener">RØDE Website →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="web" onclick="toggleTut(this)">
+        <div class="tut-card-header">
+          <span class="tut-num">06</span>
+          <div class="tut-header-body">
+            <div class="tut-title">Web Dev with AI (Vibe Coding)</div>
+            <div class="tut-meta"><span class="tut-cat">Web</span><span class="tut-level">· Beginner</span></div>
+          </div>
+          <span class="tut-chevron">›</span>
+        </div>
+        <div class="tut-body">
+          <div class="tut-body-inner">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Start with a prompt</strong> — describe what you want to build to Claude AI as clearly as possible.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Iterate fast</strong> — don't aim for perfect on the first pass. Ask for changes one section at a time.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Push to GitHub</strong> — create a repo, commit your files, use Git for version control.</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Deploy on Vercel</strong> — connect your GitHub repo, Vercel auto-deploys on every push.</div></div>
+              <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Iterate in production</strong> — test on real devices, collect feedback, keep improving.</div></div>
+            </div>
+            <div class="tut-links">
+              <a class="tut-link" href="https://claude.ai" target="_blank" rel="noopener">Claude AI →</a>
+              <a class="tut-link" href="https://vercel.com" target="_blank" rel="noopener">Vercel →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="portfolio.js"></script>
+  <script>
+    function toggleTut(card) {
+      const wasOpen = card.classList.contains('open');
+      document.querySelectorAll('.tut-card.open').forEach(c => c.classList.remove('open'));
+      if (!wasOpen) card.classList.add('open');
+    }
+    function filterTut(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cards = document.querySelectorAll('.tut-card');
+      let count = 0;
+      cards.forEach(c => {
+        const match = cat === 'all' || c.dataset.cat === cat;
+        c.classList.toggle('hidden', !match);
+        if (match) count++;
+      });
+      document.getElementById('tut-count').textContent = count + ' tutorial' + (count !== 1 ? 's' : '');
+    }
+  </script>
+
+  <style>
+    .more-btn { background: none; border: 1px solid var(--line); border-radius: 8px; padding: 5px 14px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--sub); cursor: pointer; font-family: inherit; transition: color .2s, border-color .2s, background .2s; }
+    .more-btn:hover, .more-btn.open { color: var(--accent); border-color: rgba(42,143,163,.4); background: rgba(42,143,163,.07); }
+    .more-overlay { position: fixed; inset: 0; z-index: 800; pointer-events: none; }
+    .more-overlay.open { pointer-events: all; }
+    .more-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.4); opacity: 0; transition: opacity .3s; }
+    .more-overlay.open .more-backdrop { opacity: 1; }
+    .more-sidebar { position: absolute; top: 0; right: 0; width: 380px; height: 100%; background: #111; border-left: 1px solid var(--line); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .35s cubic-bezier(.32,.72,0,1); overflow-y: auto; }
+    .more-overlay.open .more-sidebar { transform: translateX(0); }
+    .more-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+    .more-header-title { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sub); }
+    .more-close { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--sub); font-family: inherit; transition: color .2s; }
+    .more-close:hover { color: var(--text); }
+    .more-section { padding: 20px 24px 0; }
+    .more-section-label { font-size: 10px; font-weight: 700; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+    .more-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--s1); text-decoration: none; color: var(--text); margin-bottom: 8px; cursor: pointer; transition: background .2s, border-color .2s, transform .15s; }
+    .more-item:hover { background: var(--s2); border-color: rgba(42,143,163,.3); transform: translateX(3px); }
+    .more-item-icon { width: 34px; height: 34px; border-radius: 9px; background: rgba(42,143,163,.08); border: 1px solid rgba(42,143,163,.2); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; font-size: 15px; }
+    .more-item-body { flex: 1; }
+    .more-item-title { font-size: 13px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 2px; }
+    .more-item-sub { font-size: 11px; color: var(--sub); line-height: 1.45; }
+    .more-item-arrow { font-size: 14px; color: var(--faint); align-self: center; flex-shrink: 0; transition: color .2s, transform .2s; }
+    .more-item:hover .more-item-arrow { color: var(--accent); transform: translateX(3px); }
+    .more-divider { height: 1px; background: var(--line); margin: 20px 24px 0; }
+    .more-footer { padding: 20px 24px; margin-top: auto; }
+    .more-footer-text { font-size: 11px; color: var(--sub); }
+  </style>
+  <div class="more-overlay" id="more-overlay" onclick="handleMoreOverlayClick(event)">
+    <div class="more-backdrop"></div>
+    <div class="more-sidebar">
+      <div class="more-header"><span class="more-header-title">More</span><button class="more-close" onclick="closeMore()">✕</button></div>
+      <div class="more-section">
+        <div class="more-section-label">Equipment</div>
+        <a class="more-item" href="equipment.html"><div class="more-item-icon">⚡</div><div class="more-item-body"><div class="more-item-title">Quickstart + Usage</div><div class="more-item-sub">Jump right in</div></div><span class="more-item-arrow">→</span></a>
+      </div>
+      <div class="more-divider"></div>
+      <div class="more-section" style="padding-top:20px;">
+        <div class="more-section-label">Learning</div>
+        <a class="more-item" href="tutorials.html"><div class="more-item-icon">📖</div><div class="more-item-body"><div class="more-item-title">Tutorials</div><div class="more-item-sub">Step-by-step guides</div></div><span class="more-item-arrow">→</span></a>
+        <a class="more-item" href="resources.html"><div class="more-item-icon">🔗</div><div class="more-item-body"><div class="more-item-title">Resources</div><div class="more-item-sub">Tools I actually use</div></div><span class="more-item-arrow">→</span></a>
+      </div>
+      <div class="more-divider"></div>
+      <div class="more-section" style="padding-top:20px;">
+        <div class="more-section-label">Other</div>
+        <a class="more-item" href="https://github.com/jadenjirasevijinda/jadenjirasevijinda" target="_blank" rel="noopener"><div class="more-item-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></div><div class="more-item-body"><div class="more-item-title">Source Code</div><div class="more-item-sub">GitHub repo</div></div><span class="more-item-arrow">↗</span></a>
+      </div>
+      <div class="more-footer"><div class="more-footer-text">Built with Claude AI · Hosted on Vercel</div></div>
+    </div>
+  </div>
+  <script>
+    function openMore()  { document.getElementById('more-overlay').classList.add('open');    document.getElementById('more-btn').classList.add('open'); }
+    function closeMore() { document.getElementById('more-overlay').classList.remove('open'); document.getElementById('more-btn').classList.remove('open'); }
+    function handleMoreOverlayClick(e) { if (e.target === document.getElementById('more-overlay') || e.target.classList.contains('more-backdrop')) closeMore(); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMore(); });
+  </script>
+</body>
+</html>
