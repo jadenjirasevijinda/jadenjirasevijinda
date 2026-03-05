@@ -6,311 +6,6 @@
   <title>Works — Jaden Jirasevijinda</title>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    html, body { overflow: hidden; }
-
-    .page-shell {
-      height: 100vh; width: 100vw;
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      padding-top: var(--nav-h);
-      position: relative; z-index: 1;
-    }
-
-    /* LEFT — heading */
-    .works-left {
-      display: flex; flex-direction: column;
-      justify-content: space-between;
-      padding: 52px 60px 52px 48px;
-      border-right: 1px solid var(--line);
-      animation: up .5s .05s ease both;
-      overflow: hidden; position: relative;
-    }
-
-    .page-eyebrow {
-      font-size: 11px; font-weight: 500;
-      color: var(--sub); letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 20px;
-    }
-    .page-heading {
-      font-size: clamp(3rem, 7vw, 7rem);
-      font-weight: 800; letter-spacing: -.04em;
-      line-height: .9; text-transform: uppercase;
-      margin-bottom: 0;
-    }
-    .page-heading .ac { color: var(--accent); }
-
-    .works-count {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: clamp(1rem, 1.4vw, 1.2rem);
-      color: var(--sub);
-    }
-
-    /* Ticker */
-    .ticker-wrap {
-      position: absolute; bottom: 60px; left: 0; right: 0;
-      overflow: hidden; pointer-events: none; opacity: .04;
-    }
-    .ticker {
-      display: flex; gap: 60px; white-space: nowrap;
-      animation: ticker-scroll 20s linear infinite;
-    }
-    .ticker span {
-      font-size: clamp(5rem, 9vw, 10rem);
-      font-weight: 800; letter-spacing: -.04em;
-      color: var(--text); flex-shrink: 0;
-    }
-
-    /* RIGHT — project cards */
-    .works-right {
-      display: flex; flex-direction: column;
-      padding: 32px 28px; gap: 8px;
-      animation: up .5s .15s ease both;
-      overflow-y: auto;
-    }
-    .right-label {
-      font-size: 11px; font-weight: 600;
-      color: var(--sub); letter-spacing: .12em;
-      text-transform: uppercase; margin-bottom: 4px; padding: 0 4px;
-    }
-
-    .project-card {
-      background: var(--s1); border: 1px solid var(--line);
-      border-radius: 16px; padding: 22px 24px;
-      display: flex; align-items: center; gap: 18px;
-      cursor: pointer; position: relative; overflow: hidden;
-      transition: background .22s, border-color .22s, transform .2s;
-    }
-    .project-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--adim); opacity: 0;
-      transition: opacity .22s; border-radius: 16px;
-    }
-    .project-card:hover { background: var(--s2); border-color: rgba(42,143,163,.3); transform: translateX(5px); }
-    .project-card:hover::before { opacity: 1; }
-    .project-card:hover .pc-arrow { color: var(--accent); transform: translate(3px,-3px); }
-    .project-card:hover .pc-num   { color: var(--accent); opacity: 1; }
-
-    .pc-num {
-      font-size: 10px; font-weight: 700;
-      color: var(--sub); letter-spacing: .1em;
-      opacity: .5; flex-shrink: 0; width: 22px;
-      transition: color .2s, opacity .2s;
-    }
-    .pc-body { flex: 1; }
-    .pc-title {
-      font-size: 17px; font-weight: 700;
-      letter-spacing: -.02em; line-height: 1; margin-bottom: 4px;
-    }
-    .pc-meta { display: flex; align-items: center; gap: 8px; }
-    .pc-type {
-      font-size: 10px; font-weight: 600;
-      color: var(--accent); letter-spacing: .08em; text-transform: uppercase;
-    }
-    .pc-status {
-      font-size: 10px; color: var(--sub);
-      letter-spacing: .04em; text-transform: uppercase;
-    }
-    .pc-skills { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
-    .pc-skill {
-      font-size: 10px; padding: 2px 8px; border-radius: 999px;
-      border: 1px solid var(--line); color: var(--sub);
-    }
-    .pc-arrow {
-      font-size: 17px; color: var(--faint);
-      transition: color .2s, transform .2s; flex-shrink: 0;
-    }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.7);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      z-index: 2000; display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 20px;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal-box {
-      background: #161616; border: 1px solid rgba(42,143,163,.25);
-      border-radius: 20px; padding: 36px; width: 100%; max-width: 480px;
-      position: relative; transform: translateY(14px);
-      transition: transform .28s cubic-bezier(.32,.72,0,1);
-      max-height: 90vh; overflow-y: auto;
-    }
-    .modal-overlay.open .modal-box { transform: translateY(0); }
-    .modal-close {
-      position: absolute; top: 16px; right: 18px;
-      background: none; border: none; cursor: pointer;
-      font-size: 18px; color: var(--sub); font-family: inherit;
-      transition: color .2s;
-    }
-    .modal-close:hover { color: var(--text); }
-    .modal-tag {
-      font-size: 11px; font-weight: 600;
-      color: var(--accent); letter-spacing: .08em;
-      text-transform: uppercase; margin-bottom: 8px;
-    }
-    .modal-title {
-      font-size: 26px; font-weight: 800;
-      letter-spacing: -.03em; line-height: 1; margin-bottom: 16px;
-    }
-    .modal-desc {
-      font-size: 14px; color: var(--sub);
-      line-height: 1.75; margin-bottom: 24px;
-    }
-    .modal-section { margin-bottom: 20px; }
-    .modal-section-label {
-      font-size: 10px; font-weight: 700;
-      color: var(--sub); letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 10px;
-    }
-    .modal-skills { display: flex; flex-wrap: wrap; gap: 6px; }
-    .modal-skill {
-      font-size: 11px; padding: 4px 12px; border-radius: 999px;
-      border: 1px solid rgba(42,143,163,.3);
-      color: var(--accent); background: rgba(42,143,163,.06);
-    }
-    .modal-links { display: flex; flex-direction: column; gap: 8px; }
-    .modal-link {
-      display: flex; align-items: center; gap: 10px;
-      padding: 12px 16px; border-radius: 12px;
-      border: 1px solid var(--line); background: var(--s2);
-      color: var(--text); text-decoration: none; font-size: 13px;
-      transition: border-color .2s, background .2s;
-    }
-    .modal-link:hover { border-color: rgba(42,143,163,.4); background: var(--s1); }
-
-    @media (max-width: 960px) {
-      html, body { overflow: auto; }
-      .page-shell { grid-template-columns: 1fr; height: auto; }
-      .works-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px 24px; overflow: visible; }
-      .ticker-wrap { display: none; }
-      .works-right { padding: 20px; }
-    }
-
-    /* ── More sidebar ── */
-    .more-btn {
-      background: none; border: 1px solid var(--line);
-      border-radius: 8px; padding: 5px 14px;
-      font-size: 11px; font-weight: 600;
-      letter-spacing: .08em; text-transform: uppercase;
-      color: var(--sub); cursor: pointer;
-      font-family: inherit;
-      transition: color .2s, border-color .2s, background .2s;
-    }
-    .more-btn:hover,
-    .more-btn.open { color: var(--accent); border-color: rgba(42,143,163,.4); background: rgba(42,143,163,.07); }
-
-    .more-overlay {
-      position: fixed; inset: 0;
-      z-index: 800;
-      pointer-events: none;
-    }
-    .more-overlay.open { pointer-events: all; }
-
-    .more-backdrop {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,.4);
-      opacity: 0;
-      transition: opacity .3s;
-    }
-    .more-overlay.open .more-backdrop { opacity: 1; }
-
-    .more-sidebar {
-      position: absolute;
-      top: 0; right: 0;
-      width: 380px; height: 100%;
-      background: #111;
-      border-left: 1px solid var(--line);
-      display: flex; flex-direction: column;
-      transform: translateX(100%);
-      transition: transform .35s cubic-bezier(.32,.72,0,1);
-      overflow-y: auto;
-    }
-    .more-overlay.open .more-sidebar { transform: translateX(0); }
-
-    .more-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--line);
-      flex-shrink: 0;
-    }
-    .more-header-title {
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .1em; text-transform: uppercase; color: var(--sub);
-    }
-    .more-close {
-      background: none; border: none; cursor: pointer;
-      font-size: 18px; color: var(--sub); font-family: inherit;
-      transition: color .2s;
-    }
-    .more-close:hover { color: var(--text); }
-
-    .more-section {
-      padding: 20px 24px 0;
-    }
-    .more-section-label {
-      font-size: 10px; font-weight: 700;
-      color: var(--sub); letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 10px;
-    }
-
-    .more-item {
-      display: flex; align-items: flex-start; gap: 14px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: var(--s1);
-      text-decoration: none;
-      color: var(--text);
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: background .2s, border-color .2s, transform .15s;
-      position: relative; overflow: hidden;
-    }
-    .more-item::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--adim); opacity: 0; transition: opacity .2s;
-    }
-    .more-item:hover { background: var(--s2); border-color: rgba(42,143,163,.3); transform: translateX(3px); }
-    .more-item:hover::before { opacity: 1; }
-
-    .more-item-icon {
-      width: 34px; height: 34px; border-radius: 9px;
-      background: rgba(42,143,163,.08); border: 1px solid rgba(42,143,163,.2);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent); flex-shrink: 0; font-size: 15px;
-    }
-    .more-item-body { flex: 1; }
-    .more-item-title {
-      font-size: 13px; font-weight: 600;
-      letter-spacing: -.01em; margin-bottom: 2px;
-    }
-    .more-item-sub {
-      font-size: 11px; color: var(--sub); line-height: 1.45;
-    }
-    .more-item-arrow {
-      font-size: 14px; color: var(--faint);
-      align-self: center; flex-shrink: 0;
-      transition: color .2s, transform .2s;
-    }
-    .more-item:hover .more-item-arrow { color: var(--accent); transform: translateX(3px); }
-
-    .more-divider {
-      height: 1px; background: var(--line);
-      margin: 20px 24px 0;
-    }
-
-    .more-footer {
-      padding: 20px 24px;
-      margin-top: auto;
-    }
-    .more-footer-text {
-      font-size: 11px; color: var(--sub); letter-spacing: .02em; line-height: 1.6;
-    }
-
-  </style>
 </head>
 <body>
   <canvas id="dot-canvas"></canvas>
@@ -472,5 +167,80 @@
       if (e.key === 'Escape') document.getElementById('modal-overlay').classList.remove('open');
     });
   </script>
+
+  <!-- ── More Sidebar ── -->
+  <div class="more-overlay" id="more-overlay" onclick="handleMoreOverlayClick(event)">
+    <div class="more-backdrop"></div>
+    <div class="more-sidebar" id="more-sidebar">
+      <div class="more-header">
+        <span class="more-header-title">More</span>
+        <button class="more-close" onclick="closeMore()">✕</button>
+      </div>
+      <div class="more-section">
+        <div class="more-section-label">Equipment</div>
+        <a class="more-item" href="equipment.html">
+          <div class="more-item-icon">⚡</div>
+          <div class="more-item-body">
+            <div class="more-item-title">Quickstart + Usage</div>
+            <div class="more-item-sub">Jump right in — what you need to get started</div>
+          </div>
+          <span class="more-item-arrow">→</span>
+        </a>
+      </div>
+      <div class="more-divider"></div>
+      <div class="more-section" style="padding-top:20px;">
+        <div class="more-section-label">Learning</div>
+        <a class="more-item" href="tutorials.html">
+          <div class="more-item-icon">📖</div>
+          <div class="more-item-body">
+            <div class="more-item-title">Tutorials</div>
+            <div class="more-item-sub">Step-by-step guides for video &amp; audio</div>
+          </div>
+          <span class="more-item-arrow">→</span>
+        </a>
+        <a class="more-item" href="resources.html">
+          <div class="more-item-icon">🔗</div>
+          <div class="more-item-body">
+            <div class="more-item-title">Resources</div>
+            <div class="more-item-sub">Tools, apps, and gear links I use</div>
+          </div>
+          <span class="more-item-arrow">→</span>
+        </a>
+      </div>
+      <div class="more-divider"></div>
+      <div class="more-section" style="padding-top:20px;">
+        <div class="more-section-label">Other</div>
+        <a class="more-item" href="https://github.com/jadenjirasevijinda/jadenjirasevijinda" target="_blank" rel="noopener">
+          <div class="more-item-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          </div>
+          <div class="more-item-body">
+            <div class="more-item-title">Source Code</div>
+            <div class="more-item-sub">This site on GitHub</div>
+          </div>
+          <span class="more-item-arrow">↗</span>
+        </a>
+      </div>
+      <div class="more-footer">
+        <div class="more-footer-text">Built with Claude AI · Hosted on Vercel</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function openMore()  {
+      document.getElementById('more-overlay').classList.add('open');
+      document.getElementById('more-btn').classList.add('open');
+    }
+    function closeMore() {
+      document.getElementById('more-overlay').classList.remove('open');
+      document.getElementById('more-btn').classList.remove('open');
+    }
+    function handleMoreOverlayClick(e) {
+      if (e.target === document.getElementById('more-overlay') ||
+          e.target.classList.contains('more-backdrop')) closeMore();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMore(); });
+  </script>
+
 </body>
 </html>
