@@ -208,60 +208,46 @@
   </script>
 
 
-  <!-- More sidebar -->
+  <!-- ── More Sidebar ── -->
   <div class="more-overlay" id="more-overlay" onclick="handleMoreOverlayClick(event)">
     <div class="more-backdrop"></div>
     <div class="more-sidebar" id="more-sidebar">
-
       <div class="more-header">
         <span class="more-header-title">More</span>
         <button class="more-close" onclick="closeMore()">✕</button>
       </div>
-
       <div class="more-section">
         <div class="more-section-label">Equipment</div>
-        <div class="more-item" onclick="openMoreModal('quickstart')">
+        <a class="more-item" href="equipment.html">
           <div class="more-item-icon">⚡</div>
           <div class="more-item-body">
-            <div class="more-item-title">Quickstart</div>
+            <div class="more-item-title">Quickstart + Usage</div>
             <div class="more-item-sub">Jump right in — what you need to get started</div>
           </div>
           <span class="more-item-arrow">→</span>
-        </div>
-        <div class="more-item" onclick="openMoreModal('usage')">
-          <div class="more-item-icon">🎬</div>
-          <div class="more-item-body">
-            <div class="more-item-title">Usage Guide</div>
-            <div class="more-item-sub">Camera, audio, and editing setup breakdown</div>
-          </div>
-          <span class="more-item-arrow">→</span>
-        </div>
+        </a>
       </div>
-
       <div class="more-divider"></div>
-
       <div class="more-section" style="padding-top:20px;">
         <div class="more-section-label">Learning</div>
-        <div class="more-item" onclick="openMoreModal('tutorials')">
+        <a class="more-item" href="tutorials.html">
           <div class="more-item-icon">📖</div>
           <div class="more-item-body">
             <div class="more-item-title">Tutorials</div>
-            <div class="more-item-sub">Step-by-step guides for video, photo & web</div>
+            <div class="more-item-sub">Step-by-step guides for video &amp; audio</div>
           </div>
           <span class="more-item-arrow">→</span>
-        </div>
-        <div class="more-item" onclick="openMoreModal('resources')">
+        </a>
+        <a class="more-item" href="resources.html">
           <div class="more-item-icon">🔗</div>
           <div class="more-item-body">
             <div class="more-item-title">Resources</div>
-            <div class="more-item-sub">Tools, apps, and links I actually use</div>
+            <div class="more-item-sub">Tools, apps, and gear links I use</div>
           </div>
           <span class="more-item-arrow">→</span>
-        </div>
+        </a>
       </div>
-
       <div class="more-divider"></div>
-
       <div class="more-section" style="padding-top:20px;">
         <div class="more-section-label">Other</div>
         <a class="more-item" href="https://github.com/jadenjirasevijinda/jadenjirasevijinda" target="_blank" rel="noopener">
@@ -274,63 +260,14 @@
           </div>
           <span class="more-item-arrow">↗</span>
         </a>
-        <div class="more-item" onclick="openMoreModal('changelog')">
-          <div class="more-item-icon">📝</div>
-          <div class="more-item-body">
-            <div class="more-item-title">Changelog</div>
-            <div class="more-item-sub">What's new on this site</div>
-          </div>
-          <span class="more-item-arrow">→</span>
-        </div>
       </div>
-
       <div class="more-footer">
         <div class="more-footer-text">Built with Claude AI · Hosted on Vercel</div>
       </div>
-
     </div>
   </div>
-
-  <!-- More content modals -->
-  <div class="org-overlay" id="more-modal-overlay" onclick="closeMoreModal(event)" style="z-index:2500;">
-    <div class="org-modal" id="more-modal-box">
-      <button class="org-close" onclick="document.getElementById('more-modal-overlay').classList.remove('open')">✕</button>
-      <div class="org-tag" id="mm-tag"></div>
-      <div class="org-name" id="mm-title"></div>
-      <p class="org-desc" id="mm-body"></p>
-    </div>
-  </div>
-
   <script>
-    const moreContent = {
-      quickstart: {
-        tag: 'Equipment · Quickstart',
-        title: 'Getting Started',
-        body: 'To get started with videography you need a camera, a microphone, and a way to edit. I shoot on a Sony camera, record audio with a Rodecaster Pro, and edit everything in DaVinci Resolve. For photography I use the same camera with a good lens and edit in Lightroom. Start simple — great content comes from great stories, not great gear.'
-      },
-      usage: {
-        tag: 'Equipment · Usage Guide',
-        title: 'My Setup',
-        body: 'Camera: Sony mirrorless — great for both photo and video. Audio: Rodecaster Pro for podcast/vodcast recording, clean gain and easy mixing. Editing: DaVinci Resolve for video (free and powerful), Adobe Lightroom for photo color grading. Web: VS Code + Claude AI for vibe coding, GitHub for version control, Vercel for hosting.'
-      },
-      tutorials: {
-        tag: 'Learning · Tutorials',
-        title: 'Tutorials',
-        body: 'I'm working on a series of tutorials covering video editing in DaVinci Resolve, photography basics, and web development with AI tools. Check my YouTube channel @thereal_jasian for the latest walkthroughs and breakdowns.'
-      },
-      resources: {
-        tag: 'Learning · Resources',
-        title: 'Tools I Use',
-        body: 'Video: DaVinci Resolve, Rodecaster Pro, Sony camera. Photo: Adobe Lightroom, Capture One. Web: VS Code, Claude AI, Vercel, GitHub. Design: Figma. Learning: YouTube, official docs, and a lot of trial and error.'
-      },
-      changelog: {
-        tag: 'Site · Changelog',
-        title: 'What's New',
-        body: 'v2.0 — Complete redesign with new teal accent color, split-panel layout, and dot grid background. New pages for About, Works, Gallery, and Connect. Language detail modals, org popups, and project modals all added. Hosted on Vercel, files on GitHub.'
-      }
-    };
-
-    function openMore() {
+    function openMore()  {
       document.getElementById('more-overlay').classList.add('open');
       document.getElementById('more-btn').classList.add('open');
     }
@@ -342,23 +279,7 @@
       if (e.target === document.getElementById('more-overlay') ||
           e.target.classList.contains('more-backdrop')) closeMore();
     }
-    function openMoreModal(key) {
-      const d = moreContent[key]; if (!d) return;
-      document.getElementById('mm-tag').textContent   = d.tag;
-      document.getElementById('mm-title').textContent = d.title;
-      document.getElementById('mm-body').textContent  = d.body;
-      document.getElementById('more-modal-overlay').classList.add('open');
-    }
-    function closeMoreModal(e) {
-      if (e.target === document.getElementById('more-modal-overlay'))
-        document.getElementById('more-modal-overlay').classList.remove('open');
-    }
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        closeMore();
-        document.getElementById('more-modal-overlay').classList.remove('open');
-      }
-    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMore(); });
   </script>
 
 </body>
