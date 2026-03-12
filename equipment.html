@@ -6,6 +6,7 @@
   <title>Equipment — Jaden Jirasevijinda</title>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="nav.js" defer></script>
   <style>
     html, body { overflow: hidden; }
 
@@ -17,7 +18,6 @@
       position: relative; z-index: 1;
     }
 
-    /* ── LEFT ── */
     .eq-left {
       display: flex; flex-direction: column;
       justify-content: space-between;
@@ -26,140 +26,44 @@
       animation: up .5s .05s ease both;
     }
 
-    .page-eyebrow {
-      font-size: 11px; font-weight: 500;
-      color: var(--sub); letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 20px;
-    }
-    .page-heading {
-      font-size: clamp(2.4rem, 4vw, 4.2rem);
-      font-weight: 800; letter-spacing: -.04em;
-      line-height: .9; text-transform: uppercase; margin-bottom: 24px;
-    }
+    .page-eyebrow { font-size: 11px; font-weight: 500; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 20px; }
+    .page-heading { font-size: clamp(2.4rem, 4vw, 4.2rem); font-weight: 800; letter-spacing: -.04em; line-height: .9; text-transform: uppercase; margin-bottom: 24px; }
     .page-heading .ac { color: var(--accent); }
+    .eq-desc { font-size: 13px; color: var(--sub); line-height: 1.7; margin-bottom: 28px; }
 
-    .eq-desc {
-      font-size: 13px; color: var(--sub);
-      line-height: 1.7; margin-bottom: 28px;
-    }
-
-    /* Tab switcher */
     .tab-group { display: flex; flex-direction: column; gap: 6px; }
-    .tab-label {
-      font-size: 10px; font-weight: 700; color: var(--sub);
-      letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px;
-    }
-    .tab-btn {
-      background: var(--s1); border: 1px solid var(--line);
-      border-radius: 10px; padding: 10px 16px;
-      font-size: 12px; font-weight: 500;
-      color: var(--sub); cursor: pointer;
-      font-family: inherit; letter-spacing: .02em;
-      text-align: left;
-      transition: color .2s, border-color .2s, background .2s;
-    }
+    .tab-label { font-size: 10px; font-weight: 700; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+    .tab-btn { background: var(--s1); border: 1px solid var(--line); border-radius: 10px; padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--sub); cursor: pointer; font-family: inherit; letter-spacing: .02em; text-align: left; transition: color .2s, border-color .2s, background .2s; }
     .tab-btn:hover  { color: var(--text); }
-    .tab-btn.active {
-      color: var(--accent);
-      border-color: rgba(42,143,163,.35);
-      background: rgba(42,143,163,.07);
-    }
+    .tab-btn.active { color: var(--accent); border-color: rgba(42,143,163,.35); background: rgba(42,143,163,.07); }
 
-    .eq-count {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic; font-size: 13px; color: var(--sub);
-    }
+    .eq-count { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 13px; color: var(--sub); }
 
-    /* ── RIGHT — gear grid ── */
-    .eq-right {
-      padding: 28px 28px;
-      overflow-y: auto;
-      animation: up .5s .1s ease both;
-      position: relative;
-    }
+    .eq-right { padding: 28px; overflow-y: auto; animation: up .5s .1s ease both; position: relative; }
 
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
+    .panel-label { font-size: 11px; font-weight: 600; color: var(--sub); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; padding: 0 2px; }
 
-    .panel-label {
-      font-size: 11px; font-weight: 600;
-      color: var(--sub); letter-spacing: .12em;
-      text-transform: uppercase; margin-bottom: 14px; padding: 0 2px;
-    }
-
-    /* Gear cards — horizontal accordion style */
-    .gear-card {
-      background: var(--s1);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      margin-bottom: 8px;
-      overflow: hidden;
-      transition: border-color .2s;
-    }
+    .gear-card { background: var(--s1); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 8px; overflow: hidden; transition: border-color .2s; }
     .gear-card.open { border-color: rgba(42,143,163,.3); }
-
-    .gear-card-header {
-      display: flex; align-items: center; gap: 16px;
-      padding: 18px 22px;
-      cursor: pointer;
-      transition: background .2s;
-    }
+    .gear-card-header { display: flex; align-items: center; gap: 16px; padding: 18px 22px; cursor: pointer; transition: background .2s; }
     .gear-card-header:hover { background: var(--s2); }
-
-    .gear-icon {
-      width: 38px; height: 38px; border-radius: 10px;
-      background: rgba(42,143,163,.08); border: 1px solid rgba(42,143,163,.15);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-      transition: background .2s;
-    }
+    .gear-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(42,143,163,.08); border: 1px solid rgba(42,143,163,.15); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: background .2s; }
     .gear-card.open .gear-icon { background: rgba(42,143,163,.18); }
-
     .gear-header-body { flex: 1; }
-    .gear-name {
-      font-size: 15px; font-weight: 700;
-      letter-spacing: -.02em; line-height: 1; margin-bottom: 3px;
-    }
+    .gear-name { font-size: 15px; font-weight: 700; letter-spacing: -.02em; line-height: 1; margin-bottom: 3px; }
     .gear-meta { display: flex; gap: 8px; align-items: center; }
-    .gear-type {
-      font-size: 10px; font-weight: 600;
-      color: var(--accent); letter-spacing: .08em; text-transform: uppercase;
-    }
-    .gear-status {
-      font-size: 10px; color: var(--sub);
-      letter-spacing: .04em; text-transform: uppercase;
-    }
-
-    .gear-chevron {
-      font-size: 12px; color: var(--sub);
-      transition: transform .25s, color .2s; flex-shrink: 0;
-    }
+    .gear-type { font-size: 10px; font-weight: 600; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; }
+    .gear-status { font-size: 10px; color: var(--sub); letter-spacing: .04em; text-transform: uppercase; }
+    .gear-chevron { font-size: 12px; color: var(--sub); transition: transform .25s, color .2s; flex-shrink: 0; }
     .gear-card.open .gear-chevron { transform: rotate(90deg); color: var(--accent); }
-
-    .gear-body {
-      max-height: 0; overflow: hidden;
-      transition: max-height .35s cubic-bezier(.32,.72,0,1);
-    }
+    .gear-body { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.32,.72,0,1); }
     .gear-card.open .gear-body { max-height: 600px; }
-
-    .gear-body-inner {
-      padding: 0 22px 20px;
-      border-top: 1px solid var(--line);
-      padding-top: 18px;
-    }
-    .gear-desc {
-      font-size: 13px; color: var(--sub);
-      line-height: 1.75; margin-bottom: 16px;
-    }
+    .gear-body-inner { padding: 18px 22px 20px; border-top: 1px solid var(--line); }
+    .gear-desc { font-size: 13px; color: var(--sub); line-height: 1.75; margin-bottom: 16px; }
     .gear-links { display: flex; flex-wrap: wrap; gap: 8px; }
-    .gear-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11px; color: var(--accent); text-decoration: none;
-      padding: 7px 14px; border-radius: 8px;
-      border: 1px solid rgba(42,143,163,.3);
-      background: rgba(42,143,163,.06);
-      transition: background .2s, border-color .2s;
-    }
+    .gear-link { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--accent); text-decoration: none; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(42,143,163,.3); background: rgba(42,143,163,.06); transition: background .2s, border-color .2s; }
     .gear-link:hover { background: rgba(42,143,163,.14); border-color: rgba(42,143,163,.5); }
 
     @media (max-width: 960px) {
@@ -175,20 +79,7 @@
   <canvas id="dot-canvas"></canvas>
   <div class="glow"></div>
 
-  <nav>
-    <a class="nav-logo" href="index.html">JADEN JIRASEVIJINDA</a>
-    <ul class="nav-links">
-      <li><a href="index.html">01_HOME</a></li>
-      <li><a href="about.html">02_ABOUT</a></li>
-      <li><a href="projects.html">03_WORKS</a></li>
-      <li><a href="photos.html">04_GALLERY</a></li>
-      <li><a href="contact.html">05_CONNECT</a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="more-btn" id="more-btn" onclick="openMore()">More</button>
-      <div class="nav-time" id="clock">00:00:00</div>
-    </div>
-  </nav>
+  <nav></nav>
 
   <div class="page-shell">
     <div class="eq-left">
@@ -222,15 +113,13 @@
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add your own quickstart notes here — e.g. settings you use for photo vs video, preferred autofocus mode, card setup, and any tips for getting the best out of this camera.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.usa.canon.com/support/p/eos-m50-mark-ii" target="_blank" rel="noopener">Canon Support →</a>
-                <a class="gear-link" href="https://gdlp01.c-wss.com/gds/8/0300029138/02/eosm50mkiim-ug-en.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Set to 4K 24fps for cinematic video, or 1080p 60fps for slow motion. Use Dual Pixel CAF for autofocus. Import footage via USB-C or SD card.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.usa.canon.com/support/p/eos-m50-mark-ii" target="_blank" rel="noopener">Canon Support →</a>
+              <a class="gear-link" href="https://gdlp01.c-wss.com/gds/8/0300029138/02/eosm50mkiim-ug-en.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
@@ -242,15 +131,13 @@
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add your quickstart notes here — e.g. preferred resolution/frame rate, RockSteady stabilization settings, when you use it vs the M50, and mounting setups you like.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.dji.com/osmo-action-4" target="_blank" rel="noopener">DJI Product Page →</a>
-                <a class="gear-link" href="https://dl.djicdn.com/downloads/osmo_action_4/20230831/DJI_Osmo_Action_4_User_Manual_v1.0_en.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Set RockSteady ON for stabilized shots. Use 4K 60fps for buttery slow motion. Great for POV and outdoor action content.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.dji.com/osmo-action-4" target="_blank" rel="noopener">DJI Product Page →</a>
+              <a class="gear-link" href="https://dl.djicdn.com/downloads/osmo_action_4/20230831/DJI_Osmo_Action_4_User_Manual_v1.0_en.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
@@ -262,36 +149,30 @@
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add your quickstart notes here — e.g. pre-flight checklist, camera settings for cinematic aerial shots, favorite flight modes, and local airspace tips for Livermore.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.dji.com/mavic-mini" target="_blank" rel="noopener">DJI Product Page →</a>
-                <a class="gear-link" href="https://dl.djicdn.com/downloads/mavic-mini/20191108/Mavic_Mini_User_Manual_v1.0_EN.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-                <a class="gear-link" href="https://www.faa.gov/uas" target="_blank" rel="noopener">FAA UAS Rules →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Under 250g — no FAA registration required. Shoots 2.7K video. Always check local airspace rules before flying. Charge batteries fully before use.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.dji.com/mavic-mini" target="_blank" rel="noopener">DJI Product Page →</a>
+              <a class="gear-link" href="https://www.faa.gov/uas" target="_blank" rel="noopener">FAA UAS Rules →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
           <div class="gear-card-header">
             <div class="gear-icon">📱</div>
             <div class="gear-header-body">
-              <div class="gear-name">DJI OM 2 (Osmo Mobile 2)</div>
-              <div class="gear-meta"><span class="gear-type">Hardware · Stabilization</span><span class="gear-status">· Phone Gimbal</span></div>
+              <div class="gear-name">DJI OM 2</div>
+              <div class="gear-meta"><span class="gear-type">Hardware · Stabilization</span></div>
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add your quickstart notes here — e.g. balancing your phone, ActiveTrack setup, follow/lock/FPV mode differences, and when you reach for this vs the Mavic.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.dji.com/osmo-mobile-2" target="_blank" rel="noopener">DJI Product Page →</a>
-                <a class="gear-link" href="https://dl.djicdn.com/downloads/osmo_mobile_2/20180424/Osmo+Mobile+2+User+Manual+v1.2.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Balance your phone on the gimbal before turning it on. Use ActiveTrack for auto subject tracking. Great for walk-and-talk and vlog content.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.dji.com/osmo-mobile-2" target="_blank" rel="noopener">DJI Product Page →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
@@ -299,18 +180,16 @@
             <div class="gear-icon">🎞️</div>
             <div class="gear-header-body">
               <div class="gear-name">Tripod</div>
-              <div class="gear-meta"><span class="gear-type">Hardware · Stabilization</span><span class="gear-status">· Essential</span></div>
+              <div class="gear-meta"><span class="gear-type">Hardware · Stabilization</span></div>
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add your quickstart notes here — e.g. your tripod model, quick-release setup, preferred head type for video vs photo, and tips for stable handheld-to-tripod transitions.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.bhphotovideo.com/explora/video/tips-and-solutions/how-to-use-a-tripod" target="_blank" rel="noopener">Tripod Guide →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Use the quick-release plate for fast camera swaps. Extend legs evenly on flat surfaces. Fluid head allows smooth pans and tilts for interview and b-roll shots.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.bhphotovideo.com/explora/video/tips-and-solutions/how-to-use-a-tripod" target="_blank" rel="noopener">Tripod Guide →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
@@ -318,26 +197,24 @@
             <div class="gear-icon">💻</div>
             <div class="gear-header-body">
               <div class="gear-name">DaVinci Resolve</div>
-              <div class="gear-meta"><span class="gear-type">Software · Editing</span><span class="gear-status">· Free</span></div>
+              <div class="gear-meta"><span class="gear-type">Software · Editing</span></div>
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add your quickstart notes — e.g. "Import footage to Media Pool, drag to timeline, cut on the Edit page, color in Color page. Export via Deliver at H.264 for YouTube."</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" rel="noopener">Download Free →</a>
-                <a class="gear-link" href="https://documents.blackmagicdesign.com/UserManuals/DaVinci-Resolve-18-Reference-Manual.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Import footage to Media Pool, drag to timeline, cut on the Edit page, color in Color page. Export via Deliver at H.264 for YouTube.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" rel="noopener">Download Free →</a>
+              <a class="gear-link" href="https://documents.blackmagicdesign.com/UserManuals/DaVinci-Resolve-18-Reference-Manual.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
       </div><!-- /tab-quickstart -->
 
       <!-- USAGE TAB -->
       <div class="tab-panel" id="tab-usage">
-        <div class="panel-label">Full setup & usage notes</div>
+        <div class="panel-label">Full setup &amp; usage notes</div>
 
         <div class="gear-card" onclick="toggleCard(this)">
           <div class="gear-card-header">
@@ -348,15 +225,13 @@
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add detailed usage notes — your preferred settings per scenario (portrait, event, video), lens choices, EF-M mount adapters, battery life tips, and your SD card workflow.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.usa.canon.com/support/p/eos-m50-mark-ii" target="_blank" rel="noopener">Canon Support →</a>
-                <a class="gear-link" href="https://gdlp01.c-wss.com/gds/8/0300029138/02/eosm50mkiim-ug-en.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Add detailed usage notes — your preferred settings per scenario (portrait, event, video), lens choices, EF-M mount adapters, battery life tips, and your SD card workflow.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.usa.canon.com/support/p/eos-m50-mark-ii" target="_blank" rel="noopener">Canon Support →</a>
+              <a class="gear-link" href="https://gdlp01.c-wss.com/gds/8/0300029138/02/eosm50mkiim-ug-en.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
@@ -368,36 +243,29 @@
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add detailed usage notes — your go-to resolution and frame rate, RockSteady vs HorizonSteady, color profiles, underwater housing use, and how you integrate clips with M50 footage in Resolve.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.dji.com/osmo-action-4" target="_blank" rel="noopener">DJI Product Page →</a>
-                <a class="gear-link" href="https://dl.djicdn.com/downloads/osmo_action_4/20230831/DJI_Osmo_Action_4_User_Manual_v1.0_en.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Add detailed usage notes — your settings for different environments, waterproof housing use cases, ND filter usage, and how you sync footage with your main camera.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.dji.com/osmo-action-4" target="_blank" rel="noopener">DJI Product Page →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
           <div class="gear-card-header">
             <div class="gear-icon">🚁</div>
             <div class="gear-header-body">
-              <div class="gear-name">DJI Mavic Mini (Gen 1) — Usage</div>
+              <div class="gear-name">DJI Mavic Mini — Usage</div>
               <div class="gear-meta"><span class="gear-type">Video · Aerial</span></div>
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add detailed usage notes — Cine vs Normal vs Sport mode, camera angle and gimbal tilt settings, battery management for longer sessions, and post workflow for the 2.7K footage in Resolve.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.dji.com/mavic-mini" target="_blank" rel="noopener">DJI Product Page →</a>
-                <a class="gear-link" href="https://dl.djicdn.com/downloads/mavic-mini/20191108/Mavic_Mini_User_Manual_v1.0_EN.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-                <a class="gear-link" href="https://www.faa.gov/uas" target="_blank" rel="noopener">FAA UAS Rules →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Add detailed usage notes — pre-flight checklist, shot types (reveal, orbit, top-down), color grading drone footage to match ground camera, and post-flight SD card workflow.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.faa.gov/uas" target="_blank" rel="noopener">FAA UAS Rules →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
@@ -409,15 +277,13 @@
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add detailed usage notes — balancing different phone sizes, ActiveTrack 2.0 subject tracking, gesture control setup, Story mode templates, and how you use it for walk-and-talk shots.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.dji.com/osmo-mobile-2" target="_blank" rel="noopener">DJI Product Page →</a>
-                <a class="gear-link" href="https://dl.djicdn.com/downloads/osmo_mobile_2/20180424/Osmo+Mobile+2+User+Manual+v1.2.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Add detailed usage notes — balancing different phone sizes, ActiveTrack 2.0 subject tracking, gesture control setup, Story mode templates, and how you use it for walk-and-talk shots.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.dji.com/osmo-mobile-2" target="_blank" rel="noopener">DJI Product Page →</a>
+              <a class="gear-link" href="https://dl.djicdn.com/downloads/osmo_mobile_2/20180424/Osmo+Mobile+2+User+Manual+v1.2.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
@@ -429,14 +295,12 @@
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add detailed usage notes — quick-release plate setup, fluid head drag settings for smooth pans, low-angle vs high-angle configurations, and how you set up for interviews vs events.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.bhphotovideo.com/explora/video/tips-and-solutions/how-to-use-a-tripod" target="_blank" rel="noopener">Tripod Guide →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Add detailed usage notes — quick-release plate setup, fluid head drag settings for smooth pans, low-angle vs high-angle configurations, and how you set up for interviews vs events.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.bhphotovideo.com/explora/video/tips-and-solutions/how-to-use-a-tripod" target="_blank" rel="noopener">Tripod Guide →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <div class="gear-card" onclick="toggleCard(this)">
@@ -448,15 +312,13 @@
             </div>
             <span class="gear-chevron">›</span>
           </div>
-          <div class="gear-body">
-            <div class="gear-body-inner">
-              <p class="gear-desc">Add detailed usage notes — your timeline setup, keyboard shortcuts you rely on, Fusion for motion graphics, Fairlight for audio mixing, and delivery presets for YouTube vs. Instagram.</p>
-              <div class="gear-links">
-                <a class="gear-link" href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" rel="noopener">Download Free →</a>
-                <a class="gear-link" href="https://documents.blackmagicdesign.com/UserManuals/DaVinci-Resolve-18-Reference-Manual.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
-              </div>
+          <div class="gear-body"><div class="gear-body-inner">
+            <p class="gear-desc">Add detailed usage notes — your timeline setup, keyboard shortcuts you rely on, Fusion for motion graphics, Fairlight for audio mixing, and delivery presets for YouTube vs. Instagram.</p>
+            <div class="gear-links">
+              <a class="gear-link" href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" rel="noopener">Download Free →</a>
+              <a class="gear-link" href="https://documents.blackmagicdesign.com/UserManuals/DaVinci-Resolve-18-Reference-Manual.pdf" target="_blank" rel="noopener">Manual (PDF) →</a>
             </div>
-          </div>
+          </div></div>
         </div>
 
       </div><!-- /tab-usage -->
@@ -471,7 +333,6 @@
       document.querySelectorAll('.gear-card.open').forEach(c => c.classList.remove('open'));
       if (!wasOpen) card.classList.add('open');
     }
-
     function switchTab(name, btn) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -479,82 +340,5 @@
       document.getElementById('tab-' + name).classList.add('active');
     }
   </script>
-
-  <!-- More sidebar injected via shared snippet -->
-
-  <!-- ── More Sidebar ── -->
-  <div class="more-overlay" id="more-overlay" onclick="handleMoreOverlayClick(event)">
-    <div class="more-backdrop"></div>
-    <div class="more-sidebar" id="more-sidebar">
-      <div class="more-header">
-        <span class="more-header-title">More</span>
-        <button class="more-close" onclick="closeMore()">✕</button>
-      </div>
-      <div class="more-section">
-        <div class="more-section-label">Equipment</div>
-        <a class="more-item" href="equipment.html">
-          <div class="more-item-icon">⚡</div>
-          <div class="more-item-body">
-            <div class="more-item-title">Quickstart + Usage</div>
-            <div class="more-item-sub">Jump right in — what you need to get started</div>
-          </div>
-          <span class="more-item-arrow">→</span>
-        </a>
-      </div>
-      <div class="more-divider"></div>
-      <div class="more-section" style="padding-top:20px;">
-        <div class="more-section-label">Learning</div>
-        <a class="more-item" href="tutorials.html">
-          <div class="more-item-icon">📖</div>
-          <div class="more-item-body">
-            <div class="more-item-title">Tutorials</div>
-            <div class="more-item-sub">Step-by-step guides for video &amp; audio</div>
-          </div>
-          <span class="more-item-arrow">→</span>
-        </a>
-        <a class="more-item" href="resources.html">
-          <div class="more-item-icon">🔗</div>
-          <div class="more-item-body">
-            <div class="more-item-title">Resources</div>
-            <div class="more-item-sub">Tools, apps, and gear links I use</div>
-          </div>
-          <span class="more-item-arrow">→</span>
-        </a>
-      </div>
-      <div class="more-divider"></div>
-      <div class="more-section" style="padding-top:20px;">
-        <div class="more-section-label">Other</div>
-        <a class="more-item" href="https://github.com/jadenjirasevijinda/jadenjirasevijinda" target="_blank" rel="noopener">
-          <div class="more-item-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-          </div>
-          <div class="more-item-body">
-            <div class="more-item-title">Source Code</div>
-            <div class="more-item-sub">This site on GitHub</div>
-          </div>
-          <span class="more-item-arrow">↗</span>
-        </a>
-      </div>
-      <div class="more-footer">
-        <div class="more-footer-text">Built with Claude AI · Hosted on Vercel</div>
-      </div>
-    </div>
-  </div>
-  <script>
-    function openMore()  {
-      document.getElementById('more-overlay').classList.add('open');
-      document.getElementById('more-btn').classList.add('open');
-    }
-    function closeMore() {
-      document.getElementById('more-overlay').classList.remove('open');
-      document.getElementById('more-btn').classList.remove('open');
-    }
-    function handleMoreOverlayClick(e) {
-      if (e.target === document.getElementById('more-overlay') ||
-          e.target.classList.contains('more-backdrop')) closeMore();
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMore(); });
-  </script>
-
 </body>
 </html>

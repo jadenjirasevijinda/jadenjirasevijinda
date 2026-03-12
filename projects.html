@@ -6,25 +6,103 @@
   <title>Works — Jaden Jirasevijinda</title>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="nav.js" defer></script>
+  <style>
+    html, body { overflow: hidden; }
+
+    .page-shell {
+      height: 100vh; width: 100vw;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      padding-top: var(--nav-h);
+      position: relative; z-index: 1;
+    }
+
+    .works-left {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 52px 52px 40px 48px;
+      border-right: 1px solid var(--line);
+      position: relative; overflow: hidden;
+      animation: up .5s .05s ease both;
+    }
+
+    .page-eyebrow { font-size: 11px; font-weight: 500; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 20px; }
+    .page-heading { font-size: clamp(3rem, 7vw, 7rem); font-weight: 800; letter-spacing: -.04em; line-height: .9; text-transform: uppercase; }
+    .page-heading .ac { color: var(--accent); }
+
+    .works-count { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 13px; color: var(--sub); }
+
+    .ticker-wrap { position: absolute; bottom: 60px; left: 0; right: 0; overflow: hidden; pointer-events: none; opacity: .045; }
+    .ticker { display: flex; gap: 80px; white-space: nowrap; animation: ticker-scroll 24s linear infinite; }
+    .ticker span { font-size: clamp(6rem, 10vw, 11rem); font-weight: 800; letter-spacing: -.04em; color: var(--text); flex-shrink: 0; }
+
+    .works-right {
+      display: flex; flex-direction: column;
+      padding: 32px 28px; gap: 8px;
+      overflow-y: auto;
+      animation: up .5s .15s ease both;
+    }
+
+    .project-card {
+      background: var(--s1); border: 1px solid var(--line);
+      border-radius: 14px; padding: 20px 22px;
+      display: flex; align-items: flex-start; gap: 16px;
+      cursor: pointer;
+      transition: background .22s, border-color .22s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before { content: ''; position: absolute; inset: 0; background: var(--adim); opacity: 0; transition: opacity .22s; border-radius: 14px; }
+    .project-card:hover { background: var(--s2); border-color: rgba(42,143,163,.3); transform: translateX(4px); }
+    .project-card:hover::before { opacity: 1; }
+    .project-card:hover .pc-arrow { color: var(--accent); transform: translate(3px,-3px); }
+    .project-card:hover .pc-num   { color: var(--accent); opacity: 1; }
+
+    .pc-num { font-size: 10px; font-weight: 700; color: var(--sub); letter-spacing: .1em; opacity: .5; flex-shrink: 0; transition: color .2s, opacity .2s; padding-top: 3px; width: 22px; }
+    .pc-body { flex: 1; }
+    .pc-title { font-size: 16px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 6px; }
+    .pc-meta { font-size: 11px; color: var(--sub); margin-bottom: 10px; }
+    .pc-type { color: var(--accent); font-weight: 600; }
+    .pc-status { color: var(--sub); }
+    .pc-skills { display: flex; flex-wrap: wrap; gap: 5px; }
+    .pc-skill { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--sub); background: none; letter-spacing: .03em; }
+    .pc-arrow { font-size: 16px; color: var(--faint); flex-shrink: 0; align-self: flex-start; padding-top: 2px; transition: color .2s, transform .2s; }
+
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 20px;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box { background: #161616; border: 1px solid rgba(42,143,163,.25); border-radius: 18px; padding: 32px; width: 100%; max-width: 460px; position: relative; transform: translateY(12px); transition: transform .25s cubic-bezier(.32,.72,0,1); max-height: 90vh; overflow-y: auto; }
+    .modal-overlay.open .modal-box { transform: translateY(0); }
+    .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; cursor: pointer; font-size: 18px; color: var(--sub); font-family: inherit; transition: color .2s; }
+    .modal-close:hover { color: var(--text); }
+    .modal-tag { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .modal-title { font-size: 22px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 14px; }
+    .modal-desc { font-size: 13px; color: var(--sub); line-height: 1.75; margin-bottom: 20px; }
+    .modal-skills-label { font-size: 10px; font-weight: 700; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+    .modal-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+    .modal-skill { font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--sub); letter-spacing: .03em; }
+    .modal-links { display: flex; flex-direction: column; gap: 8px; }
+    .modal-link { font-size: 12px; color: var(--accent); text-decoration: none; padding: 9px 14px; border-radius: 10px; border: 1px solid rgba(42,143,163,.3); background: rgba(42,143,163,.06); transition: background .2s, border-color .2s; }
+    .modal-link:hover { background: rgba(42,143,163,.14); border-color: rgba(42,143,163,.5); }
+
+    @media (max-width: 960px) {
+      html, body { overflow: auto; }
+      .page-shell { grid-template-columns: 1fr; height: auto; }
+      .works-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px 24px; overflow: visible; }
+      .ticker-wrap { display: none; }
+      .works-right { padding: 20px; }
+    }
+  </style>
 </head>
 <body>
   <canvas id="dot-canvas"></canvas>
   <div class="glow"></div>
 
-  <nav>
-    <a class="nav-logo" href="index.html">JADEN JIRASEVIJINDA</a>
-    <ul class="nav-links">
-      <li><a href="index.html">01_HOME</a></li>
-      <li><a href="about.html">02_ABOUT</a></li>
-      <li><a href="projects.html" class="active">03_WORKS</a></li>
-      <li><a href="photos.html">04_GALLERY</a></li>
-      <li><a href="contact.html">05_CONNECT</a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="more-btn" id="more-btn" onclick="openMore()">More</button>
-      <div class="nav-time" id="clock">00:00:00</div>
-    </div>
-  </nav>
+  <nav></nav>
 
   <div class="page-shell">
     <div class="works-left">
@@ -47,10 +125,7 @@
         <span class="pc-num">01</span>
         <div class="pc-body">
           <div class="pc-title">Brainless Experts</div>
-          <div class="pc-meta">
-            <span class="pc-type">Vodcast</span>
-            <span class="pc-status">· Archived</span>
-          </div>
+          <div class="pc-meta"><span class="pc-type">Vodcast</span><span class="pc-status">· Archived</span></div>
           <div class="pc-skills">
             <span class="pc-skill">DaVinci Resolve</span>
             <span class="pc-skill">Rodecaster Pro</span>
@@ -64,10 +139,7 @@
         <span class="pc-num">02</span>
         <div class="pc-body">
           <div class="pc-title">Affordable Housing Project</div>
-          <div class="pc-meta">
-            <span class="pc-type">Architecture</span>
-            <span class="pc-status">· Archived</span>
-          </div>
+          <div class="pc-meta"><span class="pc-type">Architecture</span><span class="pc-status">· Archived</span></div>
           <div class="pc-skills">
             <span class="pc-skill">Revit</span>
             <span class="pc-skill">Leadership</span>
@@ -80,15 +152,13 @@
         <span class="pc-num">03</span>
         <div class="pc-body">
           <div class="pc-title">Portfolio Website</div>
-          <div class="pc-meta">
-            <span class="pc-type">Web Dev</span>
-            <span class="pc-status">· Active</span>
-          </div>
+          <div class="pc-meta"><span class="pc-type">Web Dev</span><span class="pc-status">· Active</span></div>
           <div class="pc-skills">
             <span class="pc-skill">Claude AI</span>
             <span class="pc-skill">Vibe Coding</span>
             <span class="pc-skill">Vercel</span>
             <span class="pc-skill">GitHub</span>
+            <span class="pc-skill">HTML/CSS/JS</span>
           </div>
         </div>
         <span class="pc-arrow">→</span>
@@ -96,151 +166,37 @@
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Project Modal -->
   <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
     <div class="modal-box">
       <button class="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('open')">✕</button>
       <div class="modal-tag" id="m-tag"></div>
       <div class="modal-title" id="m-title"></div>
-      <p class="modal-desc" id="m-desc"></p>
-      <div class="modal-section">
-        <div class="modal-section-label">Skills Used</div>
-        <div class="modal-skills" id="m-skills"></div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-label">Links</div>
-        <div class="modal-links" id="m-links"></div>
-      </div>
+      <div class="modal-desc" id="m-desc"></div>
+      <div class="modal-skills-label">Stack</div>
+      <div class="modal-skills" id="m-skills"></div>
+      <div class="modal-links" id="m-links"></div>
     </div>
   </div>
 
   <script src="portfolio.js"></script>
   <script>
     const projects = {
-      brainless: {
-        tag: 'Vodcast · Archived',
-        title: 'Brainless Experts',
-        desc: 'A video podcast interviewing students on their talents, interests, and more, with the hope that more people can learn as they listen. During my time at Brainless Experts I learned the importance of storytelling, videography, video editing, and research.',
-        skills: ['DaVinci Resolve', 'Rodecaster Pro', 'Management', 'Storytelling'],
-        links: [
-          { label: 'Website', url: 'https://sites.google.com/view/brainless-experts-website/home' },
-          { label: 'YouTube Channel', url: 'https://www.youtube.com/@brainlessexperts8626/videos' },
-        ]
-      },
-      housing: {
-        tag: 'Architecture · Archived',
-        title: 'Affordable Housing Project',
-        desc: 'Our team designed an affordable housing complex for the Leahy Square site in Livermore. As Project Manager I ensured the design met all codes and site constraints, managed budget and financing, delegated tasks, and was personally responsible for designing the two-bedroom unit.',
-        skills: ['Revit', 'Leadership', 'Project Management', 'Architecture'],
-        links: [
-          { label: 'Final Presentation (PDF)', url: 'media/Affordable Housing Project Final Presentation.pdf', download: true },
-          { label: 'Draft Site Plan (PDF)', url: 'media/Affordable Housing Project Draft Site Plan.pdf', download: true },
-        ]
-      },
-      portfolio: {
-        tag: 'Web Dev · Active',
-        title: 'Portfolio Website',
-        desc: 'Experimenting with Claude and AI vibe coding to create this personal portfolio website, hosted on Vercel with all files managed through GitHub.',
-        skills: ['Claude AI', 'Vibe Coding', 'Vercel', 'GitHub', 'HTML/CSS/JS'],
-        links: [
-          { label: 'GitHub Repository', url: 'https://github.com/jadenjirasevijinda/jadenjirasevijinda' },
-        ]
-      }
+      brainless: { tag:'Vodcast · Archived', title:'Brainless Experts', desc:'A student-run vodcast covering topics in science, technology, and culture. I managed production end-to-end — recording, editing, and publishing episodes.', skills:['DaVinci Resolve','Rodecaster Pro','Management','Audio Engineering'], links:[] },
+      housing:   { tag:'Architecture · Archived', title:'Affordable Housing Project', desc:'A design project exploring modular affordable housing solutions. Led a team using Revit to create detailed architectural models and presentations.', skills:['Revit','Leadership','Architecture','CAD'], links:[] },
+      portfolio: { tag:'Web Dev · Active', title:'Portfolio Website', desc:'This site — designed and built from scratch using Claude AI as a coding assistant. Hosted on Vercel with a custom dark UI and interactive components.', skills:['Claude AI','Vibe Coding','Vercel','GitHub','HTML/CSS/JS'], links:[{label:'GitHub Repository',url:'https://github.com/jadenjirasevijinda/jadenjirasevijinda'}] }
     };
-
     function openProject(key) {
       const p = projects[key];
       document.getElementById('m-tag').textContent   = p.tag;
       document.getElementById('m-title').textContent = p.title;
       document.getElementById('m-desc').textContent  = p.desc;
-      document.getElementById('m-skills').innerHTML  = p.skills.map(s =>
-        `<span class="modal-skill">${s}</span>`).join('');
-      document.getElementById('m-links').innerHTML   = p.links.map(l =>
-        `<a class="modal-link" href="${l.url}" ${l.download ? 'download' : 'target="_blank" rel="noopener"'}>${l.label} →</a>`).join('');
+      document.getElementById('m-skills').innerHTML  = p.skills.map(s=>`<span class="modal-skill">${s}</span>`).join('');
+      document.getElementById('m-links').innerHTML   = p.links.map(l=>`<a class="modal-link" href="${l.url}" target="_blank" rel="noopener">${l.label} →</a>`).join('');
       document.getElementById('modal-overlay').classList.add('open');
     }
-    function closeModal(e) {
-      if (e.target === document.getElementById('modal-overlay'))
-        document.getElementById('modal-overlay').classList.remove('open');
-    }
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') document.getElementById('modal-overlay').classList.remove('open');
-    });
+    function closeModal(e) { if (e.target===document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.remove('open'); }
+    document.addEventListener('keydown', e => { if (e.key==='Escape') document.getElementById('modal-overlay').classList.remove('open'); });
   </script>
-
-  <!-- ── More Sidebar ── -->
-  <div class="more-overlay" id="more-overlay" onclick="handleMoreOverlayClick(event)">
-    <div class="more-backdrop"></div>
-    <div class="more-sidebar" id="more-sidebar">
-      <div class="more-header">
-        <span class="more-header-title">More</span>
-        <button class="more-close" onclick="closeMore()">✕</button>
-      </div>
-      <div class="more-section">
-        <div class="more-section-label">Equipment</div>
-        <a class="more-item" href="equipment.html">
-          <div class="more-item-icon">⚡</div>
-          <div class="more-item-body">
-            <div class="more-item-title">Quickstart + Usage</div>
-            <div class="more-item-sub">Jump right in — what you need to get started</div>
-          </div>
-          <span class="more-item-arrow">→</span>
-        </a>
-      </div>
-      <div class="more-divider"></div>
-      <div class="more-section" style="padding-top:20px;">
-        <div class="more-section-label">Learning</div>
-        <a class="more-item" href="tutorials.html">
-          <div class="more-item-icon">📖</div>
-          <div class="more-item-body">
-            <div class="more-item-title">Tutorials</div>
-            <div class="more-item-sub">Step-by-step guides for video &amp; audio</div>
-          </div>
-          <span class="more-item-arrow">→</span>
-        </a>
-        <a class="more-item" href="resources.html">
-          <div class="more-item-icon">🔗</div>
-          <div class="more-item-body">
-            <div class="more-item-title">Resources</div>
-            <div class="more-item-sub">Tools, apps, and gear links I use</div>
-          </div>
-          <span class="more-item-arrow">→</span>
-        </a>
-      </div>
-      <div class="more-divider"></div>
-      <div class="more-section" style="padding-top:20px;">
-        <div class="more-section-label">Other</div>
-        <a class="more-item" href="https://github.com/jadenjirasevijinda/jadenjirasevijinda" target="_blank" rel="noopener">
-          <div class="more-item-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-          </div>
-          <div class="more-item-body">
-            <div class="more-item-title">Source Code</div>
-            <div class="more-item-sub">This site on GitHub</div>
-          </div>
-          <span class="more-item-arrow">↗</span>
-        </a>
-      </div>
-      <div class="more-footer">
-        <div class="more-footer-text">Built with Claude AI · Hosted on Vercel</div>
-      </div>
-    </div>
-  </div>
-  <script>
-    function openMore()  {
-      document.getElementById('more-overlay').classList.add('open');
-      document.getElementById('more-btn').classList.add('open');
-    }
-    function closeMore() {
-      document.getElementById('more-overlay').classList.remove('open');
-      document.getElementById('more-btn').classList.remove('open');
-    }
-    function handleMoreOverlayClick(e) {
-      if (e.target === document.getElementById('more-overlay') ||
-          e.target.classList.contains('more-backdrop')) closeMore();
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMore(); });
-  </script>
-
 </body>
 </html>
